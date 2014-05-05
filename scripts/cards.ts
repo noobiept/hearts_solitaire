@@ -8,8 +8,8 @@
 
 module Cards
 {
-export enum Suit { clubs= 0, diamonds, spades, hearts }
-export enum SuitSymbol { ace= 0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, jack, queen, king }
+export enum Suit { clubs, diamonds, spades, hearts }
+export enum SuitSymbol { 2, 3, 4, 5, 6, 7, 8, 9, 10, jack, queen, king, ace }
 
 var ALL: IndividualCard[] = [];
 var ALL_AVAILABLE: IndividualCard[] = [];
@@ -17,11 +17,6 @@ var ALL_AVAILABLE: IndividualCard[] = [];
 
 export function init()
 {
-var cards = [
-        'ace_of_clubs', '2_of_clubs', '3_of_clubs', '4_of_clubs', '5_of_clubs', '6_of_clubs', '7_of_clubs', '8_of_clubs', '9_of_clubs', '10_of_clubs', 'jack_of_clubs', 'queen_of_clubs', 'king_of_clubs'
-
-    ];
-
 var suitLength = 4;
 var symbolLength = 13;
 
@@ -35,22 +30,19 @@ for (var a = 0 ; a < suitLength ; a++)
             });
 
         ALL.push( card );
+        ALL_AVAILABLE.push( card );
         }
     }
-
-
-var test = Cards.getRandom();
-
-test.show();
-test.moveTo( 20, 20 );
 }
 
 
 export function getRandom()
 {
-var position = getRandomInt( 0, ALL.length - 1 );
+var position = getRandomInt( 0, ALL_AVAILABLE.length - 1 );
 
-return ALL[ position ];
+var card = ALL_AVAILABLE.splice( position, 1 )[ 0 ];
+
+return card;
 }
 
 
@@ -93,6 +85,7 @@ export class IndividualCard
 
     show()
         {
+        G.STAGE.addChild( this.bitmap );    // to force it to up in the stack to be drawn on top of other stuff
         this.bitmap.visible = true;
         }
 
