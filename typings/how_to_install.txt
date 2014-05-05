@@ -1,0 +1,1 @@
+tsd query the_library --save --action install

@@ -13,6 +13,18 @@
     },
     "preloadjs/preloadjs.d.ts": {
       "commit": "a9d2023e8eb1afe534b55758f2f1d16fb69ce61f"
+    },
+    "createjs/createjs.d.ts": {
+      "commit": "09e35ed6c81028150db555f4ea7b1676a93d2ed3"
+    },
+    "soundjs/soundjs.d.ts": {
+      "commit": "09e35ed6c81028150db555f4ea7b1676a93d2ed3"
+    },
+    "tweenjs/tweenjs.d.ts": {
+      "commit": "09e35ed6c81028150db555f4ea7b1676a93d2ed3"
+    },
+    "createjs-lib/createjs-lib.d.ts": {
+      "commit": "09e35ed6c81028150db555f4ea7b1676a93d2ed3"
     }
   }
 }
