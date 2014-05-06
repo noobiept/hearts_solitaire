@@ -62,6 +62,11 @@ export class IndividualCard
     suit: Suit;
     suitSymbol: SuitSymbol;
 
+    static scale = 0.3;
+    static width = 500 * IndividualCard.scale;
+    static height = 726 * IndividualCard.scale;
+
+
     constructor( args: IndividualCardArgs )
         {
         this.suit = args.suit;
@@ -71,8 +76,11 @@ export class IndividualCard
 
         this.bitmap = new createjs.Bitmap( G.PRELOAD.getResult( imageId ) );
         this.bitmap.visible = false;
-        this.bitmap.scaleX = 0.5;
-        this.bitmap.scaleY = 0.5;
+
+        var scale = 0.2;
+
+        this.bitmap.scaleX = scale;
+        this.bitmap.scaleY = scale;
 
         G.STAGE.addChild( this.bitmap );
         }
@@ -94,6 +102,4 @@ export class IndividualCard
         this.bitmap.visible = false;
         }
     }
-
-
 }

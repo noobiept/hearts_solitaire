@@ -27,6 +27,7 @@
         - first pass to left
         - second pass to right
         - third pass to front
+    - clock-wise turns (for example: north, east, south, west)
 
     - each player needs to follow the suit (play a card of the same suit as the lead card (last card played))
     - if doesn't have a card of that suit, then he can play any other card
@@ -87,8 +88,8 @@ G.STAGE = new createjs.Stage( G.CANVAS );
 createjs.Ticker.setFPS( G.FPS );
 
 
-G.CANVAS.width = 800;
-G.CANVAS.height = 600;
+G.CANVAS.width = 1200;
+G.CANVAS.height = 800;
 
 
 G.PRELOAD = new createjs.LoadQueue();
