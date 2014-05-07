@@ -161,4 +161,60 @@ class Player
             y += stepY;
             }
         }
+
+    hasCard( suit: Cards.Suit, symbol: Cards.SuitSymbol )
+    {
+    var a;
+
+    if ( suit == Cards.Suit.clubs )
+        {
+        for (a = 0 ; a < this.clubs.length ; a++)
+            {
+            if ( this.clubs[ a ].suitSymbol == symbol )
+                {
+                return true;
+                }
+            }
+        }
+
+    else if ( suit == Cards.Suit.diamonds )
+        {
+        for (a = 0 ; a < this.diamonds.length ; a++)
+            {
+            if ( this.diamonds[ a ].suitSymbol == symbol )
+                {
+                return true;
+                }
+            }
+        }
+
+    else if ( suit == Cards.Suit.hearts )
+        {
+        for (a = 0 ; a < this.hearts.length ; a++)
+            {
+            if ( this.hearts[ a ].suitSymbol == symbol )
+                {
+                return true;
+                }
+            }
+        }
+
+    else if ( suit == Cards.Suit.spades )
+        {
+        for (a = 0 ; a < this.spades.length ; a++)
+            {
+            if ( this.spades[ a ].suitSymbol == symbol )
+                {
+                return true;
+                }
+            }
+        }
+
+    else
+        {
+        console.log( 'error, wrong suit argument.' );
+        }
+
+    return false;
+    }
 }

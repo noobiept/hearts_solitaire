@@ -10,7 +10,7 @@
 module Cards
 {
 export enum Suit { clubs, diamonds, spades, hearts }
-export enum SuitSymbol { 2, 3, 4, 5, 6, 7, 8, 9, 10, jack, queen, king, ace }
+export enum SuitSymbol { two, three, four, five, six, seven, eight, nine, ten, jack, queen, king, ace }
 
 var ALL: IndividualCard[] = [];
 var ALL_AVAILABLE: IndividualCard[] = [];

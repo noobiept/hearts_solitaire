@@ -10,6 +10,8 @@ var EAST: Player;
 var WEST: Player;
 
 
+var ACTIVE_PLAYER = null;
+
 export enum Position { west, east, north, south }
 
 export function start()
@@ -37,6 +39,20 @@ WEST = new Player({
         position: Position.west
     });
 
+
+
+    // determine who starts playing (who has the 2 of clubs)
+var players = [ HUMAN, NORTH, EAST, WEST ];
+
+for (var a = 0 ; a < players.length ; a++)
+    {
+    if ( players[ a ].hasCard( Cards.Suit.clubs, Cards.SuitSymbol.two ) )
+        {
+        ACTIVE_PLAYER = players[ a ];
+        }
+    }
+
+console.log(ACTIVE_PLAYER);
 
 createjs.Ticker.on( 'tick', tick );
 }
