@@ -1,6 +1,7 @@
 /// <reference path='../typings/tsd.d.ts' />
 /// <reference path='main.ts' />
 /// <reference path='utilities.ts' />
+/// <reference path='player.ts' />
 
 /*
     Will manage all the cards
@@ -36,14 +37,17 @@ for (var a = 0 ; a < suitLength ; a++)
 }
 
 
-export function getRandom()
+export function getRandom( player: Player )
 {
 var position = getRandomInt( 0, ALL_AVAILABLE.length - 1 );
 
 var card = ALL_AVAILABLE.splice( position, 1 )[ 0 ];
 
+card.setPlayer( player );
+
 return card;
 }
+
 
 
 /*
@@ -61,6 +65,7 @@ export class IndividualCard
     bitmap: createjs.Bitmap;
     suit: Suit;
     suitSymbol: SuitSymbol;
+    player: Player;
 
     static scale = 0.3;
     static width = 500 * IndividualCard.scale;
@@ -69,12 +74,15 @@ export class IndividualCard
 
     constructor( args: IndividualCardArgs )
         {
+        var _this = this;
+
         this.suit = args.suit;
         this.suitSymbol = args.suitSymbol;
 
         var imageId = SuitSymbol[ this.suitSymbol ] + '_of_' + Suit[ this.suit ];
 
         this.bitmap = new createjs.Bitmap( G.PRELOAD.getResult( imageId ) );
+        this.bitmap.on('click', function() { Game.playCard( _this ) });
         this.bitmap.visible = false;
 
         var scale = 0.2;
@@ -85,11 +93,22 @@ export class IndividualCard
         G.STAGE.addChild( this.bitmap );
         }
 
-    moveTo( x: number, y: number )
+    setPosition( x: number, y: number )
         {
         this.bitmap.x = x;
         this.bitmap.y = y;
         }
+
+    setPlayer( player: Player )
+        {
+        this.player = player;
+        }
+
+    moveTo( x: number, y: number )
+        {
+        createjs.Tween.get( this.bitmap ).to({ x: x, y: y }, 500 );
+        }
+
 
     show()
         {

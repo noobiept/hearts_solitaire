@@ -9,6 +9,7 @@
         - createjs
             - easeljs: 0.7
             - preloadjs: 0.4
+            - tweenjs: 0.5
         - underscore : 1.6
         - cards images : 1.3
             - https://code.google.com/p/vector-playing-cards/
@@ -46,18 +47,17 @@
         - Card:
             - draw card, move
 
-        - Hand (the cards each player have):
+        - Player:
             - position the cards in order of suit (clubs / diamonds / spades / hearts)
             - can be shown (for the player) / hidden (the bots)
             - position in top/bottom/left/right
 
+        - Bot (inherits from Player):
+            - has the bot game logic
+
         - Round:
             - receives each players card
             - position them in the center
-
-        - Player:
-            - keeps track of the cards
-            - has bot logic
 
         - Game:
             - which turn it is
@@ -158,3 +158,4 @@ G.PRELOAD.addEventListener( 'progress', function( event )
 G.PRELOAD.addEventListener( 'complete', Game.start );
 G.PRELOAD.loadManifest( manifest, true );
 };
+
