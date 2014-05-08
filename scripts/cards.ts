@@ -37,13 +37,11 @@ for (var a = 0 ; a < suitLength ; a++)
 }
 
 
-export function getRandom( player: Player )
+export function getRandom()
 {
 var position = getRandomInt( 0, ALL_AVAILABLE.length - 1 );
 
 var card = ALL_AVAILABLE.splice( position, 1 )[ 0 ];
-
-card.setPlayer( player );
 
 return card;
 }
@@ -82,7 +80,7 @@ export class IndividualCard
         var imageId = SuitSymbol[ this.suitSymbol ] + '_of_' + Suit[ this.suit ];
 
         this.bitmap = new createjs.Bitmap( G.PRELOAD.getResult( imageId ) );
-        this.bitmap.on('click', function() { Game.playCard( _this ) });
+        this.bitmap.on('click', function() { _this.player.playCard( _this ) });
         this.bitmap.visible = false;
 
         var scale = 0.2;

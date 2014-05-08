@@ -8,10 +8,12 @@ interface PlayerArgs
 
 class Player
 {
-    clubs: Cards.IndividualCard[];
-    diamonds: Cards.IndividualCard[];
-    spades: Cards.IndividualCard[];
-    hearts: Cards.IndividualCard[];
+    cards: {
+        clubs: Cards.IndividualCard[];
+        diamonds: Cards.IndividualCard[];
+        spades: Cards.IndividualCard[];
+        hearts: Cards.IndividualCard[];
+    };
 
     cardsCount: number;
 
@@ -29,27 +31,32 @@ class Player
 
         this.cardsCount = startingCards;
         this.position = args.position;
+        this.cards = { clubs: null, diamonds: null, spades: null, hearts: null };
 
         var cards = [];
 
         for (var a = 0 ; a < startingCards ; a++)
             {
-            cards.push( Cards.getRandom( this ) );
+            var card = Cards.getRandom();
+
+            card.setPlayer( this );
+
+            cards.push( card );
             }
 
-        this.clubs = cards.filter(function( element )
+        this.cards.clubs = cards.filter(function( element )
             {
             return element.suit == Cards.Suit.clubs;
             });
-        this.diamonds = cards.filter(function( element )
+        this.cards.diamonds = cards.filter(function( element )
             {
             return element.suit == Cards.Suit.diamonds;
             });
-        this.spades = cards.filter(function( element )
+        this.cards.spades = cards.filter(function( element )
             {
             return element.suit == Cards.Suit.spades;
             });
-        this.hearts = cards.filter(function( element )
+        this.cards.hearts = cards.filter(function( element )
             {
             return element.suit == Cards.Suit.hearts;
             });
@@ -61,10 +68,10 @@ class Player
             return a.suitSymbol - b.suitSymbol;
             };
 
-        this.clubs.sort( sortSymbol );
-        this.diamonds.sort( sortSymbol );
-        this.spades.sort( sortSymbol );
-        this.hearts.sort( sortSymbol );
+        this.cards.clubs.sort( sortSymbol );
+        this.cards.diamonds.sort( sortSymbol );
+        this.cards.spades.sort( sortSymbol );
+        this.cards.hearts.sort( sortSymbol );
 
         var width = G.CANVAS.width;
         var height = G.CANVAS.height;
@@ -128,34 +135,34 @@ class Player
             }
 
 
-        for (var a = 0 ; a < this.clubs.length ; a++)
+        for (var a = 0 ; a < this.cards.clubs.length ; a++)
             {
-            this.clubs[ a ].show();
-            this.clubs[ a ].setPosition( x, y );
+            this.cards.clubs[ a ].show();
+            this.cards.clubs[ a ].setPosition( x, y );
 
             x += stepX;
             y += stepY;
             }
-        for (var a = 0 ; a < this.diamonds.length ; a++)
+        for (var a = 0 ; a < this.cards.diamonds.length ; a++)
             {
-            this.diamonds[ a ].show();
-            this.diamonds[ a ].setPosition( x, y );
+            this.cards.diamonds[ a ].show();
+            this.cards.diamonds[ a ].setPosition( x, y );
 
             x += stepX;
             y += stepY;
             }
-        for (var a = 0 ; a < this.spades.length ; a++)
+        for (var a = 0 ; a < this.cards.spades.length ; a++)
             {
-            this.spades[ a ].show();
-            this.spades[ a ].setPosition( x, y );
+            this.cards.spades[ a ].show();
+            this.cards.spades[ a ].setPosition( x, y );
 
             x += stepX;
             y += stepY;
             }
-        for (var a = 0 ; a < this.hearts.length ; a++)
+        for (var a = 0 ; a < this.cards.hearts.length ; a++)
             {
-            this.hearts[ a ].show();
-            this.hearts[ a ].setPosition( x, y );
+            this.cards.hearts[ a ].show();
+            this.cards.hearts[ a ].setPosition( x, y );
 
             x += stepX;
             y += stepY;
@@ -163,58 +170,34 @@ class Player
         }
 
     hasCard( suit: Cards.Suit, symbol: Cards.SuitSymbol )
-    {
-    var a;
-
-    if ( suit == Cards.Suit.clubs )
         {
-        for (a = 0 ; a < this.clubs.length ; a++)
+        var array: Cards.IndividualCard[] = this.cards[ Cards.Suit[ suit ] ];
+
+        for (var a = 0 ; a < array.length ; a++)
             {
-            if ( this.clubs[ a ].suitSymbol == symbol )
+            if ( array[ a ].suitSymbol == symbol )
                 {
                 return true;
                 }
             }
+
+        return false;
         }
 
-    else if ( suit == Cards.Suit.diamonds )
+    playCard( card: Cards.IndividualCard )
         {
-        for (a = 0 ; a < this.diamonds.length ; a++)
+        var wasPlayed = Game.playCard( card );
+
+            // remove the card from the player (now its part of the round)
+        if ( wasPlayed )
             {
-            if ( this.diamonds[ a ].suitSymbol == symbol )
-                {
-                return true;
-                }
+            var array = this.cards[ Cards.Suit[ card.suit ] ];
+
+            var index = array.indexOf( card );
+
+            array.splice( index, 1 );
+
+            this.cardsCount--;
             }
         }
-
-    else if ( suit == Cards.Suit.hearts )
-        {
-        for (a = 0 ; a < this.hearts.length ; a++)
-            {
-            if ( this.hearts[ a ].suitSymbol == symbol )
-                {
-                return true;
-                }
-            }
-        }
-
-    else if ( suit == Cards.Suit.spades )
-        {
-        for (a = 0 ; a < this.spades.length ; a++)
-            {
-            if ( this.spades[ a ].suitSymbol == symbol )
-                {
-                return true;
-                }
-            }
-        }
-
-    else
-        {
-        console.log( 'error, wrong suit argument.' );
-        }
-
-    return false;
-    }
 }
