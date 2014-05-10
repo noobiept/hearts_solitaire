@@ -70,6 +70,10 @@
 
         - Message:
             - when game ends, to tell the score
+
+
+    to doo:
+        - when a round ends, the click (from choosing the last card) immediately triggers a new card from the new round
  */
 
 var G = {

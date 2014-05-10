@@ -37,6 +37,10 @@ for (var a = 0 ; a < suitLength ; a++)
 }
 
 
+/*
+    Gets a random card that isn't being used at the moment
+ */
+
 export function getRandom()
 {
 var position = getRandomInt( 0, ALL_AVAILABLE.length - 1 );
@@ -44,6 +48,18 @@ var position = getRandomInt( 0, ALL_AVAILABLE.length - 1 );
 var card = ALL_AVAILABLE.splice( position, 1 )[ 0 ];
 
 return card;
+}
+
+
+/*
+    Flags a card as not being used
+ */
+
+export function notUsed( card: IndividualCard )
+{
+card.hide();
+
+ALL_AVAILABLE.push( card );
 }
 
 
@@ -61,6 +77,7 @@ export interface IndividualCardArgs
 export class IndividualCard
     {
     bitmap: createjs.Bitmap;
+    click_f;
     suit: Suit;
     suitSymbol: SuitSymbol;
     player: Player;
@@ -80,7 +97,7 @@ export class IndividualCard
         var imageId = SuitSymbol[ this.suitSymbol ] + '_of_' + Suit[ this.suit ];
 
         this.bitmap = new createjs.Bitmap( G.PRELOAD.getResult( imageId ) );
-        this.bitmap.on('click', function() { _this.player.playCard( _this ) });
+        this.click_f = this.bitmap.on( 'click', function() { Game.playCard( _this ) });
         this.bitmap.visible = false;
 
         var scale = 0.2;
@@ -117,6 +134,14 @@ export class IndividualCard
     hide()
         {
         this.bitmap.visible = false;
+        }
+
+    remove()
+        {
+        this.bitmap.off( 'click', this.click_f );
+        this.click_f = null;
+
+        G.STAGE.removeChild( this.bitmap );
         }
     }
 }

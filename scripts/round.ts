@@ -14,14 +14,6 @@ var CARDS = [];
 var LEAD_CARD: Cards.IndividualCard;
 
 
-export function start()
-{
-LEAD_CARD = null;
-
-IS_FIRST_TURN = true;
-IS_HEARTS_BROKEN = false;
-}
-
 
 
 function isValidMove( card: Cards.IndividualCard )
@@ -55,7 +47,7 @@ if ( LEAD_CARD === null )
             if ( !IS_HEARTS_BROKEN )
                 {
                     // check if you only have hearts left
-                if ( player.cards.hearts.length == player.cardsCount )
+                if ( player.cards.hearts.length == player.cardCount() )
                     {
                     return true;
                     }
@@ -104,7 +96,6 @@ export function playCard( card: Cards.IndividualCard )
 {
 if ( !isValidMove( card ) )
     {
-    console.log( 'invalid card' );
     return false;
     }
 
@@ -143,12 +134,20 @@ else
 
 card.moveTo( x, y );
 
+CARDS.push( card );
+
+
+
 if ( LEAD_CARD === null )
     {
     LEAD_CARD = card;
     }
 
-CARDS.push( card );
+if ( card.suit === Cards.Suit.hearts )
+    {
+    IS_HEARTS_BROKEN = true;
+    }
+
 
 return true;
 }
@@ -162,6 +161,12 @@ export function getWinner()
     // all players played a card, need to determine who won the round
 if ( CARDS.length >= 4 )
     {
+        // a round was completed, so we can update this flag
+    if ( IS_FIRST_TURN )
+        {
+        IS_FIRST_TURN = false;
+        }
+
     return determineWinner();
     }
 
@@ -171,11 +176,94 @@ return null;
 
 
 
-export function determineWinner()
+function determineWinner()
 {
-return CARDS[ 0 ].player;   //HERE
+    // get all cards of the suit of the lead
+var suit = LEAD_CARD.suit;
+
+var cards = [];
+var a;
+
+for (a = 0 ; a < CARDS.length ; a++)
+    {
+    if ( CARDS[ a ].suit === suit )
+        {
+        cards.push( CARDS[ a ] );
+        }
+    }
+
+
+    // determine the card with highest symbol (will be the winner)
+var highest = cards[ 0 ];
+
+for (a = 1 ; a < cards.length ; a++)
+    {
+    if ( cards[ a ].suitSymbol > highest.suitSymbol )
+        {
+        highest = cards[ a ];
+        }
+    }
+
+
+    // determine the points
+    // 1 point per hearts card
+    // 13 points for the queen of spades
+var points = 0;
+
+for (a = 0 ; a < CARDS.length ; a++)
+    {
+    var card = CARDS[ a ];
+
+    if ( card.suit === Cards.Suit.hearts )
+        {
+        points++;
+        }
+
+    else if ( card.suit === Cards.Suit.spades && card.suitSymbol === Cards.SuitSymbol.queen )
+        {
+        points += 13;
+        }
+    }
+
+
+    // clear this turn
+clearTurn();
+
+return {
+        player: highest.player,
+        points: points
+    };
 }
 
+
+/*
+    When a round ends, removes the cards and the lead card
+ */
+
+function clearTurn()
+{
+for (var a = 0 ; a < CARDS.length ; a++)
+    {
+    Cards.notUsed( CARDS[ a ] );
+    }
+
+CARDS.length = 0;
+
+LEAD_CARD = null;
+}
+
+
+/*
+    For when restarting the game (clears everything)
+ */
+
+export function clearRound()
+{
+clearTurn();
+
+IS_FIRST_TURN = true;
+IS_HEARTS_BROKEN = false;
+}
 
 
 }

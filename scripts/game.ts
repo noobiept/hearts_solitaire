@@ -43,6 +43,21 @@ WEST = new Player({
     // in clockwise order
 PLAYERS.push( NORTH, EAST, SOUTH,  WEST );
 
+Round.clearRound();
+startRound();
+
+createjs.Ticker.on( 'tick', tick );
+}
+
+
+export function startRound()
+{
+var a = 0;
+
+for (a = 0 ; a < PLAYERS.length ; a++)
+    {
+    PLAYERS[ a ].getHand();
+    }
 
     // determine who starts playing (who has the 2 of clubs)
 for (var a = 0 ; a < PLAYERS.length ; a++)
@@ -50,36 +65,51 @@ for (var a = 0 ; a < PLAYERS.length ; a++)
     if ( PLAYERS[ a ].hasCard( Cards.Suit.clubs, Cards.SuitSymbol.two ) )
         {
         ACTIVE_PLAYER = PLAYERS[ a ];
+        break;
         }
     }
 
-
-Round.start();
 console.log( 'Its ' + Position[ ACTIVE_PLAYER.position ] + ' turn' );
-
-createjs.Ticker.on( 'tick', tick );
 }
 
 
 export function playCard( card: Cards.IndividualCard )
 {
-if ( card.player !== ACTIVE_PLAYER )
+var player = card.player;
+
+if ( player !== ACTIVE_PLAYER )
     {
     console.log( 'Its ' + Position[ ACTIVE_PLAYER.position ] + ' turn' );
     return false;
     }
 
-console.log('card played by', Position[ card.player.position ]);
+console.log( 'card played by', Position[ player.position ] );
 
 if ( Round.playCard( card ) )
     {
+    player.removeCard( card );
+
     var winner = Round.getWinner();
 
-        // round ended
+        // turn ended
     if ( winner )
         {
-            // the player that has won will start the next round
-        ACTIVE_PLAYER = winner;
+        winner.player.addPoints( winner.points );   //HERE should only update the points at the end of the round (since there's the chance of one player getting all the points)
+
+            // the player that has won will start the next turn
+        ACTIVE_PLAYER = winner.player;
+
+
+            // check if the round has ended (when there's no more cards to be played)
+            // we can check in any player (since they all have the same amount of cards)
+        if ( ACTIVE_PLAYER.cardCount() === 0 )
+            {
+                // round ended
+                // update the points //HERE
+                // start new round
+            Round.clearRound();
+            startRound();
+            }
         }
 
         // round still going on, go to next player
@@ -97,14 +127,11 @@ if ( Round.playCard( card ) )
 
         ACTIVE_PLAYER = PLAYERS[ index ];
         }
-
-    return true;
     }
 
 else
     {
     console.log('invalid card.');
-    return false;
     }
 }
 
