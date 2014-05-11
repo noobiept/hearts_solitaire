@@ -13,6 +13,12 @@ var CARDS = [];
     // lead card in the current turn
 var LEAD_CARD: Cards.IndividualCard;
 
+var POINTS = {
+        south: 0,
+        west: 0,
+        north: 0,
+        east: 0
+    };
 
 
 
@@ -156,7 +162,7 @@ return true;
     Returns null if the round hasn't ended, otherwise returns a reference to the player that won
  */
 
-export function getWinner()
+export function getTurnWinner()
 {
     // all players played a card, need to determine who won the round
 if ( CARDS.length >= 4 )
@@ -167,11 +173,16 @@ if ( CARDS.length >= 4 )
         IS_FIRST_TURN = false;
         }
 
-    return determineWinner();
+    var winner = determineWinner();
+
+    clearTurn();
+
+    return winner;
     }
 
 return null;
 }
+
 
 
 
@@ -204,7 +215,6 @@ for (a = 1 ; a < cards.length ; a++)
         }
     }
 
-
     // determine the points
     // 1 point per hearts card
     // 13 points for the queen of spades
@@ -225,14 +235,56 @@ for (a = 0 ; a < CARDS.length ; a++)
         }
     }
 
+var player = highest.player;
+var position = Game.Position[ player.position ];
 
-    // clear this turn
-clearTurn();
+POINTS[ position ] += points;
 
-return {
-        player: highest.player,
-        points: points
-    };
+return highest.player;
+}
+
+/*
+    Called when the round ends
+    Need to check if a player got all the hearts + queen of spades (if so, all the other players get 26 points)
+    Otherwise the current points stays
+ */
+
+export function getPoints()
+{
+if ( POINTS.west >= 26 )
+    {
+    POINTS.west = 0;
+    POINTS.north = 26;
+    POINTS.east = 26;
+    POINTS.south = 26;
+    }
+
+else if ( POINTS.north >= 26 )
+    {
+    POINTS.west = 26;
+    POINTS.north = 0;
+    POINTS.east = 26;
+    POINTS.south = 26;
+    }
+
+else if ( POINTS.east >= 26 )
+    {
+    POINTS.west = 26;
+    POINTS.north = 26;
+    POINTS.east = 0;
+    POINTS.south = 26;
+    }
+
+else if ( POINTS.south >= 26 )
+    {
+    POINTS.west = 26;
+    POINTS.north = 26;
+    POINTS.east = 26;
+    POINTS.south = 0;
+    }
+
+
+return POINTS;
 }
 
 
@@ -260,6 +312,11 @@ LEAD_CARD = null;
 export function clearRound()
 {
 clearTurn();
+
+POINTS.south = 0;
+POINTS.west = 0;
+POINTS.north = 0;
+POINTS.east = 0;
 
 IS_FIRST_TURN = true;
 IS_HEARTS_BROKEN = false;

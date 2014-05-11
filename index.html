@@ -15,11 +15,23 @@
     <script type="text/javascript" src="scripts/player.js"></script>
     <script type="text/javascript" src="scripts/round.js"></script>
     <script type="text/javascript" src="scripts/game.js"></script>
+    <script type="text/javascript" src="scripts/game_menu.js"></script>
     <script type="text/javascript" src="scripts/main.js"></script>
 </head>
 <body>
 
     <canvas id="MainCanvas"></canvas>
+
+    <div id="GameMenu">
+        <div id="Scores">
+            <div>South: <span id="south"></span></div>
+            <div>West: <span id="west"></span></div>
+            <div>North: <span id="north"></span></div>
+            <div>East: <span id="east"></span></div>
+        </div>
+
+        <div id="Restart" class="button">Restart</div>
+    </div>
 
 </body>
 </html>

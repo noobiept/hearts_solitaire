@@ -1,48 +1,55 @@
 /// <reference path='cards.ts' />
 /// <reference path='player.ts' />
 /// <reference path='round.ts' />
+/// <reference path='game_menu.ts' />
 
 module Game
 {
-var SOUTH: Player;  // human player
-var NORTH: Player;
-var EAST: Player;
-var WEST: Player;
+export enum Position { south, west, north, east }
 
-var PLAYERS: Player[] = [];
+var PLAYERS = {
+    south: <Player> null,  // human player
+    west: <Player> null,
+    north: <Player> null,
+    east: <Player> null
+};
+
+    // in the play order (clock-wise)
+var PLAYERS_POSITION = [ 'south', 'west', 'north', 'east' ];
+
 
 var ACTIVE_PLAYER: Player = null;
 
-export enum Position { west, east, north, south }
+
 
 export function start()
 {
 Cards.init();
 
 
-SOUTH = new Player({
+PLAYERS.south = new Player({
         show: true,
         position: Position.south
     });
 
-NORTH = new Player({
+PLAYERS.north = new Player({
         show: true,     // for now show for debugging //HERE
         position: Position.north
     });
 
-EAST = new Player({
+PLAYERS.east = new Player({
         show: true,
         position: Position.east
     });
 
-WEST = new Player({
+PLAYERS.west = new Player({
         show: true,
         position: Position.west
     });
 
-    // in clockwise order
-PLAYERS.push( NORTH, EAST, SOUTH,  WEST );
 
+GameMenu.init();
+GameMenu.updateScores();
 Round.clearRound();
 startRound();
 
@@ -52,19 +59,28 @@ createjs.Ticker.on( 'tick', tick );
 
 export function startRound()
 {
-var a = 0;
+var a;
+var player;
+var position;
 
-for (a = 0 ; a < PLAYERS.length ; a++)
+for (a = 0 ; a < PLAYERS_POSITION.length ; a++)
     {
-    PLAYERS[ a ].getHand();
+    position = PLAYERS_POSITION[ a ];
+
+    player = PLAYERS[ position ];
+
+    player.getHand();
     }
 
     // determine who starts playing (who has the 2 of clubs)
-for (var a = 0 ; a < PLAYERS.length ; a++)
+for (a = 0 ; a < PLAYERS_POSITION.length ; a++)
     {
-    if ( PLAYERS[ a ].hasCard( Cards.Suit.clubs, Cards.SuitSymbol.two ) )
+    position = PLAYERS_POSITION[ a ];
+    player = PLAYERS[ position ];
+
+    if ( player.hasCard( Cards.Suit.clubs, Cards.SuitSymbol.two ) )
         {
-        ACTIVE_PLAYER = PLAYERS[ a ];
+        ACTIVE_PLAYER = player;
         break;
         }
     }
@@ -80,7 +96,7 @@ var player = card.player;
 if ( player !== ACTIVE_PLAYER )
     {
     console.log( 'Its ' + Position[ ACTIVE_PLAYER.position ] + ' turn' );
-    return false;
+    return;
     }
 
 console.log( 'card played by', Position[ player.position ] );
@@ -89,15 +105,13 @@ if ( Round.playCard( card ) )
     {
     player.removeCard( card );
 
-    var winner = Round.getWinner();
+    var winner = Round.getTurnWinner();
 
         // turn ended
     if ( winner )
         {
-        winner.player.addPoints( winner.points );   //HERE should only update the points at the end of the round (since there's the chance of one player getting all the points)
-
             // the player that has won will start the next turn
-        ACTIVE_PLAYER = winner.player;
+        ACTIVE_PLAYER = winner;
 
 
             // check if the round has ended (when there's no more cards to be played)
@@ -105,7 +119,9 @@ if ( Round.playCard( card ) )
         if ( ACTIVE_PLAYER.cardCount() === 0 )
             {
                 // round ended
-                // update the points //HERE
+                // update the points
+            updatePoints();
+
                 // start new round
             Round.clearRound();
             startRound();
@@ -116,16 +132,16 @@ if ( Round.playCard( card ) )
     else
         {
             // give turn to next player
-        var index = PLAYERS.indexOf( ACTIVE_PLAYER );
+        var index = ACTIVE_PLAYER.position;
 
         index++;
 
-        if ( index >= PLAYERS.length )
+        if ( index >= PLAYERS_POSITION.length )
             {
             index = 0;
             }
 
-        ACTIVE_PLAYER = PLAYERS[ index ];
+        ACTIVE_PLAYER = PLAYERS[ Position[ index ] ];
         }
     }
 
@@ -136,8 +152,40 @@ else
 }
 
 
+function updatePoints()
+{
+var points = Round.getPoints();
+
+for (var a = 0 ; a < PLAYERS_POSITION.length ; a++)
+    {
+    var position = PLAYERS_POSITION[ a ];
+
+    var player = PLAYERS[ position ];
+
+    player.addPoints( points[ position ] );
+    }
+
+GameMenu.updateScores();
+}
 
 
+export function getPlayer( position: Position )
+{
+return PLAYERS[ Position[ position ] ];
+}
+
+
+export function restart()
+{
+clear();
+start();
+}
+
+
+function clear()
+{
+
+}
 
 
 export function tick()

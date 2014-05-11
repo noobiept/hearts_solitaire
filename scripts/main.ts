@@ -58,11 +58,11 @@
         - Round:
             - receives each players card
             - position them in the center
+            - determines if a player move is valid or not
 
         - Game:
             - which turn it is
             - knows if the hearts have been broken or not
-            - determines if a player move is valid or not
 
         - GameMenu:
             - current players points

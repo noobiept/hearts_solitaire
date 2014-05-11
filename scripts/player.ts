@@ -213,4 +213,9 @@ class Player
         {
         this.points += points;
         }
+
+    getPoints()
+        {
+        return this.points;
+        }
 }
