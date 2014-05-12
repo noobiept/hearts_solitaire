@@ -22,7 +22,7 @@ var POINTS = {
 
 
 
-function isValidMove( card: Cards.IndividualCard )
+export function isValidMove( card: Cards.IndividualCard )
 {
 var player = card.player;
 
@@ -124,11 +124,6 @@ else
 
 export function playCard( card: Cards.IndividualCard )
 {
-if ( !isValidMove( card ) )
-    {
-    return false;
-    }
-
 var x = G.CANVAS.width / 2;
 var y = G.CANVAS.height / 2;
 var position = card.player.position;
@@ -162,7 +157,7 @@ else
     }
 
 
-card.moveTo( x, y );
+card.moveTo( x, y, function() { Game.cardPlayed( card ) } );
 
 CARDS.push( card );
 
@@ -177,9 +172,6 @@ if ( card.suit === Cards.Suit.hearts )
     {
     IS_HEARTS_BROKEN = true;
     }
-
-
-return true;
 }
 
 /*

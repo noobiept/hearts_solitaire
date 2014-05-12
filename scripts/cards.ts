@@ -114,7 +114,7 @@ export class IndividualCard
         var imageId = SuitSymbol[ this.suitSymbol ] + '_of_' + Suit[ this.suit ];
 
         this.bitmap = new createjs.Bitmap( G.PRELOAD.getResult( imageId ) );
-        this.click_f = this.bitmap.on( 'click', function() { Game.playCard( _this ) });
+        this.click_f = this.bitmap.on( 'click', this.clicked, this );
         this.bitmap.visible = false;
 
         var scale = 0.2;
@@ -136,7 +136,7 @@ export class IndividualCard
         this.player = player;
         }
 
-    moveTo( x: number, y: number )
+    moveTo( x: number, y: number, callback?: () => any )
         {
         var _this = this;
         this.isMoving = true;
@@ -144,6 +144,13 @@ export class IndividualCard
         createjs.Tween.get( this.bitmap ).to({ x: x, y: y }, 500 ).call( function()
             {
             _this.isMoving = false;
+
+            createjs.Tween.removeTweens( _this.bitmap );
+
+            if (_.isFunction( callback ) )
+                {
+                callback();
+                }
             });
         }
 
@@ -157,6 +164,15 @@ export class IndividualCard
             _this.isMoving = false;
             _this.hide();
             });
+        }
+
+    clicked()
+        {
+            // check if valid move
+        if ( Game.isValidMove( this ) )
+            {
+            Round.playCard( this );
+            }
         }
 
 

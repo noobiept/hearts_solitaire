@@ -88,12 +88,11 @@ for (a = 0 ; a < PLAYERS_POSITION.length ; a++)
 console.log( 'Its ' + Position[ ACTIVE_PLAYER.position ] + ' turn' );
 }
 
-
-export function playCard( card: Cards.IndividualCard )
+export function isValidMove( card: Cards.IndividualCard )
 {
 if ( Cards.isMoving() )
     {
-    return;
+    return false;
     }
 
 var player = card.player;
@@ -101,58 +100,58 @@ var player = card.player;
 if ( player !== ACTIVE_PLAYER )
     {
     console.log( 'Its ' + Position[ ACTIVE_PLAYER.position ] + ' turn' );
-    return;
+    return false;
     }
 
 console.log( 'card played by', Position[ player.position ] );
 
-if ( Round.playCard( card ) )
+return Round.isValidMove( card );
+}
+
+
+export function cardPlayed( card: Cards.IndividualCard )
+{
+var player = card.player;
+
+player.removeCard( card );
+
+var winner = Round.getTurnWinner();
+
+    // turn ended
+if ( winner )
     {
-    player.removeCard( card );
+        // the player that has won will start the next turn
+    ACTIVE_PLAYER = winner;
 
-    var winner = Round.getTurnWinner();
 
-        // turn ended
-    if ( winner )
+        // check if the round has ended (when there's no more cards to be played)
+        // we can check in any player (since they all have the same amount of cards)
+    if ( ACTIVE_PLAYER.cardCount() === 0 )
         {
-            // the player that has won will start the next turn
-        ACTIVE_PLAYER = winner;
+            // round ended
+            // update the points
+        updatePoints();
 
-
-            // check if the round has ended (when there's no more cards to be played)
-            // we can check in any player (since they all have the same amount of cards)
-        if ( ACTIVE_PLAYER.cardCount() === 0 )
-            {
-                // round ended
-                // update the points
-            updatePoints();
-
-                // start new round
-            Round.clearRound();
-            startRound();
-            }
-        }
-
-        // round still going on, go to next player
-    else
-        {
-            // give turn to next player
-        var index = ACTIVE_PLAYER.position;
-
-        index++;
-
-        if ( index >= PLAYERS_POSITION.length )
-            {
-            index = 0;
-            }
-
-        ACTIVE_PLAYER = PLAYERS[ Position[ index ] ];
+            // start new round
+        Round.clearRound();
+        startRound();
         }
     }
 
+    // round still going on, go to next player
 else
     {
-    console.log('invalid card.');
+        // give turn to next player
+    var index = ACTIVE_PLAYER.position;
+
+    index++;
+
+    if ( index >= PLAYERS_POSITION.length )
+        {
+        index = 0;
+        }
+
+    ACTIVE_PLAYER = PLAYERS[ Position[ index ] ];
     }
 }
 
