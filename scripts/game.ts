@@ -91,6 +91,11 @@ console.log( 'Its ' + Position[ ACTIVE_PLAYER.position ] + ' turn' );
 
 export function playCard( card: Cards.IndividualCard )
 {
+if ( Cards.isMoving() )
+    {
+    return;
+    }
+
 var player = card.player;
 
 if ( player !== ACTIVE_PLAYER )

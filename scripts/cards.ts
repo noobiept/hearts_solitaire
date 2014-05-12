@@ -55,11 +55,26 @@ return card;
     Flags a card as not being used
  */
 
-export function notUsed( card: IndividualCard )
+export function setAvailable( card: IndividualCard )
 {
-card.hide();
-
 ALL_AVAILABLE.push( card );
+}
+
+/*
+    Tells if a card is currently moving or not
+ */
+
+export function isMoving()
+{
+for (var a = 0 ; a < ALL.length ; a++)
+    {
+    if ( ALL[ a ].isMoving )
+        {
+        return true;
+        }
+    }
+
+return false;
 }
 
 
@@ -81,6 +96,7 @@ export class IndividualCard
     suit: Suit;
     suitSymbol: SuitSymbol;
     player: Player;
+    isMoving: boolean;
 
     static scale = 0.3;
     static width = 500 * IndividualCard.scale;
@@ -93,6 +109,7 @@ export class IndividualCard
 
         this.suit = args.suit;
         this.suitSymbol = args.suitSymbol;
+        this.isMoving = false;
 
         var imageId = SuitSymbol[ this.suitSymbol ] + '_of_' + Suit[ this.suit ];
 
@@ -121,7 +138,25 @@ export class IndividualCard
 
     moveTo( x: number, y: number )
         {
-        createjs.Tween.get( this.bitmap ).to({ x: x, y: y }, 500 );
+        var _this = this;
+        this.isMoving = true;
+
+        createjs.Tween.get( this.bitmap ).to({ x: x, y: y }, 500 ).call( function()
+            {
+            _this.isMoving = false;
+            });
+        }
+
+    moveAndHide( x: number, y: number )
+        {
+        var _this = this;
+        this.isMoving = true;
+
+        createjs.Tween.get( this.bitmap ).to({ x: x, y: y }, 500 ).call( function()
+            {
+            _this.isMoving = false;
+            _this.hide();
+            });
         }
 
 

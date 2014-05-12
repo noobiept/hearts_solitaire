@@ -83,7 +83,31 @@ else
         {
         if ( player.cards[ Cards.Suit[ leadSuit ] ].length == 0 )
             {
-            return true;
+                // can't play the queen of spades or hearts on the first turn (unless you happen to have all 13 hearts cards)
+            if ( IS_FIRST_TURN )
+                {
+                if ( card.suit == Cards.Suit.spades && card.suitSymbol == Cards.SuitSymbol.queen )
+                    {
+                    console.log( "Can't play the queen of spades on first turn." );
+                    return false;
+                    }
+
+                else if ( card.suit == Cards.Suit.hearts && player.cards[ 'hearts' ].length < 13 )
+                    {
+                    console.log( "Can't play hearts on the first turn (unless you happen to have all 13 hearts cards." );
+                    return false;
+                    }
+
+                else
+                    {
+                    return true;
+                    }
+                }
+
+            else
+                {
+                return true;
+                }
             }
 
         else
@@ -174,6 +198,11 @@ if ( CARDS.length >= 4 )
         }
 
     var winner = determineWinner();
+
+    for (var a = 0 ; a < CARDS.length ; a++)
+        {
+        CARDS[ a ].moveAndHide( winner.centerX, winner.centerY );
+        }
 
     clearTurn();
 
@@ -296,7 +325,7 @@ function clearTurn()
 {
 for (var a = 0 ; a < CARDS.length ; a++)
     {
-    Cards.notUsed( CARDS[ a ] );
+    Cards.setAvailable( CARDS[ a ] );
     }
 
 CARDS.length = 0;

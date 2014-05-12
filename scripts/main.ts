@@ -74,6 +74,9 @@
 
     to doo:
         - when a round ends, the click (from choosing the last card) immediately triggers a new card from the new round
+        - need to add a flag to tell when a card is being moved, and you can't continue the game until that ends
+            - also, if clicked it forces the card to move immediately to the destination (so skip the animation)
+
  */
 
 var G = {
