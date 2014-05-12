@@ -124,11 +124,11 @@ else
 
 export function playCard( card: Cards.IndividualCard )
 {
-var x = G.CANVAS.width / 2;
-var y = G.CANVAS.height / 2;
+var x = G.CANVAS.width / 2 - Cards.IndividualCard.width / 2;
+var y = G.CANVAS.height / 2 - Cards.IndividualCard.height / 2;
 var position = card.player.position;
 
-var offset = 40;
+var offset = 70;
 
 if ( position == Game.Position.west )
     {
@@ -157,7 +157,7 @@ else
     }
 
 
-card.moveTo( x, y, function() { Game.cardPlayed( card ) } );
+card.moveTo( x, y, 500, function() { Game.cardPlayed( card ) } );
 
 CARDS.push( card );
 
@@ -193,7 +193,7 @@ if ( CARDS.length >= 4 )
 
     for (var a = 0 ; a < CARDS.length ; a++)
         {
-        CARDS[ a ].moveAndHide( winner.centerX, winner.centerY );
+        CARDS[ a ].moveAndHide( winner.centerX, winner.centerY, 500 );
         }
 
     clearTurn();

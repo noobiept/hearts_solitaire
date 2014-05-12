@@ -98,15 +98,12 @@ export class IndividualCard
     player: Player;
     isMoving: boolean;
 
-    static scale = 0.3;
-    static width = 500 * IndividualCard.scale;
-    static height = 726 * IndividualCard.scale;
+    static width = 150;
+    static height = 218;
 
 
     constructor( args: IndividualCardArgs )
         {
-        var _this = this;
-
         this.suit = args.suit;
         this.suitSymbol = args.suitSymbol;
         this.isMoving = false;
@@ -115,15 +112,13 @@ export class IndividualCard
 
         this.bitmap = new createjs.Bitmap( G.PRELOAD.getResult( imageId ) );
         this.click_f = this.bitmap.on( 'click', this.clicked, this );
-        this.bitmap.visible = false;
 
-        var scale = 0.2;
-
-        this.bitmap.scaleX = scale;
-        this.bitmap.scaleY = scale;
+        this.bitmap.x = G.CANVAS.width / 2 - IndividualCard.width / 2;
+        this.bitmap.y = G.CANVAS.height / 2 - IndividualCard.height / 2;
 
         G.STAGE.addChild( this.bitmap );
         }
+
 
     setPosition( x: number, y: number )
         {
@@ -136,12 +131,12 @@ export class IndividualCard
         this.player = player;
         }
 
-    moveTo( x: number, y: number, callback?: () => any )
+    moveTo( x: number, y: number, animationDuration: number, callback?: () => any )
         {
         var _this = this;
         this.isMoving = true;
 
-        createjs.Tween.get( this.bitmap ).to({ x: x, y: y }, 500 ).call( function()
+        createjs.Tween.get( this.bitmap ).to({ x: x, y: y }, animationDuration ).call( function()
             {
             _this.isMoving = false;
 
@@ -154,12 +149,12 @@ export class IndividualCard
             });
         }
 
-    moveAndHide( x: number, y: number )
+    moveAndHide( x: number, y: number, animationDuration: number )
         {
         var _this = this;
         this.isMoving = true;
 
-        createjs.Tween.get( this.bitmap ).to({ x: x, y: y }, 500 ).call( function()
+        createjs.Tween.get( this.bitmap ).to({ x: x, y: y }, animationDuration ).call( function()
             {
             _this.isMoving = false;
             _this.hide();

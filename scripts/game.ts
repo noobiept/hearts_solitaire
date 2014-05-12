@@ -51,9 +51,9 @@ PLAYERS.west = new Player({
 GameMenu.init();
 GameMenu.updateScores();
 Round.clearRound();
-startRound();
-
 createjs.Ticker.on( 'tick', tick );
+
+startRound();
 }
 
 
@@ -114,6 +114,8 @@ export function cardPlayed( card: Cards.IndividualCard )
 var player = card.player;
 
 player.removeCard( card );
+
+player.positionCards( 500 );
 
 var winner = Round.getTurnWinner();
 

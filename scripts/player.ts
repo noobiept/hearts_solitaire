@@ -44,7 +44,6 @@ class Player
             {
             var card = Cards.getRandom();
 
-            card.show();
             card.setPlayer( this );
 
             cards.push( card );
@@ -118,17 +117,17 @@ class Player
             return;
             }
 
-        this.positionCards();
+        this.positionCards( 1000 );
         }
 
 
-    positionCards()
+    positionCards( animationDuration )
         {
         var x, y, stepX, stepY;
 
         if ( this.horizontalOrientation )
             {
-            x = this.centerX - Math.round( this.cardsCount / 2 ) * Player.step;
+            x = this.centerX - ( this.cardsCount / 2 ) * Player.step;
             y = this.centerY;
             stepX = Player.step;
             stepY = 0;
@@ -137,7 +136,7 @@ class Player
         else
             {
             x = this.centerX;
-            y = this.centerY - Math.round( this.cardsCount / 2 ) * Player.step;
+            y = this.centerY - ( this.cardsCount / 2 ) * Player.step;
             stepX = 0;
             stepY = Player.step;
             }
@@ -146,7 +145,7 @@ class Player
         for (var a = 0 ; a < this.cards.clubs.length ; a++)
             {
             this.cards.clubs[ a ].show();
-            this.cards.clubs[ a ].setPosition( x, y );
+            this.cards.clubs[ a ].moveTo( x, y, animationDuration );
 
             x += stepX;
             y += stepY;
@@ -154,7 +153,7 @@ class Player
         for (var a = 0 ; a < this.cards.diamonds.length ; a++)
             {
             this.cards.diamonds[ a ].show();
-            this.cards.diamonds[ a ].setPosition( x, y );
+            this.cards.diamonds[ a ].moveTo( x, y, animationDuration );
 
             x += stepX;
             y += stepY;
@@ -162,7 +161,7 @@ class Player
         for (var a = 0 ; a < this.cards.spades.length ; a++)
             {
             this.cards.spades[ a ].show();
-            this.cards.spades[ a ].setPosition( x, y );
+            this.cards.spades[ a ].moveTo( x, y, animationDuration );
 
             x += stepX;
             y += stepY;
@@ -170,7 +169,7 @@ class Player
         for (var a = 0 ; a < this.cards.hearts.length ; a++)
             {
             this.cards.hearts[ a ].show();
-            this.cards.hearts[ a ].setPosition( x, y );
+            this.cards.hearts[ a ].moveTo( x, y, animationDuration );
 
             x += stepX;
             y += stepY;
