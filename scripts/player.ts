@@ -117,7 +117,7 @@ class Player
             return;
             }
 
-        this.positionCards( 1000 );
+        this.positionCards( 700 );
         }
 
 

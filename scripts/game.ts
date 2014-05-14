@@ -51,7 +51,23 @@ PLAYERS.west = new Player({
 GameMenu.init();
 GameMenu.updateScores();
 Round.clearRound();
+
 createjs.Ticker.on( 'tick', tick );
+
+    // called when you press the right button of the mouse
+    // disable the context menu
+    // force the cards to move immediately to destination
+G.CANVAS.oncontextmenu = function( event )
+    {
+        // right click
+    if ( event.button == 2 )
+        {
+        Cards.forceMoveToDestination();
+        }
+
+     return false;
+    };
+
 
 startRound();
 }
@@ -115,7 +131,7 @@ var player = card.player;
 
 player.removeCard( card );
 
-player.positionCards( 500 );
+player.positionCards( 150 );
 
 var winner = Round.getTurnWinner();
 
@@ -133,10 +149,32 @@ if ( winner )
             // round ended
             // update the points
         updatePoints();
+        var roundEnded = document.querySelector( '#RoundEnded' );
 
-            // start new round
-        Round.clearRound();
-        startRound();
+        var message = '';
+
+        for (var a = 0 ; a < PLAYERS_POSITION.length ; a++)
+            {
+            var aPlayer = PLAYERS[ PLAYERS_POSITION[ a ] ];
+
+            message += Position[ aPlayer.position ] + ': ' + aPlayer.getPoints() + '<br />';
+            }
+
+        $( roundEnded ).html( message );
+        $( roundEnded ).dialog({
+                modal: true,
+                buttons: {
+                    Ok: function()
+                        {
+                        $( this ).dialog( 'close' );
+
+                            // start new round
+                        Cards.centerCards();
+                        Round.clearRound();
+                        startRound();
+                        }
+                }
+            });
         }
     }
 

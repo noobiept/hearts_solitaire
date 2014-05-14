@@ -157,6 +157,7 @@ else
     }
 
 
+card.show();    // force the card to be shown in front of others
 card.moveTo( x, y, 500, function() { Game.cardPlayed( card ) } );
 
 CARDS.push( card );

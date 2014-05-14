@@ -77,6 +77,29 @@ for (var a = 0 ; a < ALL.length ; a++)
 return false;
 }
 
+/*
+    If there's a card moving, force it to the destination (without the animation)
+ */
+
+export function forceMoveToDestination()
+{
+/*for (var a = 0 ; a < ALL.length ; a++)
+    {
+    ALL[ a ].forceMoveToDestination();
+    }*/ //HERE
+}
+
+
+export function centerCards()
+{
+var x = G.CANVAS.width / 2 - IndividualCard.width / 2;
+var y = G.CANVAS.height / 2 - IndividualCard.height / 2;
+
+for (var a = 0 ; a < ALL.length ; a++)
+    {
+    ALL[ a ].setPosition( x, y );
+    }
+}
 
 
 /*
@@ -97,6 +120,9 @@ export class IndividualCard
     suitSymbol: SuitSymbol;
     player: Player;
     isMoving: boolean;
+    destinationX: number;
+    destinationY: number;
+    moveCallback: () => any;
 
     static width = 150;
     static height = 218;
@@ -135,6 +161,9 @@ export class IndividualCard
         {
         var _this = this;
         this.isMoving = true;
+        this.destinationX = x;
+        this.destinationY = y;
+        this.moveCallback = callback;
 
         createjs.Tween.get( this.bitmap ).to({ x: x, y: y }, animationDuration ).call( function()
             {
@@ -142,7 +171,7 @@ export class IndividualCard
 
             createjs.Tween.removeTweens( _this.bitmap );
 
-            if (_.isFunction( callback ) )
+            if ( _.isFunction( callback ) )
                 {
                 callback();
                 }
@@ -161,12 +190,34 @@ export class IndividualCard
             });
         }
 
-    clicked()
+    forceMoveToDestination()
         {
-            // check if valid move
-        if ( Game.isValidMove( this ) )
+        if ( this.isMoving )
             {
-            Round.playCard( this );
+            this.isMoving = false;
+            createjs.Tween.removeTweens( this.bitmap );
+
+            this.setPosition( this.destinationX, this.destinationY );
+
+            if ( _.isFunction( this.moveCallback ) )
+                {
+                this.moveCallback();
+                this.moveCallback = null;
+                }
+            }
+        }
+
+
+    clicked( event )
+        {
+            // left click
+        if ( event.nativeEvent.button == 0 )
+            {
+                // check if valid move
+            if ( Game.isValidMove( this ) )
+                {
+                Round.playCard( this );
+                }
             }
         }
 

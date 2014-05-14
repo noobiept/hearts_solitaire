@@ -28,6 +28,9 @@
     },
     "underscore/underscore.d.ts": {
       "commit": "5c919dfc762b98fc2094cb89e15836528f91c476"
+    },
+    "jqueryui/jqueryui.d.ts": {
+      "commit": "9371c65e5a288612195b4dac93dd9b57dc41911a"
     }
   }
 }

@@ -6,6 +6,9 @@
     Libraries:
 
         - jquery : 2.1
+        - jqueryui : 1.10
+            - dialog
+            - smoothness theme
         - createjs
             - easeljs: 0.7
             - preloadjs: 0.4
@@ -73,11 +76,10 @@
 
 
     to doo:
-        - when a round ends, the click (from choosing the last card) immediately triggers a new card from the new round
         - need to add a flag to tell when a card is being moved, and you can't continue the game until that ends
             - also, if clicked it forces the card to move immediately to the destination (so skip the animation)
-        - z-index of played cards (last one played goes on top)
-
+            - tweenjs doesn't let you remove tweens (seriously?..)
+                - need to implement my own way of animating the cards
 
  */
 
