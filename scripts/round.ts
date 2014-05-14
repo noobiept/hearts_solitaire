@@ -158,10 +158,9 @@ else
 
 
 card.show();    // force the card to be shown in front of others
-card.moveTo( x, y, 500, function() { Game.cardPlayed( card ) } );
+card.moveTo( x, y, 500, function() { Game.cardPlayed() } );
 
 CARDS.push( card );
-
 
 
 if ( LEAD_CARD === null )

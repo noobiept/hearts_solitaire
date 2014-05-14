@@ -76,10 +76,7 @@
 
 
     to doo:
-        - need to add a flag to tell when a card is being moved, and you can't continue the game until that ends
-            - also, if clicked it forces the card to move immediately to the destination (so skip the animation)
-            - tweenjs doesn't let you remove tweens (seriously?..)
-                - need to implement my own way of animating the cards
+
 
  */
 

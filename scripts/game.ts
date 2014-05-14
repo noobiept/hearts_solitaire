@@ -2,6 +2,7 @@
 /// <reference path='player.ts' />
 /// <reference path='round.ts' />
 /// <reference path='game_menu.ts' />
+/// <reference path='move_animation.ts' />
 
 module Game
 {
@@ -25,6 +26,7 @@ var ACTIVE_PLAYER: Player = null;
 export function start()
 {
 Cards.init();
+MoveAnimation.init();
 
 
 PLAYERS.south = new Player({
@@ -125,14 +127,8 @@ return Round.isValidMove( card );
 }
 
 
-export function cardPlayed( card: Cards.IndividualCard )
+export function cardPlayed()
 {
-var player = card.player;
-
-player.removeCard( card );
-
-player.positionCards( 150 );
-
 var winner = Round.getTurnWinner();
 
     // turn ended

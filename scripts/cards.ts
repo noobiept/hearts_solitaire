@@ -2,6 +2,7 @@
 /// <reference path='main.ts' />
 /// <reference path='utilities.ts' />
 /// <reference path='player.ts' />
+/// <reference path='move_animation.ts' />
 
 /*
     Will manage all the cards
@@ -68,7 +69,7 @@ export function isMoving()
 {
 for (var a = 0 ; a < ALL.length ; a++)
     {
-    if ( ALL[ a ].isMoving )
+    if ( ALL[ a ].moveAnimation.isMoving )
         {
         return true;
         }
@@ -83,10 +84,10 @@ return false;
 
 export function forceMoveToDestination()
 {
-/*for (var a = 0 ; a < ALL.length ; a++)
+for (var a = 0 ; a < ALL.length ; a++)
     {
-    ALL[ a ].forceMoveToDestination();
-    }*/ //HERE
+    ALL[ a ].moveAnimation.end();
+    }
 }
 
 
@@ -99,6 +100,22 @@ for (var a = 0 ; a < ALL.length ; a++)
     {
     ALL[ a ].setPosition( x, y );
     }
+}
+
+
+export function get( suit: Suit, symbol: SuitSymbol )
+{
+for (var a = 0 ; a < ALL.length ; a++)
+    {
+    var card = ALL[ a ];
+
+    if ( card.suit == suit && card.suitSymbol == symbol )
+        {
+        return card;
+        }
+    }
+
+return null;
 }
 
 
@@ -119,10 +136,7 @@ export class IndividualCard
     suit: Suit;
     suitSymbol: SuitSymbol;
     player: Player;
-    isMoving: boolean;
-    destinationX: number;
-    destinationY: number;
-    moveCallback: () => any;
+    moveAnimation: MoveAnimation.Move;
 
     static width = 150;
     static height = 218;
@@ -132,7 +146,6 @@ export class IndividualCard
         {
         this.suit = args.suit;
         this.suitSymbol = args.suitSymbol;
-        this.isMoving = false;
 
         var imageId = SuitSymbol[ this.suitSymbol ] + '_of_' + Suit[ this.suit ];
 
@@ -141,6 +154,8 @@ export class IndividualCard
 
         this.bitmap.x = G.CANVAS.width / 2 - IndividualCard.width / 2;
         this.bitmap.y = G.CANVAS.height / 2 - IndividualCard.height / 2;
+
+        this.moveAnimation = new MoveAnimation.Move( this.bitmap );
 
         G.STAGE.addChild( this.bitmap );
         }
@@ -159,18 +174,8 @@ export class IndividualCard
 
     moveTo( x: number, y: number, animationDuration: number, callback?: () => any )
         {
-        var _this = this;
-        this.isMoving = true;
-        this.destinationX = x;
-        this.destinationY = y;
-        this.moveCallback = callback;
-
-        createjs.Tween.get( this.bitmap ).to({ x: x, y: y }, animationDuration ).call( function()
+        this.moveAnimation.start( x, y, animationDuration, function()
             {
-            _this.isMoving = false;
-
-            createjs.Tween.removeTweens( _this.bitmap );
-
             if ( _.isFunction( callback ) )
                 {
                 callback();
@@ -181,30 +186,8 @@ export class IndividualCard
     moveAndHide( x: number, y: number, animationDuration: number )
         {
         var _this = this;
-        this.isMoving = true;
 
-        createjs.Tween.get( this.bitmap ).to({ x: x, y: y }, animationDuration ).call( function()
-            {
-            _this.isMoving = false;
-            _this.hide();
-            });
-        }
-
-    forceMoveToDestination()
-        {
-        if ( this.isMoving )
-            {
-            this.isMoving = false;
-            createjs.Tween.removeTweens( this.bitmap );
-
-            this.setPosition( this.destinationX, this.destinationY );
-
-            if ( _.isFunction( this.moveCallback ) )
-                {
-                this.moveCallback();
-                this.moveCallback = null;
-                }
-            }
+        this.moveTo( x, y, animationDuration, function() { _this.hide(); } );
         }
 
 
@@ -217,6 +200,8 @@ export class IndividualCard
             if ( Game.isValidMove( this ) )
                 {
                 Round.playCard( this );
+                this.player.removeCard( this );
+                this.player.positionCards( 150 );
                 }
             }
         }
