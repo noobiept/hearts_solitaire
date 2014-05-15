@@ -26,6 +26,7 @@ export function isValidMove( card: Cards.IndividualCard )
 {
 var player = card.player;
 
+
     // first play of the turn
 if ( LEAD_CARD === null )
     {

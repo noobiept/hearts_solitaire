@@ -20,14 +20,25 @@ var PLAYERS_POSITION = [ 'south', 'west', 'north', 'east' ];
 
 
 var ACTIVE_PLAYER: Player = null;
+var PASS_CARDS_PHASE: boolean;
+var PASS_CARDS_ELEMENT: createjs.Bitmap;
 
+enum Pass { left, right, across }
 
+var PASS_CARDS = Pass.left;
 
 export function start()
 {
 Cards.init();
 MoveAnimation.init();
 
+PASS_CARDS_ELEMENT = new createjs.Bitmap( G.PRELOAD.getResult( 'pass_left' ) );
+PASS_CARDS_ELEMENT.visible = false;
+PASS_CARDS_ELEMENT.x = G.CANVAS.width / 2;
+PASS_CARDS_ELEMENT.y = G.CANVAS.height / 2;
+PASS_CARDS_ELEMENT.on( 'click', Game.passCards );
+
+G.STAGE.addChild( PASS_CARDS_ELEMENT );
 
 PLAYERS.south = new Player({
         show: true,
@@ -71,17 +82,16 @@ G.CANVAS.oncontextmenu = function( event )
     };
 
 
-startRound();
+drawCards();
 }
 
 
-export function startRound()
+export function drawCards()
 {
-var a;
 var player;
 var position;
 
-for (a = 0 ; a < PLAYERS_POSITION.length ; a++)
+for (var a = 0 ; a < PLAYERS_POSITION.length ; a++)
     {
     position = PLAYERS_POSITION[ a ];
 
@@ -90,8 +100,101 @@ for (a = 0 ; a < PLAYERS_POSITION.length ; a++)
     player.getHand();
     }
 
+PASS_CARDS_PHASE = true;
+
+var pass = Pass[ PASS_CARDS ];
+
+PASS_CARDS_ELEMENT.image = G.PRELOAD.getResult( 'pass_' + pass );
+PASS_CARDS_ELEMENT.visible = true;
+}
+
+
+export function passCards()
+{
+for (var a = 0 ; a < PLAYERS_POSITION.length ; a++)
+    {
+    var player = PLAYERS[ PLAYERS_POSITION[ a ] ];
+
+    if ( player.selectedCards.length < 3 )
+        {
+        console.log( "Need to select 3 cards to pass." );
+        return;
+        }
+    }
+
+
+var pass = function( from, to )
+    {
+    var cards = PLAYERS[ from ].removeSelectedCards();
+
+    for (a = 0 ; a < cards.length ; a++)
+        {
+        PLAYERS[ to ].addCard( cards[ a ] );
+        }
+    };
+
+
+    // clockwise order
+if ( PASS_CARDS == Pass.left )
+    {
+    pass( 'south', 'west' );
+    pass( 'west', 'north' );
+    pass( 'north', 'east' );
+    pass( 'east', 'south' );
+    }
+
+    // anti-clockwise order
+else if ( PASS_CARDS == Pass.right )
+    {
+    pass( 'south', 'east' );
+    pass( 'east', 'north' );
+    pass( 'north', 'west' );
+    pass( 'west', 'south' );
+    }
+
+else if ( PASS_CARDS == Pass.across )
+    {
+    pass( 'south', 'north' );
+    pass( 'north', 'south' );
+    pass( 'east', 'west' );
+    pass( 'west', 'east' );
+    }
+
+else
+    {
+    console.log( 'Wrong value in PASS_CARDS.' );
+    return;
+    }
+
+
+for (var a = 0 ; a < PLAYERS_POSITION.length ; a++)
+    {
+    PLAYERS[ PLAYERS_POSITION[ a ] ].positionCards( 400 );
+    }
+
+
+PASS_CARDS_PHASE = false;
+PASS_CARDS++;
+if ( PASS_CARDS >= 3 )  // its either left, right or across
+    {
+    PASS_CARDS = 0;
+    }
+
+PASS_CARDS_ELEMENT.visible = false;
+
+startRound();
+}
+
+
+
+
+export function startRound()
+{
+var player;
+var position;
+
     // determine who starts playing (who has the 2 of clubs)
-for (a = 0 ; a < PLAYERS_POSITION.length ; a++)
+for (var a = 0 ; a < PLAYERS_POSITION.length ; a++)
     {
     position = PLAYERS_POSITION[ a ];
     player = PLAYERS[ position ];
@@ -106,11 +209,17 @@ for (a = 0 ; a < PLAYERS_POSITION.length ; a++)
 console.log( 'Its ' + Position[ ACTIVE_PLAYER.position ] + ' turn' );
 }
 
+
 export function isValidMove( card: Cards.IndividualCard )
 {
 if ( Cards.isMoving() )
     {
     return false;
+    }
+
+if ( PASS_CARDS_PHASE )
+    {
+    return true;
     }
 
 var player = card.player;
@@ -125,6 +234,25 @@ console.log( 'card played by', Position[ player.position ] );
 
 return Round.isValidMove( card );
 }
+
+
+export function playCard( card: Cards.IndividualCard )
+{
+var player = card.player;
+
+if ( PASS_CARDS_PHASE )
+    {
+    player.selectCard( card );
+    }
+
+else
+    {
+    Round.playCard( card );
+    player.removeCard( card );
+    player.positionCards( 150 );
+    }
+}
+
 
 
 export function cardPlayed()
@@ -167,7 +295,7 @@ if ( winner )
                             // start new round
                         Cards.centerCards();
                         Round.clearRound();
-                        startRound();
+                        drawCards();
                         }
                 }
             });

@@ -199,9 +199,7 @@ export class IndividualCard
                 // check if valid move
             if ( Game.isValidMove( this ) )
                 {
-                Round.playCard( this );
-                this.player.removeCard( this );
-                this.player.positionCards( 150 );
+                Game.playCard( this );
                 }
             }
         }
@@ -224,6 +222,16 @@ export class IndividualCard
         this.click_f = null;
 
         G.STAGE.removeChild( this.bitmap );
+        }
+
+    getX()
+        {
+        return this.bitmap.x;
+        }
+
+    getY()
+        {
+        return this.bitmap.y;
         }
     }
 }

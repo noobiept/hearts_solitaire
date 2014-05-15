@@ -76,7 +76,9 @@
 
 
     to doo:
-
+        - left click to force the move of the cards (skip animation)
+        - be able to select the 3 cards without having to wait for the move animation to end
+        - the bot ai
 
  */
 
@@ -157,7 +159,11 @@ var manifest = [
         { id: 'ten_of_hearts', src: G.BASE_URL + 'images/10_of_hearts.png' },
         { id: 'jack_of_hearts', src: G.BASE_URL + 'images/jack_of_hearts.png' },
         { id: 'queen_of_hearts', src: G.BASE_URL + 'images/queen_of_hearts.png' },
-        { id: 'king_of_hearts', src: G.BASE_URL + 'images/king_of_hearts.png' }
+        { id: 'king_of_hearts', src: G.BASE_URL + 'images/king_of_hearts.png' },
+
+        { id: 'pass_left', src: G.BASE_URL + 'images/pass_left.png' },
+        { id: 'pass_right', src: G.BASE_URL + 'images/pass_right.png' },
+        { id: 'pass_across', src: G.BASE_URL + 'images/pass_across.png' }
     ];
 G.PRELOAD.addEventListener( 'progress', function( event )
     {
