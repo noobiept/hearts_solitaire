@@ -27,6 +27,10 @@ enum Pass { left, right, across }
 
 var PASS_CARDS = Pass.left;
 
+    // wait until the card animations end, until we play other cards
+var PLAY_QUEUE: Cards.IndividualCard[] = [];
+
+
 export function start()
 {
 Cards.init();
@@ -45,17 +49,17 @@ PLAYERS.south = new Player({
         position: Position.south
     });
 
-PLAYERS.north = new Player({
+PLAYERS.north = new Bot({
         show: true,     // for now show for debugging //HERE
         position: Position.north
     });
 
-PLAYERS.east = new Player({
+PLAYERS.east = new Bot({
         show: true,
         position: Position.east
     });
 
-PLAYERS.west = new Player({
+PLAYERS.west = new Bot({
         show: true,
         position: Position.west
     });
@@ -101,6 +105,12 @@ for (var a = 0 ; a < PLAYERS_POSITION.length ; a++)
     }
 
 PASS_CARDS_PHASE = true;
+
+for (var a = 0 ; a < PLAYERS_POSITION.length ; a++)
+    {
+    PLAYERS[ PLAYERS_POSITION[ a ] ].yourTurn();
+    }
+
 
 var pass = Pass[ PASS_CARDS ];
 
@@ -206,17 +216,14 @@ for (var a = 0 ; a < PLAYERS_POSITION.length ; a++)
         }
     }
 
+ACTIVE_PLAYER.yourTurn();
+
 console.log( 'Its ' + Position[ ACTIVE_PLAYER.position ] + ' turn' );
 }
 
 
 export function isValidMove( card: Cards.IndividualCard )
 {
-if ( Cards.isMoving() )
-    {
-    return false;
-    }
-
 if ( PASS_CARDS_PHASE )
     {
     return true;
@@ -233,6 +240,12 @@ if ( player !== ACTIVE_PLAYER )
 console.log( 'card played by', Position[ player.position ] );
 
 return Round.isValidMove( card );
+}
+
+
+export function addCardPlayQueue( card: Cards.IndividualCard )
+{
+PLAY_QUEUE.push( card );
 }
 
 
@@ -316,6 +329,7 @@ else
         }
 
     ACTIVE_PLAYER = PLAYERS[ Position[ index ] ];
+    ACTIVE_PLAYER.yourTurn();
     }
 }
 
@@ -356,8 +370,26 @@ function clear()
 }
 
 
+export function isPassCardsPhase()
+{
+return PASS_CARDS_PHASE;
+}
+
+
+
 export function tick()
 {
+    // play a new card only when there's no card moving
+if ( !Cards.isMoving() )
+    {
+    while ( PLAY_QUEUE.length > 0 )
+        {
+        var card = PLAY_QUEUE.pop();
+
+        playCard( card );
+        }
+    }
+
 G.STAGE.update();
 }
 

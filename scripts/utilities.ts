@@ -9,6 +9,31 @@ function getRandomFloat( min, max )
 return Math.random() * (max - min) + min;
 }
 
+function getSeveralRandomInt( min, max, howMany )
+{
+var total = max - min;
+
+if ( total < howMany )
+    {
+    howMany = total;
+    }
+
+var numbers = [];
+
+while ( numbers.length < howMany )
+    {
+    var random = getRandomInt( min, max );
+
+    if ( numbers.indexOf( random ) < 0 )
+        {
+        numbers.push( random );
+        }
+    }
+
+return numbers;
+}
+
+
 function calculateAngle( aX, aY, bX, bY )
 {
     // make a triangle from the position the objectA is in, relative to the objectB position

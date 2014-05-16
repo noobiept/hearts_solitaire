@@ -71,14 +71,16 @@
             - current players points
             - restart
 
-        - Message:
-            - when game ends, to tell the score
-
 
     to doo:
         - left click to force the move of the cards (skip animation)
         - be able to select the 3 cards without having to wait for the move animation to end
         - the bot ai
+        - game ends when one player reaches 100 points
+        - show/hide the cards (show the back of the cards)
+            - when giving out the hands
+            - for bot players
+        - no onclick on the bot cards
 
  */
 

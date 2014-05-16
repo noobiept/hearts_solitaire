@@ -152,6 +152,7 @@ export class IndividualCard
         this.bitmap = new createjs.Bitmap( G.PRELOAD.getResult( imageId ) );
         this.click_f = this.bitmap.on( 'click', this.clicked, this );
 
+
         this.bitmap.x = G.CANVAS.width / 2 - IndividualCard.width / 2;
         this.bitmap.y = G.CANVAS.height / 2 - IndividualCard.height / 2;
 
@@ -190,6 +191,23 @@ export class IndividualCard
         this.moveTo( x, y, animationDuration, function() { _this.hide(); } );
         }
 
+    setClickEvent( set: boolean )
+        {
+        if ( set == true )
+            {
+            this.click_f = this.bitmap.on( 'click', this.clicked, this );
+            }
+
+        else
+            {
+            if ( this.click_f !== null )
+                {
+                this.bitmap.off( 'click', this.click_f );
+                this.click_f = null;
+                }
+            }
+        }
+
 
     clicked( event )
         {
@@ -199,7 +217,7 @@ export class IndividualCard
                 // check if valid move
             if ( Game.isValidMove( this ) )
                 {
-                Game.playCard( this );
+                Game.addCardPlayQueue( this );
                 }
             }
         }
@@ -218,8 +236,7 @@ export class IndividualCard
 
     remove()
         {
-        this.bitmap.off( 'click', this.click_f );
-        this.click_f = null;
+        this.setClickEvent( false );
 
         G.STAGE.removeChild( this.bitmap );
         }

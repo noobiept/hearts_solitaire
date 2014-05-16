@@ -325,4 +325,11 @@ class Player
         {
         return this.points;
         }
+
+    yourTurn()
+        {
+            // called when its this player's turn to play
+            // for the human player, this has nothing (card is played with the click event on the cards)
+            // the bot player will decide what to play here
+        }
 }

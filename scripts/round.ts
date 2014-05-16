@@ -345,4 +345,22 @@ IS_HEARTS_BROKEN = false;
 }
 
 
+export function isHeartsBroken()
+{
+return IS_HEARTS_BROKEN;
+}
+
+
+export function isFirstTurn()
+{
+return IS_FIRST_TURN;
+}
+
+
+export function getLeadCard()
+{
+return LEAD_CARD;
+}
+
+
 }
