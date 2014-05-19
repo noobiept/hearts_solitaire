@@ -1,5 +1,6 @@
 /// <reference path='cards.ts' />
 /// <reference path='player.ts' />
+/// <reference path='bot.ts' />
 /// <reference path='round.ts' />
 /// <reference path='game_menu.ts' />
 /// <reference path='move_animation.ts' />
@@ -277,7 +278,7 @@ if ( winner )
     {
         // the player that has won will start the next turn
     ACTIVE_PLAYER = winner;
-
+    ACTIVE_PLAYER.yourTurn();
 
         // check if the round has ended (when there's no more cards to be played)
         // we can check in any player (since they all have the same amount of cards)
@@ -285,10 +286,22 @@ if ( winner )
         {
             // round ended
             // update the points
-        updatePoints();
+        var gameEnded = updatePoints();
         var roundEnded = document.querySelector( '#RoundEnded' );
 
         var message = '';
+
+        if ( gameEnded )
+            {
+            message += 'Game Ended!<br />';
+
+            var winners = getPlayersWinning();
+
+            for (var a = 0 ; a < winners.length ; a++)
+                {
+                message += Position[ winners[ a ].position ] + ' Won!<br />';
+                }
+            }
 
         for (var a = 0 ; a < PLAYERS_POSITION.length ; a++)
             {
@@ -305,10 +318,18 @@ if ( winner )
                         {
                         $( this ).dialog( 'close' );
 
-                            // start new round
-                        Cards.centerCards();
-                        Round.clearRound();
-                        drawCards();
+                        if ( gameEnded )
+                            {
+                            restart();
+                            }
+
+                        else
+                            {
+                                // start new round
+                            Cards.centerCards();
+                            Round.clearRound();
+                            drawCards();
+                            }
                         }
                 }
             });
@@ -337,6 +358,7 @@ else
 function updatePoints()
 {
 var points = Round.getPoints();
+var gameEnded = false;
 
 for (var a = 0 ; a < PLAYERS_POSITION.length ; a++)
     {
@@ -345,9 +367,46 @@ for (var a = 0 ; a < PLAYERS_POSITION.length ; a++)
     var player = PLAYERS[ position ];
 
     player.addPoints( points[ position ] );
+
+    if ( player.getPoints() > 100 )
+        {
+        gameEnded = true;
+        }
     }
 
 GameMenu.updateScores();
+
+return gameEnded;
+}
+
+/*
+    Returns an array with the players who are currently winning (those who have less points)
+    There's at least one player, but can be more (2 max. ?..)
+ */
+function getPlayersWinning()
+{
+var position = PLAYERS_POSITION[ 0 ];
+var playersWinning = [ PLAYERS[ position ] ];
+
+for (var a = 1 ; a < PLAYERS_POSITION.length ; a++)
+    {
+    position = PLAYERS_POSITION[ a ];
+    var player = PLAYERS[ position ];
+    var playerPoints = player.getPoints();
+    var winningPoints = playersWinning[ 0 ].getPoints();
+
+    if ( playerPoints < winningPoints )
+        {
+        playersWinning = [ player ];
+        }
+
+    else if ( playerPoints == winningPoints )
+        {
+        playersWinning.push( player );
+        }
+    }
+
+return playersWinning
 }
 
 
@@ -359,15 +418,23 @@ return PLAYERS[ Position[ position ] ];
 
 export function restart()
 {
-clear();
-start();
+for (var a = 0 ; a < PLAYERS_POSITION.length ; a++)
+    {
+    var player = PLAYERS[ PLAYERS_POSITION[ a ] ];
+
+    player.clear();
+    }
+
+GameMenu.updateScores();
+
+    // start new round
+Cards.centerCards();
+Round.clearRound();
+drawCards();
 }
 
 
-function clear()
-{
 
-}
 
 
 export function isPassCardsPhase()
@@ -386,7 +453,10 @@ if ( !Cards.isMoving() )
         {
         var card = PLAY_QUEUE.pop();
 
-        playCard( card );
+        if ( Game.isValidMove( card ) )
+            {
+            Game.playCard( card );
+            }
         }
     }
 

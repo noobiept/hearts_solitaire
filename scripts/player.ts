@@ -315,11 +315,31 @@ class Player
         return card;
         }
 
+    clear()
+        {
+        this.points = 0;
+        var suits = _.keys( this.cards );
+
+        for (var a = 0 ; a < suits.length ; a++)
+            {
+            var cards = this.cards[ suits[ a ] ];
+
+            for (var b = cards.length - 1 ; b >= 0 ; b--)
+                {
+                var card = cards[ b ];
+
+                this.removeCard( card );
+                Cards.setAvailable( card );
+                }
+            }
+        }
+
 
     addPoints( points )
         {
         this.points += points;
         }
+
 
     getPoints()
         {
