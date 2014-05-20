@@ -206,7 +206,10 @@ return null;
 }
 
 
-
+export function cardsPlayed()
+{
+return CARDS;
+}
 
 
 function determineWinner()

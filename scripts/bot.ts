@@ -31,7 +31,7 @@ class Bot extends Player
 
             else
                 {
-                this.respondCardLogic( leadCard, heartsBroken );
+                this.respondCardLogic( leadCard );
                 }
             }
         }
@@ -99,42 +99,158 @@ class Bot extends Player
     /*
         We're following the lead
      */
-    respondCardLogic( leadCard, isHeartsBroken )
+    respondCardLogic( leadCard )
         {
         var leadSuit = leadCard.suit;
         var leadSuitStr = Cards.Suit[ leadSuit ];
         var cards = this.cards[ leadSuitStr ];
+        var cardsPlayed = Round.cardsPlayed();
+        var a;
+        var card;
+
 
             // check if we have cards of that suit
         if ( cards.length > 0 )
             {
-                // play a random card for now //HERE
-            var position = getRandomInt( 0, cards.length - 1 );
+                // if a card higher than the queen of spades has been played, we play queen of spades (if we have it)
+            if ( leadSuit == Cards.Suit.spades && leadCard.suitSymbol > Cards.SuitSymbol.queen )
+                {
+                for (a = 0 ; a < cards.length ; a++)
+                    {
+                    card = cards[ a ];
 
-            Game.addCardPlayQueue( cards[ position ] );
+                    if ( card.suitSymbol === Cards.SuitSymbol.queen )
+                        {
+                        Game.addCardPlayQueue( card );
+                        return;
+                        }
+                    }
+                }
+
+                // find the highest value played in the turn
+            var highestSymbol = cardsPlayed[ 0 ].suitSymbol;
+
+            for (a = 1 ; a < cardsPlayed.length ; a++)
+                {
+                card = cardsPlayed[ a ];
+
+                if ( card.suitSymbol > highestSymbol )
+                    {
+                    highestSymbol = card.suitSymbol;
+                    }
+                }
+
+
+            var closestBelow = null;
+            var closestAbove = null;
+
+                // from the cards we have, find the closest to the highest card played
+            for (a = 0 ; a < cards.length ; a++)
+                {
+                var card = cards[ a ];
+
+                if ( card.suitSymbol < highestSymbol )
+                    {
+                    if ( closestBelow === null )
+                        {
+                        closestBelow = card;
+                        }
+
+                    else if ( closestBelow.suitSymbol < card.suitSymbol )
+                        {
+                        closestBelow = card;
+                        }
+                    }
+
+                else if ( card.suitSymbol > highestSymbol )
+                    {
+                    if ( closestAbove === null )
+                        {
+                        closestAbove = card;
+                        }
+
+                    else if ( closestAbove.suitSymbol > card.suitSymbol )
+                        {
+                        closestAbove = card;
+                        }
+                    }
+                }
+
+
+                // playing the card just below the lead takes priority (so that we don't win the turn)
+            if ( closestBelow !== null )
+                {
+                Game.addCardPlayQueue( closestBelow );
+                }
+
+            else
+                {
+                    // if we're the last one playing in the round, and we don't have a card below (so we're winning the round regardless), we can play the highest card we have
+                if ( cardsPlayed.length === 3 )
+                    {
+                    Game.addCardPlayQueue( cards[ cards.length - 1 ] );
+                    }
+
+                else
+                    {
+                    Game.addCardPlayQueue( closestAbove );
+                    }
+                }
             }
 
+            // play queen of spades if we have it
+            // play a hearts if we have it
+            // otherwise just play the highest symbol we have
         else
             {
-                // play a random card from other suit //HERE
-            var suits = [ 'clubs', 'diamonds', 'spades', 'hearts' ];
+            var spadesCards = this.cards[ 'spades' ];
 
-                // remove the lead suit (which we don't have cards of)
-            var index = suits.indexOf( leadSuitStr );
-            suits.splice( index, 1 );
+            for (a = 0 ; a < spadesCards.length ; a++)
+                {
+                card = spadesCards[ a ];
 
-            for (var a = 0 ; a < suits.length ; a++)
+                if ( card.suitSymbol === Cards.SuitSymbol.queen )
+                    {
+                    Game.addCardPlayQueue( card );
+                    return;
+                    }
+                }
+
+            var heartsCards = this.cards[ 'hearts' ];
+
+            if ( heartsCards.length > 0 )
+                {
+                Game.addCardPlayQueue( heartsCards[ heartsCards.length - 1 ] );
+                return;
+                }
+
+
+            var highestCards = [];
+            var suits = _.keys( this.cards );
+
+            for (a = 0 ; a < suits.length ; a++)
                 {
                 var cards = this.cards[ suits[ a ] ];
 
                 if ( cards.length > 0 )
                     {
-                    var position = getRandomInt( 0, cards.length - 1 );
-
-                    Game.addCardPlayQueue( cards[ position ] );
-                    return;
+                    highestCards.push( cards[ cards.length - 1 ] );
                     }
                 }
+
+            var highest = highestCards[ 0 ];
+
+            for (a = 1 ; a < highestCards.length ; a++)
+                {
+                card = highestCards[ a ];
+
+                if ( card.suitSymbol > highest.suitSymbol )
+                    {
+                    highest = card;
+                    }
+                }
+
+            Game.addCardPlayQueue( highest );
             }
         }
 }

@@ -261,9 +261,9 @@ if ( PASS_CARDS_PHASE )
 
 else
     {
-    Round.playCard( card );
     player.removeCard( card );
     player.positionCards( 150 );
+    Round.playCard( card );
     }
 }
 
@@ -313,6 +313,7 @@ if ( winner )
         $( roundEnded ).html( message );
         $( roundEnded ).dialog({
                 modal: true,
+                dialogClass: "no-close",
                 buttons: {
                     Ok: function()
                         {
@@ -406,7 +407,7 @@ for (var a = 1 ; a < PLAYERS_POSITION.length ; a++)
         }
     }
 
-return playersWinning
+return playersWinning;
 }
 
 
