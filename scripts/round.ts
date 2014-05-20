@@ -20,6 +20,8 @@ var POINTS = {
         east: 0
     };
 
+var CURRENT_TURN = 1;
+
 
 
 export function isValidMove( card: Cards.IndividualCard )
@@ -197,6 +199,7 @@ if ( CARDS.length >= 4 )
         CARDS[ a ].moveAndHide( winner.centerX, winner.centerY, 500 );
         }
 
+    CURRENT_TURN++;
     clearTurn();
 
     return winner;
@@ -342,6 +345,7 @@ POINTS.south = 0;
 POINTS.west = 0;
 POINTS.north = 0;
 POINTS.east = 0;
+CURRENT_TURN = 1;
 
 IS_FIRST_TURN = true;
 IS_HEARTS_BROKEN = false;
@@ -363,6 +367,12 @@ return IS_FIRST_TURN;
 export function getLeadCard()
 {
 return LEAD_CARD;
+}
+
+
+export function getCurrentTurn()
+{
+return CURRENT_TURN;
 }
 
 

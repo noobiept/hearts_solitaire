@@ -38,27 +38,48 @@ class Bot extends Player
 
     passCardPhaseLogic()
         {
-            // choose 3 random cards for now //HERE
+            // get the 3 highest cards of each suit
+        var highestCards = [];
+        var a;
         var suits = _.keys( this.cards );
-        var count = 0;
+        var highest;
+        var secondHighest;
+        var thirdHighest;
 
-        for (var a = 0 ; a < suits.length ; a++)
+        for (a = 0 ; a < suits.length ; a++)
             {
-            var suit = this.cards[ suits[ a ] ];
+            var cards = this.cards[ suits[ a ] ];
 
-            var positions = getSeveralRandomInt( 0, suit.length - 1, 3 );
+            highest = cards[ cards.length - 1 ];
+            secondHighest = cards[ cards.length - 2 ];
+            thirdHighest = cards[ cards.length - 3 ];
 
-            for (var b = 0 ; b < positions.length ; b++)
+            if ( highest )
                 {
-                Game.addCardPlayQueue( suit[ positions[ b ] ] );
-                count++;
+                highestCards.push( highest );
+                }
 
-                if ( count >= 3 )
-                    {
-                    return;
-                    }
+            if ( secondHighest )
+                {
+                highestCards.push( secondHighest );
+                }
+
+            if ( thirdHighest )
+                {
+                highestCards.push( thirdHighest );
                 }
             }
+
+
+            // now get the 3 highest of all the suits
+        highestCards.sort(function( a, b )
+            {
+            return a.suitSymbol - b.suitSymbol;
+            });
+
+        Game.addCardPlayQueue( highestCards[ highestCards.length - 1 ] );
+        Game.addCardPlayQueue( highestCards[ highestCards.length - 2 ] );
+        Game.addCardPlayQueue( highestCards[ highestCards.length - 3 ] );
         }
 
     /*
@@ -70,10 +91,44 @@ class Bot extends Player
         if ( isFirstTurn )
             {
             Game.addCardPlayQueue( this.cards[ 'clubs' ][ 0 ] );
+            return;
             }
 
+
+        var currentTurn = Round.getCurrentTurn();
+
+            // pick a high symbol card in the first rounds (of clubs or diamonds)
+        if ( currentTurn <= 3 && (this.cards[ 'clubs' ].length > 0 || this.cards[ 'diamonds' ].length > 0) )
+            {
+            var highest = this.getHighestCard( [ 'clubs', 'diamonds' ] );
+
+            Game.addCardPlayQueue( highest );
+            }
+
+            // otherwise pick a low symbol card
         else
             {
+                // if we don't have anything above the queen of spades, try to force it out by playing spades
+            var aboveQueenSpades = false;
+            var spadesCards = this.cards[ 'spades' ];
+
+            for (var a = 0 ; a < spadesCards.length ; a++)
+                {
+                if ( spadesCards[ a ].suitSymbol >= Cards.SuitSymbol.queen )
+                    {
+                    aboveQueenSpades = true;
+                    break;
+                    }
+                }
+
+            if ( !aboveQueenSpades && spadesCards.length > 0 )
+                {
+                Game.addCardPlayQueue( spadesCards[ spadesCards.length - 1 ] );
+                return;
+                }
+
+
+                // otherwise just play some random low symbol card
             var suits = [ 'clubs', 'diamonds', 'spades' ];
 
             if ( isHeartsBroken || this.cards[ 'hearts' ].length === this.cardsCount )
@@ -81,18 +136,9 @@ class Bot extends Player
                 suits.push( 'hearts' );
                 }
 
-            for (var a = 0 ; a < suits.length ; a++)
-                {
-                var suit = this.cards[ suits[ a ] ];
+            var lowest = this.getLowestCard( suits );
 
-                if ( suit.length > 0 )
-                    {
-                    var position = getRandomInt( 0, suit.length - 1 );
-
-                    Game.addCardPlayQueue( suit[ position ] );
-                    return;
-                    }
-                }
+            Game.addCardPlayQueue( lowest );
             }
         }
 
@@ -107,7 +153,6 @@ class Bot extends Player
         var cardsPlayed = Round.cardsPlayed();
         var a;
         var card;
-
 
             // check if we have cards of that suit
         if ( cards.length > 0 )
@@ -225,32 +270,71 @@ class Bot extends Player
                 }
 
 
-            var highestCards = [];
-            var suits = _.keys( this.cards );
-
-            for (a = 0 ; a < suits.length ; a++)
-                {
-                var cards = this.cards[ suits[ a ] ];
-
-                if ( cards.length > 0 )
-                    {
-                    highestCards.push( cards[ cards.length - 1 ] );
-                    }
-                }
-
-            var highest = highestCards[ 0 ];
-
-            for (a = 1 ; a < highestCards.length ; a++)
-                {
-                card = highestCards[ a ];
-
-                if ( card.suitSymbol > highest.suitSymbol )
-                    {
-                    highest = card;
-                    }
-                }
+            var highest = this.getHighestCard( _.keys( this.cards ) );
 
             Game.addCardPlayQueue( highest );
             }
         }
+
+
+    getHighestCard( suits: string[] )
+        {
+        var highestCards = [];
+        var a;
+
+        for (a = 0 ; a < suits.length ; a++)
+            {
+            var cards = this.cards[ suits[ a ] ];
+
+            if ( cards.length > 0 )
+                {
+                highestCards.push( cards[ cards.length - 1 ] );
+                }
+            }
+
+        var highest = highestCards[ 0 ];
+
+        for (a = 1 ; a < highestCards.length ; a++)
+            {
+            var card = highestCards[ a ];
+
+            if ( card.suitSymbol > highest.suitSymbol )
+                {
+                highest = card;
+                }
+            }
+
+        return highest;
+        }
+
+    getLowestCard( suits: string[] )
+        {
+        var lowestCards = [];
+        var a;
+
+        for (a = 0 ; a < suits.length ; a++)
+            {
+            var cards = this.cards[ suits[ a ] ];
+
+            if ( cards.length > 0 )
+                {
+                lowestCards.push( cards[ 0 ] );
+                }
+            }
+
+        var lowest = lowestCards[ 0 ];
+
+        for (a = 1 ; a < lowestCards.length ; a++)
+            {
+            var card = lowestCards[ a ];
+
+            if ( card.suitSymbol < lowest.suitSymbol )
+                {
+                lowest = card;
+                }
+            }
+
+        return lowest;
+        }
+
 }

@@ -195,7 +195,10 @@ export class IndividualCard
         {
         if ( set == true )
             {
-            this.click_f = this.bitmap.on( 'click', this.clicked, this );
+            if ( this.click_f === null )
+                {
+                this.click_f = this.bitmap.on( 'click', this.clicked, this );
+                }
             }
 
         else
@@ -217,6 +220,11 @@ export class IndividualCard
                 // check if valid move
             if ( Game.isValidMove( this ) )
                 {
+                if ( !Game.isPassCardsPhase() )
+                    {
+                    this.setClickEvent( false );
+                    }
+
                 Game.addCardPlayQueue( this );
                 }
             }

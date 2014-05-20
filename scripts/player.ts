@@ -47,6 +47,7 @@ class Player
             var card = Cards.getRandom();
 
             card.setPlayer( this );
+            card.setClickEvent( true ); //HERE don't set this for the bot
 
             cards.push( card );
             }
