@@ -4,7 +4,9 @@ class Bot extends Player
 {
     constructor( args )
         {
-        super( args )
+        this.isBot = true;
+
+        super( args );
         }
 
     yourTurn()

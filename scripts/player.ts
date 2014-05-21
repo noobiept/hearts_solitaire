@@ -27,6 +27,7 @@ class Player
     selectedCards: Cards.IndividualCard[];
 
     points: number;
+    isBot: boolean;
 
 
     constructor( args: PlayerArgs )
@@ -36,6 +37,11 @@ class Player
         this.cards = { clubs: null, diamonds: null, spades: null, hearts: null };
         this.points = 0;
         this.selectedCards = [];
+
+        if ( typeof this.isBot === 'undefined' )
+            {
+            this.isBot = false;
+            }
         }
 
     getHand()
@@ -47,7 +53,11 @@ class Player
             var card = Cards.getRandom();
 
             card.setPlayer( this );
-            card.setClickEvent( true ); //HERE don't set this for the bot
+
+            if ( !this.isBot )
+                {
+                card.setClickEvent( true );
+                }
 
             cards.push( card );
             }
@@ -300,6 +310,11 @@ class Player
 
         card.setPlayer( this );
 
+        if ( !this.isBot )
+            {
+            card.setClickEvent( true );
+            }
+
         this.cardsCount++;
         }
 
@@ -311,7 +326,10 @@ class Player
 
         var card = <Cards.IndividualCard> array.splice( index, 1 )[ 0 ];
 
-//        card.setClickEvent( false ); //HERE
+        if ( !this.isBot )
+            {
+            card.setClickEvent( false );
+            }
 
         this.cardsCount--;
 

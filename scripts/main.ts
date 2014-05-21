@@ -75,11 +75,9 @@
     to doo:
         - left click to force the move of the cards (skip animation)
         - be able to select the 3 cards without having to wait for the move animation to end
-        - the bot ai
         - show/hide the cards (show the back of the cards)
             - when giving out the hands
             - for bot players
-        - no onclick on the bot cards
         - save highscores (the winrate - games played, games won, win percentage)
         - show the messages, instead of printing to the console
 

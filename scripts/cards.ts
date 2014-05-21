@@ -150,13 +150,11 @@ export class IndividualCard
         var imageId = SuitSymbol[ this.suitSymbol ] + '_of_' + Suit[ this.suit ];
 
         this.bitmap = new createjs.Bitmap( G.PRELOAD.getResult( imageId ) );
-        this.click_f = this.bitmap.on( 'click', this.clicked, this );
-
-
         this.bitmap.x = G.CANVAS.width / 2 - IndividualCard.width / 2;
         this.bitmap.y = G.CANVAS.height / 2 - IndividualCard.height / 2;
 
         this.moveAnimation = new MoveAnimation.Move( this.bitmap );
+        this.click_f = null;
 
         G.STAGE.addChild( this.bitmap );
         }
