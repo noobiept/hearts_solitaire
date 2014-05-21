@@ -212,6 +212,8 @@ export class IndividualCard
 
     clicked( event )
         {
+        Message.close();
+
             // left click
         if ( event.nativeEvent.button == 0 )
             {

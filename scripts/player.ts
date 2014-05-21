@@ -263,7 +263,7 @@ class Player
             {
             if ( this.selectedCards.length >= 3 )
                 {
-                console.log( "Can't select more than 3 cards,." );
+                Message.open( 'Only 3 cards.', "Can't select more than 3 cards." );
                 return;
                 }
 

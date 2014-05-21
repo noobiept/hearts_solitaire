@@ -4,6 +4,7 @@
 /// <reference path='round.ts' />
 /// <reference path='game_menu.ts' />
 /// <reference path='move_animation.ts' />
+/// <reference path='message.ts' />
 
 module Game
 {
@@ -36,6 +37,7 @@ export function start()
 {
 Cards.init();
 MoveAnimation.init();
+Message.init();
 
 PASS_CARDS_ELEMENT = new createjs.Bitmap( G.PRELOAD.getResult( 'pass_left' ) );
 PASS_CARDS_ELEMENT.visible = false;
@@ -86,7 +88,6 @@ G.CANVAS.oncontextmenu = function( event )
      return false;
     };
 
-
 drawCards();
 }
 
@@ -122,13 +123,15 @@ PASS_CARDS_ELEMENT.visible = true;
 
 export function passCards()
 {
+Message.close();
+
 for (var a = 0 ; a < PLAYERS_POSITION.length ; a++)
     {
     var player = PLAYERS[ PLAYERS_POSITION[ a ] ];
 
     if ( player.selectedCards.length < 3 )
         {
-        console.log( "Need to select 3 cards to pass." );
+        Message.open( 'Select 3 cards.', 'Need to select 3 cards to pass to another player.' );
         return;
         }
     }
@@ -234,7 +237,7 @@ var player = card.player;
 
 if ( player !== ACTIVE_PLAYER )
     {
-    console.log( 'Its ' + Position[ ACTIVE_PLAYER.position ] + ' turn' );
+    Message.open( "Other player's turn.", 'Its ' + Position[ ACTIVE_PLAYER.position ] + ' turn' );
     return false;
     }
 

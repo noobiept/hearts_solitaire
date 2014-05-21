@@ -79,8 +79,6 @@
             - when giving out the hands
             - for bot players
         - save highscores (the winrate - games played, games won, win percentage)
-        - show the messages, instead of printing to the console
-
  */
 
 var G = {

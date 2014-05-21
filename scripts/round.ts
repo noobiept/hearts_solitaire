@@ -42,7 +42,7 @@ if ( LEAD_CARD === null )
 
         else
             {
-            console.log( 'Need to play the 2 of clubs' );
+            Message.open( 'Invalid move.', 'The first turn has to start with the 2 of clubs.' );
             return false;
             }
         }
@@ -63,6 +63,7 @@ if ( LEAD_CARD === null )
 
                 else
                     {
+                    Message.open( 'Invalid move.', "Hearts haven't been broken yet." );
                     return false;
                     }
                 }
@@ -91,13 +92,13 @@ else
                 {
                 if ( card.suit == Cards.Suit.spades && card.suitSymbol == Cards.SuitSymbol.queen )
                     {
-                    console.log( "Can't play the queen of spades on first turn." );
+                    Message.open( 'Invalid move.', "Can't play the queen of spades on first turn." );
                     return false;
                     }
 
                 else if ( card.suit == Cards.Suit.hearts && player.cards[ 'hearts' ].length < 13 )
                     {
-                    console.log( "Can't play hearts on the first turn (unless you happen to have all 13 hearts cards." );
+                    Message.open( 'Invalid move.', "Can't play hearts on the first turn (unless you happen to have all 13 hearts cards." );
                     return false;
                     }
 
@@ -115,6 +116,7 @@ else
 
         else
             {
+            Message.open( 'Invalid move.', 'Need to play a card of the ' + Cards.Suit[ leadSuit ] + ' suit.' );
             return false;
             }
         }
