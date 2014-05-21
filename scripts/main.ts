@@ -82,7 +82,6 @@
         - no onclick on the bot cards
         - save highscores (the winrate - games played, games won, win percentage)
         - show the messages, instead of printing to the console
-        - try to play the queen of spades last (as long as you have other spades)
 
  */
 

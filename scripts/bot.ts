@@ -138,6 +138,16 @@ class Bot extends Player
 
             var lowest = this.getLowestCard( suits );
 
+                // don't play the queen of spades as long as there's other spades cards
+            if ( lowest.suit == Cards.Suit.spades && lowest.suitSymbol == Cards.SuitSymbol.queen )
+                {
+                if ( this.cards[ 'spades' ].length > 1 )
+                    {
+                        // lowest is queen so its position 0 in array, so we can just get the next card
+                    lowest = this.cards[ 'spades' ][ 1 ];
+                    }
+                }
+
             Game.addCardPlayQueue( lowest );
             }
         }
@@ -238,6 +248,15 @@ class Bot extends Player
 
                 else
                     {
+                        // don't play the queen of spades as long as there's other spades cards
+                    if ( closestAbove == Cards.Suit.spades && closestAbove.suitSymbol == Cards.SuitSymbol.queen )
+                        {
+                        if ( this.cards[ 'spades' ].length > 1 )
+                            {
+                            closestAbove = this.cards[ 'spades' ][ 1 ];
+                            }
+                        }
+
                     Game.addCardPlayQueue( closestAbove );
                     }
                 }

@@ -311,6 +311,8 @@ class Player
 
         var card = <Cards.IndividualCard> array.splice( index, 1 )[ 0 ];
 
+//        card.setClickEvent( false ); //HERE
+
         this.cardsCount--;
 
         return card;

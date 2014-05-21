@@ -220,11 +220,6 @@ export class IndividualCard
                 // check if valid move
             if ( Game.isValidMove( this ) )
                 {
-                if ( !Game.isPassCardsPhase() )
-                    {
-                    this.setClickEvent( false );
-                    }
-
                 Game.addCardPlayQueue( this );
                 }
             }

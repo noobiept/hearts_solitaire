@@ -276,10 +276,6 @@ var winner = Round.getTurnWinner();
     // turn ended
 if ( winner )
     {
-        // the player that has won will start the next turn
-    ACTIVE_PLAYER = winner;
-    ACTIVE_PLAYER.yourTurn();
-
         // check if the round has ended (when there's no more cards to be played)
         // we can check in any player (since they all have the same amount of cards)
     if ( ACTIVE_PLAYER.cardCount() === 0 )
@@ -334,6 +330,13 @@ if ( winner )
                         }
                 }
             });
+        }
+
+    else
+        {
+            // the player that has won will start the next turn
+        ACTIVE_PLAYER = winner;
+        ACTIVE_PLAYER.yourTurn();
         }
     }
 
