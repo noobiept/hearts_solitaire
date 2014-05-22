@@ -18,6 +18,9 @@
             - https://code.google.com/p/vector-playing-cards/
             - public domain
 
+        - http://opengameart.org/content/colorful-poker-card-back
+        - license: CC-BY 3.0 (Attribution 3.0 Un-ported)
+
 
     Hearts
 
@@ -75,9 +78,6 @@
     to doo:
         - left click to force the move of the cards (skip animation)
         - be able to select the 3 cards without having to wait for the move animation to end
-        - show/hide the cards (show the back of the cards)
-            - when giving out the hands
-            - for bot players
         - save highscores (the winrate - games played, games won, win percentage)
  */
 
@@ -104,6 +104,8 @@ G.CANVAS.height = 900;
 G.PRELOAD = new createjs.LoadQueue();
 
 var manifest = [
+        { id: 'card_back', src: G.BASE_URL + 'images/card_back_black.png' },
+
         { id: 'ace_of_clubs', src: G.BASE_URL + 'images/ace_of_clubs.png' },
         { id: 'two_of_clubs', src: G.BASE_URL + 'images/2_of_clubs.png' },
         { id: 'three_of_clubs', src: G.BASE_URL + 'images/3_of_clubs.png' },

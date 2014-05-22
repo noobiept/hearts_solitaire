@@ -59,6 +59,7 @@ class Player
                 card.setClickEvent( true );
                 }
 
+            card.changeSide( false );
             cards.push( card );
             }
 
@@ -137,6 +138,13 @@ class Player
     positionCards( animationDuration )
         {
         var x, y, stepX, stepY;
+        var callback = null;
+
+        if ( !this.isBot )
+            {
+            callback = function( card ) { card.changeSide( true ); };
+            }
+
 
         if ( this.horizontalOrientation )
             {
@@ -158,7 +166,7 @@ class Player
         for (var a = 0 ; a < this.cards.clubs.length ; a++)
             {
             this.cards.clubs[ a ].show();
-            this.cards.clubs[ a ].moveTo( x, y, animationDuration );
+            this.cards.clubs[ a ].moveTo( x, y, animationDuration, callback );
 
             x += stepX;
             y += stepY;
@@ -166,7 +174,7 @@ class Player
         for (var a = 0 ; a < this.cards.diamonds.length ; a++)
             {
             this.cards.diamonds[ a ].show();
-            this.cards.diamonds[ a ].moveTo( x, y, animationDuration );
+            this.cards.diamonds[ a ].moveTo( x, y, animationDuration, callback );
 
             x += stepX;
             y += stepY;
@@ -174,7 +182,7 @@ class Player
         for (var a = 0 ; a < this.cards.spades.length ; a++)
             {
             this.cards.spades[ a ].show();
-            this.cards.spades[ a ].moveTo( x, y, animationDuration );
+            this.cards.spades[ a ].moveTo( x, y, animationDuration, callback );
 
             x += stepX;
             y += stepY;
@@ -182,7 +190,7 @@ class Player
         for (var a = 0 ; a < this.cards.hearts.length ; a++)
             {
             this.cards.hearts[ a ].show();
-            this.cards.hearts[ a ].moveTo( x, y, animationDuration );
+            this.cards.hearts[ a ].moveTo( x, y, animationDuration, callback );
 
             x += stepX;
             y += stepY;
@@ -313,6 +321,12 @@ class Player
         if ( !this.isBot )
             {
             card.setClickEvent( true );
+            card.changeSide( true );
+            }
+
+        else
+            {
+            card.changeSide( false );
             }
 
         this.cardsCount++;
@@ -335,6 +349,26 @@ class Player
 
         return card;
         }
+
+
+    changeCardsSide( front: boolean )
+        {
+        if ( !_.isBoolean( front ) )
+            {
+            var suits = _.keys( this.cards );
+
+            for (var a = 0 ; a < suits.length ; a++)
+                {
+                var cards = this.cards[ suits[ a ] ];
+
+                for (var b = 0 ; b < cards.length ; b++)
+                    {
+                    cards[ a ].changeSide( front );
+                    }
+                }
+            }
+        }
+
 
     clear()
         {

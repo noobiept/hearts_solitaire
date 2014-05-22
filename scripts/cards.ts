@@ -35,6 +35,8 @@ for (var a = 0 ; a < suitLength ; a++)
         ALL_AVAILABLE.push( card );
         }
     }
+
+centerCards();
 }
 
 
@@ -132,6 +134,10 @@ export interface IndividualCardArgs
 export class IndividualCard
     {
     bitmap: createjs.Bitmap;
+    frontImage: HTMLImageElement;
+    backImage: HTMLImageElement;
+    showingFront: boolean;
+
     click_f;
     suit: Suit;
     suitSymbol: SuitSymbol;
@@ -149,9 +155,12 @@ export class IndividualCard
 
         var imageId = SuitSymbol[ this.suitSymbol ] + '_of_' + Suit[ this.suit ];
 
-        this.bitmap = new createjs.Bitmap( G.PRELOAD.getResult( imageId ) );
-        this.bitmap.x = G.CANVAS.width / 2 - IndividualCard.width / 2;
-        this.bitmap.y = G.CANVAS.height / 2 - IndividualCard.height / 2;
+        this.frontImage = G.PRELOAD.getResult( imageId );
+        this.backImage = G.PRELOAD.getResult(  'card_back' );
+
+        this.bitmap = new createjs.Bitmap( this.backImage );
+
+        this.showingFront = false;
 
         this.moveAnimation = new MoveAnimation.Move( this.bitmap );
         this.click_f = null;
@@ -171,13 +180,15 @@ export class IndividualCard
         this.player = player;
         }
 
-    moveTo( x: number, y: number, animationDuration: number, callback?: () => any )
+    moveTo( x: number, y: number, animationDuration: number, callback?: ( card: IndividualCard ) => any )
         {
+        var _this = this;
+
         this.moveAnimation.start( x, y, animationDuration, function()
             {
             if ( _.isFunction( callback ) )
                 {
-                callback();
+                callback( _this );
                 }
             });
         }
@@ -236,6 +247,24 @@ export class IndividualCard
         {
         this.bitmap.visible = false;
         }
+
+    changeSide( front: boolean )
+        {
+        if ( front === true && this.showingFront === false )
+            {
+            this.bitmap.image = this.frontImage;
+
+            this.showingFront = true;
+            }
+
+        else if ( front === false && this.showingFront === true )
+            {
+            this.bitmap.image = this.backImage;
+
+            this.showingFront = false;
+            }
+        }
+
 
     remove()
         {
