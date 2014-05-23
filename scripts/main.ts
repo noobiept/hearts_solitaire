@@ -76,8 +76,6 @@
 
 
     to doo:
-        - left click to force the move of the cards (skip animation)
-        - be able to select the 3 cards without having to wait for the move animation to end
         - save highscores (the winrate - games played, games won, win percentage)
  */
 

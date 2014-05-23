@@ -15,6 +15,8 @@ var SCORES = {
         east : null
     };
 
+var PLAYER_TURN: Game.Position = null;
+
 export function init()
 {
 var menu = document.querySelector( '#GameMenu' );
@@ -40,8 +42,28 @@ for (var a = 0 ; a < positions.length ; a++)
     var position = positions[ a ];
     var player = Game.getPlayer( Game.Position[ position ] );
 
-    $( SCORES[ position ] ).text( player.getPoints() );
+    var spanElement = SCORES[ position ].querySelector( 'span' );
+
+    $( spanElement ).text( player.getPoints() );
     }
+}
+
+
+export function setPlayerTurn( position: Game.Position )
+{
+if ( PLAYER_TURN !== null )
+    {
+    var previousPlayer = Game.Position[ PLAYER_TURN ];
+
+    $( SCORES[ previousPlayer ] ).removeClass( 'playerTurn' );
+    }
+
+
+var nextPlayer = Game.Position[ position ];
+
+$( SCORES[ nextPlayer ] ).addClass( 'playerTurn' );
+
+PLAYER_TURN = position;
 }
 
 

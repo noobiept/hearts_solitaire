@@ -7,3 +7,38 @@
     {
     display: none;
     }
+
+#MainCanvas, #GameMenu
+    {
+    display: inline;
+    float: left;
+    }
+
+.button
+    {
+    cursor: pointer;
+    background-color: #edddde;
+    }
+
+.button:hover
+    {
+    background-color: #edcbd9;
+    }
+
+#GameMenu > *
+    {
+    width: 150px;
+    text-align: center;
+    margin: 10px 0;
+    }
+
+#Scores > *
+    {
+    margin: 2px 0;
+    }
+
+.playerTurn
+    {
+    background-color: #edcf90;
+    }
+

@@ -11,7 +11,6 @@ var message = document.querySelector( '#Message' );
 $( message ).dialog({
         position: { my: 'left bottom', at: 'left bottom', of: window },
         dialogClass: 'no-close',
-        draggable: false,
         autoOpen: false
     });
 

@@ -82,6 +82,7 @@ G.CANVAS.oncontextmenu = function( event )
         // right click
     if ( event.button == 2 )
         {
+        Round.noMoveAnimationThisTurn();
         Cards.forceMoveToDestination();
         }
 
@@ -118,6 +119,9 @@ var pass = Pass[ PASS_CARDS ];
 
 PASS_CARDS_ELEMENT.image = G.PRELOAD.getResult( 'pass_' + pass );
 PASS_CARDS_ELEMENT.visible = true;
+
+    // in the pass cards phase, the turn is for the human player (since the bots play immediately)
+GameMenu.setPlayerTurn( Position.south );
 }
 
 
@@ -221,8 +225,7 @@ for (var a = 0 ; a < PLAYERS_POSITION.length ; a++)
     }
 
 ACTIVE_PLAYER.yourTurn();
-
-console.log( 'Its ' + Position[ ACTIVE_PLAYER.position ] + ' turn' );
+GameMenu.setPlayerTurn( ACTIVE_PLAYER.position );
 }
 
 
@@ -241,7 +244,6 @@ if ( player !== ACTIVE_PLAYER )
     return false;
     }
 
-console.log( 'card played by', Position[ player.position ] );
 
 return Round.isValidMove( card );
 }
@@ -340,6 +342,8 @@ if ( winner )
             // the player that has won will start the next turn
         ACTIVE_PLAYER = winner;
         ACTIVE_PLAYER.yourTurn();
+
+        GameMenu.setPlayerTurn( ACTIVE_PLAYER.position );
         }
     }
 
@@ -358,6 +362,8 @@ else
 
     ACTIVE_PLAYER = PLAYERS[ Position[ index ] ];
     ACTIVE_PLAYER.yourTurn();
+
+    GameMenu.setPlayerTurn( ACTIVE_PLAYER.position );
     }
 }
 

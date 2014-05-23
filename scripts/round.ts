@@ -22,6 +22,8 @@ var POINTS = {
 
 var CURRENT_TURN = 1;
 
+    // force the move animation of cards for a turn
+var NO_MOVE_ANIMATION = false;
 
 
 export function isValidMove( card: Cards.IndividualCard )
@@ -162,9 +164,16 @@ else
     }
 
 
+var animationDuration = 500;
+
+if ( NO_MOVE_ANIMATION )
+    {
+    animationDuration = 0;
+    }
+
 card.changeSide( true );
 card.show();    // force the card to be shown in front of others
-card.moveTo( x, y, 500, function() { Game.cardPlayed() } );
+card.moveTo( x, y, animationDuration, function() { Game.cardPlayed() } );
 
 CARDS.push( card );
 
@@ -332,6 +341,7 @@ for (var a = 0 ; a < CARDS.length ; a++)
 
 CARDS.length = 0;
 
+NO_MOVE_ANIMATION = false;
 LEAD_CARD = null;
 }
 
@@ -376,6 +386,12 @@ return LEAD_CARD;
 export function getCurrentTurn()
 {
 return CURRENT_TURN;
+}
+
+
+export function noMoveAnimationThisTurn()
+{
+NO_MOVE_ANIMATION = true;
 }
 
 
