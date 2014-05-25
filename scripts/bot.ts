@@ -33,7 +33,7 @@ class Bot extends Player
 
             else
                 {
-                this.respondCardLogic( leadCard );
+                this.respondCardLogic( firstTurn, leadCard );
                 }
             }
         }
@@ -157,7 +157,7 @@ class Bot extends Player
     /*
         We're following the lead
      */
-    respondCardLogic( leadCard )
+    respondCardLogic( isFirstTurn, leadCard )
         {
         var leadSuit = leadCard.suit;
         var leadSuitStr = Cards.Suit[ leadSuit ];
@@ -185,15 +185,19 @@ class Bot extends Player
                 }
 
                 // find the highest value played in the turn
-            var highestSymbol = cardsPlayed[ 0 ].suitSymbol;
+            var highestSymbol = leadCard.suitSymbol;
 
             for (a = 1 ; a < cardsPlayed.length ; a++)
                 {
                 card = cardsPlayed[ a ];
 
-                if ( card.suitSymbol > highestSymbol )
+                    // only the cards of the same suit as the lead matter
+                if ( card.suit == leadSuit )
                     {
-                    highestSymbol = card.suitSymbol;
+                    if ( card.suitSymbol > highestSymbol )
+                        {
+                        highestSymbol = card.suitSymbol;
+                        }
                     }
                 }
 
@@ -264,36 +268,87 @@ class Bot extends Player
                 }
             }
 
-            // play queen of spades if we have it
-            // play a hearts if we have it
-            // otherwise just play the highest symbol we have
         else
             {
-            var spadesCards = this.cards[ 'spades' ];
-
-            for (a = 0 ; a < spadesCards.length ; a++)
+                // can't play hearts or queen of spades in the first turn (unless that's all we have)
+                // try to play a spades if we have any above the queen
+                // otherwise play the highest diamonds card
+            if ( isFirstTurn )
                 {
-                card = spadesCards[ a ];
+                var spadesCards = this.cards[ 'spades' ];
 
-                if ( card.suitSymbol === Cards.SuitSymbol.queen )
+                for (a = spadesCards.length - 1 ; a >= 0 ; a--)
                     {
-                    Game.addCardPlayQueue( card );
-                    return;
+                    card = spadesCards[ a ];
+
+                    if ( card.suitSymbol > Cards.SuitSymbol.queen )
+                        {
+                        Game.addCardPlayQueue( card );
+                        return;
+                        }
+                    }
+
+                var suits = [ 'diamonds' ];
+
+                var highest = this.getHighestCard( suits );
+
+                if ( highest !== null )
+                    {
+                    Game.addCardPlayQueue( highest );
+                    }
+
+                    // we don't have clubs cards (since we failed to respond to the 2 of clubs lead of the first turn)
+                    // we don't have spades higher than the queen
+                    // we don't have diamonds
+                    // try to play a spades card (starting at the lower card)
+                    // and if that fails as well, play a hearts (we have all 13 hearts)
+                else
+                    {
+                    if ( spadesCards.length > 0 )
+                        {
+                        Game.addCardPlayQueue( spadesCards[ 0 ] );
+                        }
+
+                    else
+                        {
+                        var heartsCards = this.cards[ 'hearts' ];
+
+                        Game.addCardPlayQueue( heartsCards[ heartsCards.length - 1 ] );
+                        }
                     }
                 }
 
-            var heartsCards = this.cards[ 'hearts' ];
-
-            if ( heartsCards.length > 0 )
+                // play queen of spades if we have it
+                // play a hearts if we have it
+                // otherwise just play the highest symbol we have
+            else
                 {
-                Game.addCardPlayQueue( heartsCards[ heartsCards.length - 1 ] );
-                return;
+                var spadesCards = this.cards[ 'spades' ];
+
+                for (a = 0 ; a < spadesCards.length ; a++)
+                    {
+                    card = spadesCards[ a ];
+
+                    if ( card.suitSymbol === Cards.SuitSymbol.queen )
+                        {
+                        Game.addCardPlayQueue( card );
+                        return;
+                        }
+                    }
+
+                var heartsCards = this.cards[ 'hearts' ];
+
+                if ( heartsCards.length > 0 )
+                    {
+                    Game.addCardPlayQueue( heartsCards[ heartsCards.length - 1 ] );
+                    return;
+                    }
+
+
+                var highest = this.getHighestCard( _.keys( this.cards ) );
+
+                Game.addCardPlayQueue( highest );
                 }
-
-
-            var highest = this.getHighestCard( _.keys( this.cards ) );
-
-            Game.addCardPlayQueue( highest );
             }
         }
 
@@ -313,15 +368,20 @@ class Bot extends Player
                 }
             }
 
-        var highest = highestCards[ 0 ];
+        var highest = null;
 
-        for (a = 1 ; a < highestCards.length ; a++)
+        if ( highestCards.length > 0 )
             {
-            var card = highestCards[ a ];
+            highest = highestCards[ 0 ];
 
-            if ( card.suitSymbol > highest.suitSymbol )
+            for (a = 1 ; a < highestCards.length ; a++)
                 {
-                highest = card;
+                var card = highestCards[ a ];
+
+                if ( card.suitSymbol > highest.suitSymbol )
+                    {
+                    highest = card;
+                    }
                 }
             }
 

@@ -84,7 +84,8 @@ var G = {
         STAGE: null,
         FPS: 30,
         PRELOAD: null,
-        BASE_URL: ''
+        BASE_URL: '',
+        DEBUG: true
     };
 
 window.onload = function()

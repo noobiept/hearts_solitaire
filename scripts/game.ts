@@ -38,6 +38,7 @@ export function start()
 Cards.init();
 MoveAnimation.init();
 Message.init();
+Statistics.load();
 
 PASS_CARDS_ELEMENT = new createjs.Bitmap( G.PRELOAD.getResult( 'pass_left' ) );
 PASS_CARDS_ELEMENT.visible = false;
@@ -47,29 +48,37 @@ PASS_CARDS_ELEMENT.on( 'click', Game.passCards );
 
 G.STAGE.addChild( PASS_CARDS_ELEMENT );
 
+var showBotCards = false;
+
+if ( G.DEBUG === true )
+    {
+    showBotCards = true;
+    }
+
 PLAYERS.south = new Player({
         show: true,
         position: Position.south
     });
 
 PLAYERS.north = new Bot({
-        show: true,     // for now show for debugging //HERE
+        show: showBotCards,
         position: Position.north
     });
 
 PLAYERS.east = new Bot({
-        show: true,
+        show: showBotCards,
         position: Position.east
     });
 
 PLAYERS.west = new Bot({
-        show: true,
+        show: showBotCards,
         position: Position.west
     });
 
 
 GameMenu.init();
 GameMenu.updateScores();
+GameMenu.updateStatistics();
 Round.clearRound();
 
 createjs.Ticker.on( 'tick', tick );
@@ -294,14 +303,24 @@ if ( winner )
 
         if ( gameEnded )
             {
-            message += 'Game Ended!<br />';
+            message += 'Game Ended!<br /><br />';
 
             var winners = getPlayersWinning();
+            var southWon = false;   // see if the human player won
 
             for (var a = 0 ; a < winners.length ; a++)
                 {
-                message += Position[ winners[ a ].position ] + ' Won!<br />';
+                var position = winners[ a ].position;
+
+                message += Position[ position ] + ' Won!<br /><br />';
+
+                if ( position == Position.south )
+                    {
+                    southWon = true;
+                    }
                 }
+
+            Statistics.oneMoreGame( southWon );
             }
 
         for (var a = 0 ; a < PLAYERS_POSITION.length ; a++)
@@ -439,6 +458,7 @@ for (var a = 0 ; a < PLAYERS_POSITION.length ; a++)
     }
 
 GameMenu.updateScores();
+GameMenu.updateStatistics();
 
     // start new round
 Cards.centerCards();

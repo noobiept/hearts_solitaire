@@ -2,7 +2,7 @@
 
 interface PlayerArgs
     {
-    show: Boolean;  // show or hide the cards
+    show: boolean;  // show or hide the cards
     position: Game.Position;
     }
 
@@ -28,12 +28,14 @@ class Player
 
     points: number;
     isBot: boolean;
+    show: boolean;
 
 
     constructor( args: PlayerArgs )
         {
         this.cardsCount = 0;
         this.position = args.position;
+        this.show = args.show;
         this.cards = { clubs: null, diamonds: null, spades: null, hearts: null };
         this.points = 0;
         this.selectedCards = [];
@@ -131,7 +133,7 @@ class Player
             return;
             }
 
-        this.positionCards( 700 );
+        this.positionCards( 500 );
         }
 
 
@@ -140,7 +142,7 @@ class Player
         var x, y, stepX, stepY;
         var callback = null;
 
-        if ( !this.isBot )
+        if ( this.show )
             {
             callback = function( card ) { card.changeSide( true ); };
             }

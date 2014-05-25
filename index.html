@@ -22,6 +22,7 @@
     <script type="text/javascript" src="scripts/round.js"></script>
     <script type="text/javascript" src="scripts/game.js"></script>
     <script type="text/javascript" src="scripts/game_menu.js"></script>
+    <script type="text/javascript" src="scripts/statistics.js"></script>
     <script type="text/javascript" src="scripts/main.js"></script>
 
     <link rel="stylesheet" href="css/style.css" />
@@ -32,13 +33,19 @@
 
     <div id="GameMenu">
         <div id="Scores">
-            <div id="south">South: <span>0</span></div>
-            <div id="west">West: <span>0</span></div>
-            <div id="north">North: <span>0</span></div>
-            <div id="east">East: <span>0</span></div>
+            <div id="south">South: <span></span></div>
+            <div id="west">West: <span></span></div>
+            <div id="north">North: <span></span></div>
+            <div id="east">East: <span></span></div>
         </div>
 
         <div id="Restart" class="button">Restart</div>
+
+        <div id="Statistics">
+            <div>Games played: <span id="gamesPlayed"></span></div>
+            <div>Games won: <span id="gamesWon"></span></div>
+            <div>Win-rate: <span id="winRate"></span></div>
+        </div>
     </div>
 
     <div id="RoundEnded" title="Round ended"></div>

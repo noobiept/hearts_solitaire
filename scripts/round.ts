@@ -90,9 +90,10 @@ else
         if ( player.cards[ Cards.Suit[ leadSuit ] ].length == 0 )
             {
                 // can't play the queen of spades or hearts on the first turn (unless you happen to have all 13 hearts cards)
+                // or 12 hearts cards + the queen of spades
             if ( IS_FIRST_TURN )
                 {
-                if ( card.suit == Cards.Suit.spades && card.suitSymbol == Cards.SuitSymbol.queen )
+                if ( card.suit == Cards.Suit.spades && card.suitSymbol == Cards.SuitSymbol.queen && player.cards[ 'hearts' ].length < 12 )
                     {
                     Message.open( 'Invalid move.', "Can't play the queen of spades on first turn." );
                     return false;
@@ -164,7 +165,7 @@ else
     }
 
 
-var animationDuration = 500;
+var animationDuration = 400;
 
 if ( NO_MOVE_ANIMATION )
     {

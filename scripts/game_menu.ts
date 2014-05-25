@@ -1,4 +1,5 @@
 /// <reference path='game.ts' />
+/// <reference path='statistics.ts' />
 
 /*
     current player points
@@ -15,21 +16,32 @@ var SCORES = {
         east : null
     };
 
+var STATISTICS = {
+        gamesPlayed: null,
+        gamesWon: null,
+        winRate: null
+    };
+
 var PLAYER_TURN: Game.Position = null;
 
 export function init()
 {
 var menu = document.querySelector( '#GameMenu' );
 
-
 SCORES[ 'south' ] = menu.querySelector( '#south' );
 SCORES[ 'west'  ] = menu.querySelector( '#west' );
 SCORES[ 'north' ] = menu.querySelector( '#north' );
 SCORES[ 'east'  ] = menu.querySelector( '#east' );
 
+STATISTICS.gamesPlayed = menu.querySelector( '#gamesPlayed' );
+STATISTICS.gamesWon = menu.querySelector( '#gamesWon' );
+STATISTICS.winRate = menu.querySelector( '#winRate' );
+
 var restart = <HTMLDivElement> menu.querySelector( '#Restart' );
 
 restart.onclick = Game.restart;
+
+$( menu ).css( 'display', 'inline' );
 }
 
 
@@ -47,6 +59,15 @@ for (var a = 0 ; a < positions.length ; a++)
     $( spanElement ).text( player.getPoints() );
     }
 }
+
+
+export function updateStatistics()
+{
+$( STATISTICS.gamesPlayed ).text( Statistics.getGamesPlayed() );
+$( STATISTICS.gamesWon ).text( Statistics.getGamesWon() );
+$( STATISTICS.winRate ).text( Statistics.getWinRate() + '%' );
+}
+
 
 
 export function setPlayerTurn( position: Game.Position )
