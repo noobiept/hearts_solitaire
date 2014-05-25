@@ -165,7 +165,7 @@ else
     }
 
 
-var animationDuration = 400;
+var animationDuration = 250;
 
 if ( NO_MOVE_ANIMATION )
     {

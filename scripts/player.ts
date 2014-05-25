@@ -254,7 +254,7 @@ class Player
                 return;
                 }
 
-            card.moveTo( x, y, 200 );
+            card.moveTo( x, y, 150 );
             };
 
         var offset = 40;

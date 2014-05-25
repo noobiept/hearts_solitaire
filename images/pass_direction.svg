@@ -27,19 +27,19 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="3.959798"
-     inkscape:cx="39.801823"
-     inkscape:cy="21.988173"
+     inkscape:zoom="8"
+     inkscape:cx="52.510246"
+     inkscape:cy="42.611649"
      inkscape:document-units="px"
      inkscape:current-layer="g3781"
      showgrid="true"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:window-width="1173"
-     inkscape:window-height="655"
-     inkscape:window-x="500"
-     inkscape:window-y="224"
-     inkscape:window-maximized="0">
+     inkscape:window-width="1920"
+     inkscape:window-height="1005"
+     inkscape:window-x="-9"
+     inkscape:window-y="-9"
+     inkscape:window-maximized="1">
     <inkscape:grid
        type="xygrid"
        id="grid2985"
@@ -60,7 +60,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title />
+        <dc:title></dc:title>
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -71,24 +71,30 @@
      transform="translate(0,-982.36217)"
      style="display:none">
     <g
-       id="g3766"
-       style="fill:#8e2f6b;fill-opacity:0.52100842;stroke:none">
+       transform="matrix(-1.0002605,0,0,1,120.03126,0)"
+       style="display:inline"
+       id="g3022-7"
+       inkscape:export-filename="C:\Users\drk\Dropbox\projects\hearts_solitaire\images\pass_left.png"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
       <rect
-         y="1002.3622"
-         x="34.89975"
-         height="30"
-         width="85.10025"
-         id="rect2991"
-         style="fill:#8e2f6b;fill-opacity:0.52100842;stroke:none" />
-      <g
+         transform="scale(-1,1)"
          style="fill:#8e2f6b;fill-opacity:0.52100842;stroke:none"
-         id="g3763">
+         id="rect3775-4"
+         width="85.000595"
+         height="30"
+         x="-85.031845"
+         y="1002.3466" />
+      <g
+         transform="matrix(-1,0,0,1,120,0)"
+         id="g3777-0"
+         style="fill:#8e2f6b;fill-opacity:0.52100842;stroke:none">
         <path
-           style="fill:#8e2f6b;fill-opacity:0.52100842;stroke:none"
-           d="M 0,35 35,0 35,70 z"
-           id="path2993"
+           transform="translate(0,982.36217)"
            inkscape:connector-curvature="0"
-           transform="translate(0,982.36217)" />
+           id="path3779-9"
+           d="M 0,35 35,0 35,70 z"
+           style="fill:#8e2f6b;fill-opacity:0.52100842;stroke:none" />
       </g>
     </g>
   </g>
@@ -99,17 +105,18 @@
      inkscape:label="right"
      style="display:none">
     <g
-       style="fill:#8e2f6b;fill-opacity:0.52100842;stroke:none"
-       id="g3773"
-       transform="matrix(-1,0,0,1,120,0)">
+       id="g3022"
+       transform="matrix(1.0002605,0,0,1,-0.03125814,0)">
       <rect
+         transform="scale(-1,1)"
          style="fill:#8e2f6b;fill-opacity:0.52100842;stroke:none"
          id="rect3775"
-         width="85.10025"
+         width="85.000595"
          height="30"
-         x="34.89975"
-         y="1002.3622" />
+         x="-85.031845"
+         y="1002.3466" />
       <g
+         transform="matrix(-1,0,0,1,120,0)"
          id="g3777"
          style="fill:#8e2f6b;fill-opacity:0.52100842;stroke:none">
         <path
@@ -125,30 +132,33 @@
      inkscape:label="across"
      inkscape:groupmode="layer"
      id="g3781"
-     transform="translate(0,-982.36217)">
+     transform="translate(0,-982.36217)"
+     style="display:inline">
     <g
-       transform="matrix(0,1,1,0,-957.36217,957.36217)"
-       id="g3783"
-       style="fill:#8e2f6b;fill-opacity:0.52100842;stroke:none"
-       inkscape:export-filename="C:\Users\drk\Dropbox\projects\hearts_solitaire\images\pass_top.png"
+       transform="matrix(0,-1.0002605,-1,0,1072.3622,1072.3934)"
+       style="display:inline"
+       id="g3022-7-4"
+       inkscape:export-filename="C:\Users\drk\Dropbox\projects\hearts_solitaire\images\pass_across.png"
        inkscape:export-xdpi="90"
        inkscape:export-ydpi="90">
       <rect
-         y="1002.3622"
-         x="34.89975"
-         height="30"
-         width="85.10025"
-         id="rect3785"
-         style="fill:#8e2f6b;fill-opacity:0.52100842;stroke:none" />
-      <g
+         transform="scale(-1,1)"
          style="fill:#8e2f6b;fill-opacity:0.52100842;stroke:none"
-         id="g3787">
+         id="rect3775-4-8"
+         width="85.000595"
+         height="30"
+         x="-85.031845"
+         y="1002.3466" />
+      <g
+         transform="matrix(-1,0,0,1,120,0)"
+         id="g3777-0-8"
+         style="fill:#8e2f6b;fill-opacity:0.52100842;stroke:none">
         <path
-           style="fill:#8e2f6b;fill-opacity:0.52100842;stroke:none"
-           d="M 0,35 35,0 35,70 z"
-           id="path3789"
+           transform="translate(0,982.36217)"
            inkscape:connector-curvature="0"
-           transform="translate(0,982.36217)" />
+           id="path3779-9-2"
+           d="M 0,35 35,0 35,70 z"
+           style="fill:#8e2f6b;fill-opacity:0.52100842;stroke:none" />
       </g>
     </g>
   </g>

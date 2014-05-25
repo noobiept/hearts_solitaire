@@ -1,0 +1,1 @@
+A hearts solitaire game written in typescript.

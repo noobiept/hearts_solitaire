@@ -73,10 +73,6 @@
         - GameMenu:
             - current players points
             - restart
-
-
-    to doo:
-        - save highscores (the winrate - games played, games won, win percentage)
  */
 
 var G = {
@@ -85,7 +81,7 @@ var G = {
         FPS: 30,
         PRELOAD: null,
         BASE_URL: '',
-        DEBUG: true
+        DEBUG: false
     };
 
 window.onload = function()
