@@ -1,0 +1,11 @@
+{
+    "resultingFolder": "hearts_solitaire",
+    "basePath": "..",
+    "files":
+        [
+            "css/",
+            "images/",
+            "libraries/",
+            "manifest.json"
+        ]
+}

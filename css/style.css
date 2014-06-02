@@ -48,4 +48,8 @@
     background-color: #edcf90;
     }
 
-
+#LoadMessage
+    {
+    position: fixed;
+    text-align: center;
+    }

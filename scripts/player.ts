@@ -389,6 +389,8 @@ class Player
                 Cards.setAvailable( card );
                 }
             }
+
+        this.selectedCards.length = 0;
         }
 
 
