@@ -1,0 +1,15 @@
+{
+    "C:\\Users\\drk\\Dropbox\\projects\\hearts_solitaire": [
+        "scripts/utilities.js",
+        "scripts/move_animation.js",
+        "scripts/message.js",
+        "scripts/cards.js",
+        "scripts/player.js",
+        "scripts/bot.js",
+        "scripts/round.js",
+        "scripts/game.js",
+        "scripts/game_menu.js",
+        "scripts/statistics.js",
+        "scripts/main.js"
+    ]
+}
