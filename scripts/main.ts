@@ -38,7 +38,18 @@ var G = {
 
 var BASE_URL = '';
 
+
 window.onload = function()
+{
+AppStorage.getData( [ 'hearts_statistics' ], function( data )
+    {
+    Statistics.load( data[ 'hearts_statistics' ] );
+    initApp();
+    });
+};
+
+
+function initApp()
 {
 G.CANVAS = document.querySelector( '#MainCanvas' );
 G.STAGE = new createjs.Stage( G.CANVAS );
@@ -135,4 +146,4 @@ G.PRELOAD.addEventListener( 'complete', function()
     Game.start();
     });
 G.PRELOAD.loadManifest( manifest, true );
-};
+}

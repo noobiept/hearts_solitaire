@@ -38,7 +38,6 @@ export function start()
 Cards.init();
 MoveAnimation.init();
 Message.init();
-Statistics.load();
 
 PASS_CARDS_ELEMENT = new createjs.Bitmap( G.PRELOAD.getResult( 'pass_left' ) );
 PASS_CARDS_ELEMENT.visible = false;
