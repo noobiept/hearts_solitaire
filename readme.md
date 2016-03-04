@@ -33,14 +33,14 @@ Dependencies
 ============
 
 - typescript: 1.8
-- jquery : 2.1
-- jqueryui : 1.10
+- jquery : 2.2
+- jqueryui : 1.11
     - dialog
     - smoothness theme
 - createjs
-    - easeljs: 0.7
-    - preloadjs: 0.4
-    - tweenjs: 0.5
+    - easeljs: 0.8
+    - preloadjs: 0.6
+    - tweenjs: 0.6
 - underscore : 1.6
 
 
