@@ -31,7 +31,6 @@
 var G = {
         CANVAS: null,
         STAGE: null,
-        FPS: 30,
         PRELOAD: null,
         DEBUG: false
     };
@@ -54,12 +53,10 @@ function initApp()
 G.CANVAS = document.querySelector( '#MainCanvas' );
 G.STAGE = new createjs.Stage( G.CANVAS );
 
-createjs.Ticker.setFPS( G.FPS );
-
+createjs.Ticker.timingMode = createjs.Ticker.RAF;
 
 G.CANVAS.width = 1200;
 G.CANVAS.height = 900;
-
 
 G.PRELOAD = new createjs.LoadQueue();
 
