@@ -355,18 +355,15 @@ class Player
 
     changeCardsSide( front: boolean )
         {
-        if ( !_.isBoolean( front ) )
+        var suits = Object.keys( this.cards );
+
+        for (var a = 0 ; a < suits.length ; a++)
             {
-            var suits = _.keys( this.cards );
+            var cards = this.cards[ suits[ a ] ];
 
-            for (var a = 0 ; a < suits.length ; a++)
+            for (var b = 0 ; b < cards.length ; b++)
                 {
-                var cards = this.cards[ suits[ a ] ];
-
-                for (var b = 0 ; b < cards.length ; b++)
-                    {
-                    cards[ a ].changeSide( front );
-                    }
+                cards[ a ].changeSide( front );
                 }
             }
         }
@@ -375,7 +372,7 @@ class Player
     clear()
         {
         this.points = 0;
-        var suits = _.keys( this.cards );
+        var suits = Object.keys( this.cards );
 
         for (var a = 0 ; a < suits.length ; a++)
             {

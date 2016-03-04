@@ -1,4 +1,3 @@
-/// <reference path='../typings/tsd.d.ts' />
 /// <reference path='main.ts' />
 /// <reference path='utilities.ts' />
 /// <reference path='player.ts' />
@@ -186,7 +185,7 @@ export class IndividualCard
 
         this.moveAnimation.start( x, y, animationDuration, function()
             {
-            if ( _.isFunction( callback ) )
+            if ( callback )
                 {
                 callback( _this );
                 }

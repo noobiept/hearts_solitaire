@@ -1,7 +1,8 @@
 {
     "exclude": [
-        ".hg/",
-        "build/",
-        "release/"
+        ".hg",
+        "build",
+        "release",
+        "typings"
     ]
 }

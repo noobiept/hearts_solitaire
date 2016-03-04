@@ -1,4 +1,3 @@
-/// <reference path='../typings/tsd.d.ts' />
 /// <reference path='utilities.ts' />
 
 module MoveAnimation
@@ -52,7 +51,7 @@ export class Move
         this.destY = destY;
         this.count = 0;
 
-        if ( _.isFunction( callback ) )
+        if ( callback )
             {
             this.callback = callback;
             }
@@ -80,7 +79,7 @@ export class Move
 
         ACTIVE.splice( index, 1 );
 
-        if ( _.isFunction( this.callback ) )
+        if ( this.callback )
             {
             this.callback();
             }

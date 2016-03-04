@@ -1,5 +1,3 @@
-/// <reference path='../typings/tsd.d.ts' />
-
 module Message
 {
 var MESSAGE = null;

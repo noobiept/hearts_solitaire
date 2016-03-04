@@ -41,7 +41,6 @@ Dependencies
     - easeljs: 0.8
     - preloadjs: 0.6
     - tweenjs: 0.6
-- underscore : 1.6
 
 
 Images

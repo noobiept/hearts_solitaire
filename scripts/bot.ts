@@ -43,7 +43,7 @@ class Bot extends Player
             // get the 3 highest cards of each suit
         var highestCards = [];
         var a;
-        var suits = _.keys( this.cards );
+        var suits = Object.keys( this.cards );
         var highest;
         var secondHighest;
         var thirdHighest;
@@ -345,7 +345,7 @@ class Bot extends Player
                     }
 
 
-                var highest = this.getHighestCard( _.keys( this.cards ) );
+                var highest = this.getHighestCard( Object.keys( this.cards ) );
 
                 Game.addCardPlayQueue( highest );
                 }

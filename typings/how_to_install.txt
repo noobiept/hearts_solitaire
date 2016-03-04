@@ -1,1 +1,1 @@
-tsd query the_library --save --action install
+typings install libraryName --ambient --save

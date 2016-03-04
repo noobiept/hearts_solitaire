@@ -1,3 +1,5 @@
+// Compiled using typings@0.6.9
+// Source: https://raw.githubusercontent.com/DefinitelyTyped/DefinitelyTyped/e176a57f0de63ae22695cbfba738dc94ba0cec82/createjs/createjs.d.ts
 // Type definitions for EaselJS 0.7.1, TweenJS 0.5.1, SoundJS 0.5.2, PreloadJS 0.4.1
 // Project: http://www.createjs.com/#!/EaselJS
 // Definitions by: Pedro Ferreira <https://bitbucket.org/drk4>, Chris Smith <https://github.com/evilangelist>, Satoru Kimura <https://github.com/gyohk>
@@ -14,11 +16,3 @@
 // Library documentation : http://www.createjs.com/Docs/PreloadJS/modules/PreloadJS.html
 // Library documentation : http://www.createjs.com/Docs/SoundJS/modules/SoundJS.html
 // Library documentation : http://www.createjs.com/Docs/TweenJS/modules/TweenJS.html
-
-
-/// <reference path="../createjs-lib/createjs-lib.d.ts" />
-/// <reference path="../easeljs/easeljs.d.ts" />
-/// <reference path="../tweenjs/tweenjs.d.ts" />
-/// <reference path="../preloadjs/preloadjs.d.ts" />
-/// <reference path="../soundjs/soundjs.d.ts" />
-
