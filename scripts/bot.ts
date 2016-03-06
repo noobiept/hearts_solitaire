@@ -4,7 +4,7 @@ class Bot extends Player
 {
     constructor( args )
         {
-        this.isBot = true;
+        args.isBot = true;
 
         super( args );
         }

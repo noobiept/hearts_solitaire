@@ -1,3 +1,9 @@
+body
+    {
+    margin: 0;
+    padding: 0;
+    }
+
 .ui-dialog .ui-dialog-titlebar
     {
     padding: 0 10px;
@@ -10,7 +16,6 @@
 
 #MainCanvas, #GameMenu
     {
-    display: inline;
     float: left;
     }
 

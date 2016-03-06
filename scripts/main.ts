@@ -55,9 +55,6 @@ G.STAGE = new createjs.Stage( G.CANVAS );
 
 createjs.Ticker.timingMode = createjs.Ticker.RAF;
 
-G.CANVAS.width = 1200;
-G.CANVAS.height = 900;
-
 G.PRELOAD = new createjs.LoadQueue();
 
 var manifest = [
@@ -144,3 +141,9 @@ G.PRELOAD.addEventListener( 'complete', function()
     });
 G.PRELOAD.loadManifest( manifest, true );
 }
+
+
+window.onresize = function()
+{
+Game.resize();
+};

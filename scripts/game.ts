@@ -98,6 +98,7 @@ G.CANVAS.oncontextmenu = function( event )
     };
 
 drawCards();
+Game.resize();
 }
 
 
@@ -210,8 +211,6 @@ PASS_CARDS_ELEMENT.visible = false;
 
 startRound();
 }
-
-
 
 
 export function startRound()
@@ -496,5 +495,34 @@ G.STAGE.update();
 }
 
 
+/**
+ * Reposition/resize the game elements, based on the current available width/height of the window.
+ */
+export function resize()
+{
+var windowWidth = $( window ).outerWidth( true );
+var gameMenuWidth = $( '#GameMenu' ).outerWidth( true );
+var windowHeight = $( window ).outerHeight( true );
+
+var canvasWidth = windowWidth - gameMenuWidth - 20;
+var canvasHeight = windowHeight;
+
+G.CANVAS.width = canvasWidth;
+G.CANVAS.height = canvasHeight;
+
+PASS_CARDS_ELEMENT.x = canvasWidth / 2;
+PASS_CARDS_ELEMENT.y = canvasHeight / 2;
+
+PLAYERS.north.updateCenterPosition();
+PLAYERS.north.positionCards( 0 );
+PLAYERS.south.updateCenterPosition();
+PLAYERS.south.positionCards( 0 );
+PLAYERS.east.updateCenterPosition();
+PLAYERS.east.positionCards( 0 );
+PLAYERS.west.updateCenterPosition();
+PLAYERS.west.positionCards( 0 );
+
+Round.resize();
+}
 
 }

@@ -8,7 +8,7 @@ var IS_HEARTS_BROKEN: boolean;
 
 
     // cards played in the current turn
-var CARDS = [];
+var CARDS: Cards.IndividualCard[] = [];
 
     // lead card in the current turn
 var LEAD_CARD: Cards.IndividualCard;
@@ -134,34 +134,29 @@ export function playCard( card: Cards.IndividualCard )
 {
 var x = G.CANVAS.width / 2 - Cards.IndividualCard.width / 2;
 var y = G.CANVAS.height / 2 - Cards.IndividualCard.height / 2;
-var position = card.player.position;
 
 var offset = 70;
 
-if ( position == Game.Position.west )
+switch( card.player.position )
     {
-    x -= offset;
-    }
+    case Game.Position.west:
+        x -= offset;
+        break;
 
-else if ( position == Game.Position.east )
-    {
-    x += offset;
-    }
+    case Game.Position.east:
+        x += offset;
+        break;
 
-else if ( position == Game.Position.north )
-    {
-    y -= offset;
-    }
+    case Game.Position.north:
+        y -= offset;
+        break;
 
-else if ( position == Game.Position.south )
-    {
-    y += offset;
-    }
+    case Game.Position.south:
+        y += offset;
+        break;
 
-else
-    {
-    console.log( 'error, wrong orientation argument.' );
-    return;
+    default:
+        throw new Error( 'error, wrong orientation argument.' );
     }
 
 
@@ -395,5 +390,43 @@ export function noMoveAnimationThisTurn()
 NO_MOVE_ANIMATION = true;
 }
 
+
+export function resize()
+{
+var centerX = G.CANVAS.width / 2 - Cards.IndividualCard.width / 2;
+var centerY = G.CANVAS.height / 2 - Cards.IndividualCard.height / 2;
+var offset = 70;
+
+for (var a = 0 ; a < CARDS.length ; a++)
+    {
+    var card = CARDS[ a ];
+    var x = centerX;
+    var y = centerY;
+
+    switch( card.player.position )
+        {
+        case Game.Position.west:
+            x -= offset;
+            break;
+
+        case Game.Position.east:
+            x += offset;
+            break;
+
+        case Game.Position.north:
+            y -= offset;
+            break;
+
+        case Game.Position.south:
+            y += offset;
+            break;
+
+        default:
+            throw new Error( 'error, wrong orientation argument.' );
+        }
+
+    card.moveTo( x, y, 0 );
+    }
+}
 
 }

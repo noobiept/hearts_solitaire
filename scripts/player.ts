@@ -4,6 +4,7 @@ interface PlayerArgs
     {
     show: boolean;  // show or hide the cards
     position: Game.Position;
+    isBot?: boolean;
     }
 
 class Player
@@ -33,17 +34,18 @@ class Player
 
     constructor( args: PlayerArgs )
         {
+        if ( typeof args.isBot === 'undefined' )
+            {
+            args.isBot = false;
+            }
+
         this.cardsCount = 0;
         this.position = args.position;
         this.show = args.show;
         this.cards = { clubs: null, diamonds: null, spades: null, hearts: null };
         this.points = 0;
         this.selectedCards = [];
-
-        if ( typeof this.isBot === 'undefined' )
-            {
-            this.isBot = false;
-            }
+        this.isBot = args.isBot;
         }
 
     getHand()
@@ -96,6 +98,13 @@ class Player
         this.cards.spades.sort( sortSymbol );
         this.cards.hearts.sort( sortSymbol );
 
+        this.updateCenterPosition();
+        this.positionCards( 500 );
+        }
+
+
+    updateCenterPosition()
+        {
         var width = G.CANVAS.width;
         var height = G.CANVAS.height;
 
@@ -129,15 +138,12 @@ class Player
 
         else
             {
-            console.log( 'error, wrong position argument' );
-            return;
+            throw new Error( 'error, wrong position argument' );
             }
-
-        this.positionCards( 500 );
         }
 
 
-    positionCards( animationDuration )
+    positionCards( animationDuration: number )
         {
         var x, y, stepX, stepY;
         var callback = null;
