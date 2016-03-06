@@ -149,9 +149,3 @@ G.PRELOAD.addEventListener( 'complete', function()
     });
 G.PRELOAD.loadManifest( manifest, true );
 }
-
-
-window.onresize = function()
-{
-Game.resize();
-};

@@ -36,6 +36,9 @@ var PLAY_QUEUE: Cards.IndividualCard[] = [];
 
 export function start()
 {
+    // need to resize the canvas in the beginning to fit the available width/height (before any element is added)
+resizeCanvas();
+
 Cards.init();
 MoveAnimation.init();
 Message.init();
@@ -93,13 +96,13 @@ G.CANVAS.oncontextmenu = function( event )
     };
 
 drawCards();
-Game.resize();
+window.onresize = Game.resize;
 }
 
 
 export function drawCards()
 {
-var player;
+var player: Player;
 var position;
 
 for (var a = 0 ; a < PLAYERS_POSITION.length ; a++)
@@ -498,10 +501,7 @@ G.STAGE.update();
 }
 
 
-/**
- * Reposition/resize the game elements, based on the current available width/height of the window.
- */
-export function resize()
+function resizeCanvas()
 {
 var windowWidth = $( window ).outerWidth( true );
 var gameMenuWidth = $( '#GameMenu' ).outerWidth( true );
@@ -512,8 +512,16 @@ var canvasHeight = windowHeight;
 
 G.CANVAS.width = canvasWidth;
 G.CANVAS.height = canvasHeight;
+}
 
-PassCards.setPosition( canvasWidth / 2, canvasHeight / 2 );
+
+/**
+ * Reposition/resize the game elements, based on the current available width/height of the window.
+ */
+export function resize()
+{
+resizeCanvas();
+PassCards.setPosition( G.CANVAS.width / 2, G.CANVAS.height / 2 );
 
 PLAYERS.north.updateCenterPosition();
 PLAYERS.north.positionCards( 0 );

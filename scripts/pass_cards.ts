@@ -19,6 +19,8 @@ export function init()
     ELEMENT.visible = false;
     ELEMENT.filters = [];
     ELEMENT.on( 'click', Game.passCards );
+    ELEMENT.x = G.CANVAS.width / 2;
+    ELEMENT.y = G.CANVAS.height / 2;
 
     G.STAGE.addChild( ELEMENT );
     }

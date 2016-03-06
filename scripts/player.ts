@@ -179,6 +179,7 @@ class Player
             x += stepX;
             y += stepY;
             }
+
         for (var a = 0 ; a < this.cards.diamonds.length ; a++)
             {
             this.cards.diamonds[ a ].show();
@@ -187,6 +188,7 @@ class Player
             x += stepX;
             y += stepY;
             }
+
         for (var a = 0 ; a < this.cards.spades.length ; a++)
             {
             this.cards.spades[ a ].show();
@@ -195,6 +197,7 @@ class Player
             x += stepX;
             y += stepY;
             }
+
         for (var a = 0 ; a < this.cards.hearts.length ; a++)
             {
             this.cards.hearts[ a ].show();
@@ -203,7 +206,15 @@ class Player
             x += stepX;
             y += stepY;
             }
+
+            // update the selected cards as well
+        for (var a = 0 ; a < this.selectedCards.length ; a++)
+            {
+            var card = this.selectedCards[ a ];
+            this.moveSelectedCard( card, true, 0 );
+            }
         }
+
 
     hasCard( suit: Cards.Suit, symbol: Cards.SuitSymbol )
         {
@@ -220,51 +231,56 @@ class Player
         return false;
         }
 
+
+    /**
+     * Moves the card slightly to the center (or away from it).
+     * Useful to know visually which cards are selected in the pass cards phase.
+     */
+    moveSelectedCard( card: Cards.IndividualCard, towardsCenter: boolean, animationDuration: number )
+        {
+        var x = card.getX();
+        var y = card.getY();
+        var offset = 40;
+
+        if ( towardsCenter === false )
+            {
+            offset *= -1;
+            }
+
+        if ( this.position == Game.Position.north )
+            {
+            y += offset;
+            }
+
+        else if ( this.position == Game.Position.south )
+            {
+            y -= offset;
+            }
+
+        else if ( this.position == Game.Position.west )
+            {
+            x += offset;
+            }
+
+        else if ( this.position == Game.Position.east )
+            {
+            x -= offset;
+            }
+
+        else
+            {
+            throw new Error( 'error, wrong position argument' );
+            }
+
+        card.moveTo( x, y, animationDuration );
+        }
+
+
     /*
         For the pass cards phase (where you pass 3 cards to other player)
      */
-
     selectCard( card: Cards.IndividualCard )
         {
-        var _this = this;
-
-            // moves the card slightly to the center (if positive offset)
-        var moveCard = function( offset )
-            {
-            var x = card.getX();
-            var y = card.getY();
-
-            if ( _this.position == Game.Position.north )
-                {
-                y += offset;
-                }
-
-            else if ( _this.position == Game.Position.south )
-                {
-                y -= offset;
-                }
-
-            else if ( _this.position == Game.Position.west )
-                {
-                x += offset;
-                }
-
-            else if ( _this.position == Game.Position.east )
-                {
-                x -= offset;
-                }
-
-            else
-                {
-                console.log( 'error, wrong position argument' );
-                return;
-                }
-
-            card.moveTo( x, y, 150 );
-            };
-
-        var offset = 40;
-
             // see if we're clicking on a already selected card (if so, we deselect it)
         var index = this.selectedCards.indexOf( card );
         if ( index > -1 )
@@ -272,7 +288,7 @@ class Player
             this.selectedCards.splice( index, 1 );
 
                 // move the card back to the original position
-            moveCard( -offset );
+            this.moveSelectedCard( card, false, 150 );
             }
 
         else
@@ -284,7 +300,7 @@ class Player
                 }
 
             this.selectedCards.push( card );
-            moveCard( offset );
+            this.moveSelectedCard( card, true, 150 );
             }
         }
 

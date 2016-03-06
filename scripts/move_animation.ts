@@ -34,6 +34,19 @@ export class Move
 
     start( destX: number, destY: number, duration: number, callback: () => any )
         {
+        if ( duration === 0 )
+            {
+            this.element.x = destX;
+            this.element.y = destY;
+
+            if ( callback )
+                {
+                callback();
+                }
+
+            return;
+            }
+
         this.isMoving = true;
         var currentX = this.element.x;
         var currentY = this.element.y;
