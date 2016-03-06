@@ -124,8 +124,11 @@ var manifest = [
         { id: 'king_of_hearts', src: BASE_URL + 'images/king_of_hearts.png' },
 
         { id: 'pass_left', src: BASE_URL + 'images/pass_left.png' },
+        { id: 'pass_left_effect', src: BASE_URL + 'images/pass_left_effect.png' },
         { id: 'pass_right', src: BASE_URL + 'images/pass_right.png' },
-        { id: 'pass_across', src: BASE_URL + 'images/pass_across.png' }
+        { id: 'pass_right_effect', src: BASE_URL + 'images/pass_right_effect.png' },
+        { id: 'pass_across', src: BASE_URL + 'images/pass_across.png' },
+        { id: 'pass_across_effect', src: BASE_URL + 'images/pass_across_effect.png' }
     ];
 
 var loadMessage = document.querySelector( '#LoadMessage' );

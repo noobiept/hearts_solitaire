@@ -13,7 +13,7 @@
    height="70"
    id="svg2"
    version="1.1"
-   inkscape:version="0.48.4 r9939"
+   inkscape:version="0.91 r13725"
    sodipodi:docname="pass_direction.svg"
    inkscape:export-filename="C:\Users\drk\Dropbox\projects\hearts_solitaire\images\pass_right.png"
    inkscape:export-xdpi="90"
@@ -27,11 +27,11 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="8"
-     inkscape:cx="52.510246"
-     inkscape:cy="42.611649"
+     inkscape:zoom="5.6568543"
+     inkscape:cx="21.537001"
+     inkscape:cy="36.683501"
      inkscape:document-units="px"
-     inkscape:current-layer="g3781"
+     inkscape:current-layer="g4149"
      showgrid="true"
      showguides="true"
      inkscape:guide-bbox="true"
@@ -60,7 +60,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -93,8 +93,42 @@
            transform="translate(0,982.36217)"
            inkscape:connector-curvature="0"
            id="path3779-9"
-           d="M 0,35 35,0 35,70 z"
+           d="M 0,35 35,0 35,70 Z"
            style="fill:#8e2f6b;fill-opacity:0.52100842;stroke:none" />
+      </g>
+    </g>
+  </g>
+  <g
+     style="display:none"
+     transform="translate(0,-982.36217)"
+     id="g4169"
+     inkscape:groupmode="layer"
+     inkscape:label="left copy">
+    <g
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="C:\Users\drk\Dropbox\projects\hearts_solitaire\images\pass_left.png"
+       id="g4171"
+       style="display:inline;fill:#8e2e68;fill-opacity:0.78431373"
+       transform="matrix(-1.0002605,0,0,1,120.03126,0)">
+      <rect
+         y="1002.3466"
+         x="-85.031845"
+         height="30"
+         width="85.000595"
+         id="rect4173"
+         style="fill:#8e2e68;fill-opacity:0.78431373;stroke:none"
+         transform="scale(-1,1)" />
+      <g
+         style="fill:#8e2e68;fill-opacity:0.78431373;stroke:none"
+         id="g4175"
+         transform="matrix(-1,0,0,1,120,0)">
+        <path
+           style="fill:#8e2e68;fill-opacity:0.78431373;stroke:none"
+           d="M 0,35 35,0 35,70 Z"
+           id="path4177"
+           inkscape:connector-curvature="0"
+           transform="translate(0,982.36217)" />
       </g>
     </g>
   </g>
@@ -123,8 +157,41 @@
            transform="translate(0,982.36217)"
            inkscape:connector-curvature="0"
            id="path3779"
-           d="M 0,35 35,0 35,70 z"
+           d="M 0,35 35,0 35,70 Z"
            style="fill:#8e2f6b;fill-opacity:0.52100842;stroke:none" />
+      </g>
+    </g>
+  </g>
+  <g
+     style="display:none"
+     inkscape:label="right effect"
+     inkscape:groupmode="layer"
+     id="g4159"
+     transform="translate(0,-982.36217)">
+    <g
+       transform="matrix(1.0002605,0,0,1,-0.03125814,0)"
+       id="g4161"
+       style="fill:#8e2e68;fill-opacity:0.78431373"
+       inkscape:export-xdpi="90"
+       inkscape:export-ydpi="90">
+      <rect
+         y="1002.3466"
+         x="-85.031845"
+         height="30"
+         width="85.000595"
+         id="rect4163"
+         style="fill:#8e2e68;fill-opacity:0.78431373;stroke:none"
+         transform="scale(-1,1)" />
+      <g
+         style="fill:#8e2e68;fill-opacity:0.78431373;stroke:none"
+         id="g4165"
+         transform="matrix(-1,0,0,1,120,0)">
+        <path
+           style="fill:#8e2e68;fill-opacity:0.78431373;stroke:none"
+           d="M 0,35 35,0 35,70 Z"
+           id="path4167"
+           inkscape:connector-curvature="0"
+           transform="translate(0,982.36217)" />
       </g>
     </g>
   </g>
@@ -133,7 +200,7 @@
      inkscape:groupmode="layer"
      id="g3781"
      transform="translate(0,-982.36217)"
-     style="display:inline">
+     style="display:none">
     <g
        transform="matrix(0,-1.0002605,-1,0,1072.3622,1072.3934)"
        style="display:inline"
@@ -157,8 +224,42 @@
            transform="translate(0,982.36217)"
            inkscape:connector-curvature="0"
            id="path3779-9-2"
-           d="M 0,35 35,0 35,70 z"
+           d="M 0,35 35,0 35,70 Z"
            style="fill:#8e2f6b;fill-opacity:0.52100842;stroke:none" />
+      </g>
+    </g>
+  </g>
+  <g
+     style="display:inline"
+     transform="translate(0,-982.36217)"
+     id="g4149"
+     inkscape:groupmode="layer"
+     inkscape:label="across effect">
+    <g
+       inkscape:export-ydpi="90"
+       inkscape:export-xdpi="90"
+       inkscape:export-filename="C:\Users\drk\Dropbox\projects\hearts_solitaire\images\pass_across.png"
+       id="g4151"
+       style="display:inline;fill:#8e2e68;fill-opacity:0.78431373"
+       transform="matrix(0,-1.0002605,-1,0,1072.3622,1072.3934)">
+      <rect
+         y="1002.3466"
+         x="-85.031845"
+         height="30"
+         width="85.000595"
+         id="rect4153"
+         style="fill:#8e2e68;fill-opacity:0.78431373;stroke:none"
+         transform="scale(-1,1)" />
+      <g
+         style="fill:#8e2e68;fill-opacity:0.78431373;stroke:none"
+         id="g4155"
+         transform="matrix(-1,0,0,1,120,0)">
+        <path
+           style="fill:#8e2e68;fill-opacity:0.78431373;stroke:none"
+           d="M 0,35 35,0 35,70 Z"
+           id="path4157"
+           inkscape:connector-curvature="0"
+           transform="translate(0,982.36217)" />
       </g>
     </g>
   </g>

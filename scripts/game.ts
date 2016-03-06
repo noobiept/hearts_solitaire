@@ -10,12 +10,14 @@ module Game
 {
 export enum Position { south, west, north, east }
 
-var PLAYERS = {
-    south: <Player> null,  // human player
-    west: <Player> null,
-    north: <Player> null,
-    east: <Player> null
-};
+interface AllPlayers {
+    south: Player;  // human player
+    west: Player;
+    north: Player;
+    east: Player;
+}
+
+var PLAYERS: AllPlayers;
 
     // in the play order (clock-wise)
 var PLAYERS_POSITION = [ 'south', 'west', 'north', 'east' ];
@@ -46,26 +48,27 @@ if ( G.DEBUG === true )
     showBotCards = true;
     }
 
-PLAYERS.south = new Player({
+PLAYERS = {
+    south: new Player({
         show: true,
         position: Position.south
-    });
+    }),
 
-PLAYERS.north = new Bot({
+    north: new Bot({
         show: showBotCards,
         position: Position.north
-    });
+    }),
 
-PLAYERS.east = new Bot({
+    east: new Bot({
         show: showBotCards,
         position: Position.east
-    });
+    }),
 
-PLAYERS.west = new Bot({
+    west: new Bot({
         show: showBotCards,
         position: Position.west
-    });
-
+    })
+};
 
 GameMenu.init();
 GameMenu.updateScores();
@@ -128,7 +131,7 @@ Message.close();
 
 for (var a = 0 ; a < PLAYERS_POSITION.length ; a++)
     {
-    var player = PLAYERS[ PLAYERS_POSITION[ a ] ];
+    var player: Player = PLAYERS[ PLAYERS_POSITION[ a ] ];
 
     if ( player.selectedCards.length < 3 )
         {
@@ -256,6 +259,19 @@ var player = card.player;
 if ( PASS_CARDS_PHASE )
     {
     player.selectCard( card );
+
+    if ( !player.isBot )
+        {
+        if ( player.selectedCards.length >= 3 )
+            {
+            PassCards.addEffect();
+            }
+
+        else
+            {
+            PassCards.removeEffect();
+            }
+        }
     }
 
 else
