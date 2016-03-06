@@ -23,9 +23,8 @@ var PLAYERS_POSITION = [ 'south', 'west', 'north', 'east' ];
 
 var ACTIVE_PLAYER: Player = null;
 var PASS_CARDS_PHASE: boolean;
-var PASS_CARDS_ELEMENT: createjs.Bitmap;
 
-enum Pass { left, right, across }
+export enum Pass { left, right, across }
 
 var PASS_CARDS = Pass.left;
 
@@ -38,14 +37,7 @@ export function start()
 Cards.init();
 MoveAnimation.init();
 Message.init();
-
-PASS_CARDS_ELEMENT = new createjs.Bitmap( G.PRELOAD.getResult( 'pass_left' ) );
-PASS_CARDS_ELEMENT.visible = false;
-PASS_CARDS_ELEMENT.x = G.CANVAS.width / 2;
-PASS_CARDS_ELEMENT.y = G.CANVAS.height / 2;
-PASS_CARDS_ELEMENT.on( 'click', Game.passCards );
-
-G.STAGE.addChild( PASS_CARDS_ELEMENT );
+PassCards.init();
 
 var showBotCards = false;
 
@@ -123,11 +115,7 @@ for (var a = 0 ; a < PLAYERS_POSITION.length ; a++)
     PLAYERS[ PLAYERS_POSITION[ a ] ].yourTurn();
     }
 
-
-var pass = Pass[ PASS_CARDS ];
-
-PASS_CARDS_ELEMENT.image = G.PRELOAD.getResult( 'pass_' + pass );
-PASS_CARDS_ELEMENT.visible = true;
+PassCards.select( PASS_CARDS );
 
     // in the pass cards phase, the turn is for the human player (since the bots play immediately)
 GameMenu.setPlayerTurn( Position.south );
@@ -207,8 +195,7 @@ if ( PASS_CARDS >= 3 )  // its either left, right or across
     PASS_CARDS = 0;
     }
 
-PASS_CARDS_ELEMENT.visible = false;
-
+PassCards.hide();
 startRound();
 }
 
@@ -510,8 +497,7 @@ var canvasHeight = windowHeight;
 G.CANVAS.width = canvasWidth;
 G.CANVAS.height = canvasHeight;
 
-PASS_CARDS_ELEMENT.x = canvasWidth / 2;
-PASS_CARDS_ELEMENT.y = canvasHeight / 2;
+PassCards.setPosition( canvasWidth / 2, canvasHeight / 2 );
 
 PLAYERS.north.updateCenterPosition();
 PLAYERS.north.positionCards( 0 );

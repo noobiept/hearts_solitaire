@@ -154,8 +154,8 @@ export class IndividualCard
 
         var imageId = SuitSymbol[ this.suitSymbol ] + '_of_' + Suit[ this.suit ];
 
-        this.frontImage = G.PRELOAD.getResult( imageId );
-        this.backImage = G.PRELOAD.getResult(  'card_back' );
+        this.frontImage = <HTMLImageElement> G.PRELOAD.getResult( imageId );
+        this.backImage = <HTMLImageElement> G.PRELOAD.getResult( 'card_back' );
 
         this.bitmap = new createjs.Bitmap( this.backImage );
 

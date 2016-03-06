@@ -28,7 +28,14 @@
             - restart
  */
 
-var G = {
+interface Global {
+    CANVAS: HTMLCanvasElement;
+    STAGE: createjs.Stage;
+    PRELOAD: createjs.LoadQueue;
+    DEBUG: boolean;
+}
+
+var G: Global = {
         CANVAS: null,
         STAGE: null,
         PRELOAD: null,
@@ -50,7 +57,7 @@ AppStorage.getData( [ 'hearts_statistics' ], function( data )
 
 function initApp()
 {
-G.CANVAS = document.querySelector( '#MainCanvas' );
+G.CANVAS = <HTMLCanvasElement> document.querySelector( '#MainCanvas' );
 G.STAGE = new createjs.Stage( G.CANVAS );
 
 createjs.Ticker.timingMode = createjs.Ticker.RAF;
@@ -129,7 +136,7 @@ var top = $( window ).height() / 2;
 $( loadMessage ).css( 'top', top + 'px' );
 $( loadMessage ).css( 'left', left + 'px' );
 
-G.PRELOAD.addEventListener( 'progress', function( event )
+G.PRELOAD.addEventListener( 'progress', function( event: createjs.ProgressEvent )
     {
     $( loadMessage ).text( (event.progress * 100 | 0) + '%' );
     });
