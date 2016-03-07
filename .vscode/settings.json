@@ -2,7 +2,8 @@
 {
 "files.exclude": {
     "**scripts/*.js": true,
-    "**/*.map": true
+    "**/*.map": true,
+    "**/build/temp/**": true
     },
 "search.exclude": {
     "**/release": true,

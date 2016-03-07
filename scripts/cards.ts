@@ -142,6 +142,7 @@ export class IndividualCard
     suitSymbol: SuitSymbol;
     player: Player;
     moveAnimation: MoveAnimation.Move;
+    selected: boolean;
 
     static width = 150;
     static height = 218;
@@ -160,6 +161,7 @@ export class IndividualCard
         this.bitmap = new createjs.Bitmap( this.backImage );
 
         this.showingFront = false;
+        this.selected = false;
 
         this.moveAnimation = new MoveAnimation.Move( this.bitmap );
         this.click_f = null;

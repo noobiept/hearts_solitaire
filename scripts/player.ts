@@ -147,6 +147,7 @@ class Player
         {
         var x, y, stepX, stepY;
         var callback = null;
+        var card: Cards.IndividualCard;
 
         if ( this.show )
             {
@@ -173,8 +174,22 @@ class Player
 
         for (var a = 0 ; a < this.cards.clubs.length ; a++)
             {
-            this.cards.clubs[ a ].show();
-            this.cards.clubs[ a ].moveTo( x, y, animationDuration, callback );
+            card = this.cards.clubs[ a ];
+            card.show();
+
+            if ( card.selected )
+                {
+                    // set the non-selected position
+                card.setPosition( x, y );
+
+                    // then add a bit of offset
+                this.moveSelectedCard( card, true, animationDuration );
+                }
+
+            else
+                {
+                card.moveTo( x, y, animationDuration, callback );
+                }
 
             x += stepX;
             y += stepY;
@@ -182,8 +197,19 @@ class Player
 
         for (var a = 0 ; a < this.cards.diamonds.length ; a++)
             {
-            this.cards.diamonds[ a ].show();
-            this.cards.diamonds[ a ].moveTo( x, y, animationDuration, callback );
+            card = this.cards.diamonds[ a ];
+            card.show();
+
+            if ( card.selected )
+                {
+                card.setPosition( x, y );
+                this.moveSelectedCard( card, true, animationDuration );
+                }
+
+            else
+                {
+                card.moveTo( x, y, animationDuration, callback );
+                }
 
             x += stepX;
             y += stepY;
@@ -191,8 +217,19 @@ class Player
 
         for (var a = 0 ; a < this.cards.spades.length ; a++)
             {
-            this.cards.spades[ a ].show();
-            this.cards.spades[ a ].moveTo( x, y, animationDuration, callback );
+            card = this.cards.spades[ a ];
+            card.show();
+
+            if ( card.selected )
+                {
+                card.setPosition( x, y );
+                this.moveSelectedCard( card, true, animationDuration );
+                }
+
+            else
+                {
+                card.moveTo( x, y, animationDuration, callback );
+                }
 
             x += stepX;
             y += stepY;
@@ -200,18 +237,22 @@ class Player
 
         for (var a = 0 ; a < this.cards.hearts.length ; a++)
             {
-            this.cards.hearts[ a ].show();
-            this.cards.hearts[ a ].moveTo( x, y, animationDuration, callback );
+            card = this.cards.hearts[ a ];
+            card.show();
+            
+            if ( card.selected )
+                {
+                card.setPosition( x, y );
+                this.moveSelectedCard( card, true, animationDuration );
+                }
+
+            else
+                {
+                card.moveTo( x, y, animationDuration, callback );
+                }
 
             x += stepX;
             y += stepY;
-            }
-
-            // update the selected cards as well
-        for (var a = 0 ; a < this.selectedCards.length ; a++)
-            {
-            var card = this.selectedCards[ a ];
-            this.moveSelectedCard( card, true, 0 );
             }
         }
 
@@ -286,6 +327,7 @@ class Player
         if ( index > -1 )
             {
             this.selectedCards.splice( index, 1 );
+            card.selected = false;
 
                 // move the card back to the original position
             this.moveSelectedCard( card, false, 150 );
@@ -299,6 +341,7 @@ class Player
                 return;
                 }
 
+            card.selected = true;
             this.selectedCards.push( card );
             this.moveSelectedCard( card, true, 150 );
             }
@@ -315,6 +358,7 @@ class Player
         for (var a = 0 ; a < this.selectedCards.length ; a++)
             {
             var card = this.selectedCards[ a ];
+            card.selected = false;
 
             cards.push( this.removeCard( card ) );
             }
