@@ -177,13 +177,14 @@ class Player
             card = this.cards.clubs[ a ];
             card.show();
 
-            if ( card.selected )
+            if ( animationDuration === 0 )
                 {
-                    // set the non-selected position
                 card.setPosition( x, y );
 
-                    // then add a bit of offset
-                this.moveSelectedCard( card, true, animationDuration );
+                if ( card.selected )
+                    {
+                    this.moveSelectedCard( card, true, animationDuration );
+                    }
                 }
 
             else
@@ -200,10 +201,14 @@ class Player
             card = this.cards.diamonds[ a ];
             card.show();
 
-            if ( card.selected )
+            if ( animationDuration === 0 )
                 {
                 card.setPosition( x, y );
-                this.moveSelectedCard( card, true, animationDuration );
+
+                if ( card.selected )
+                    {
+                    this.moveSelectedCard( card, true, animationDuration );
+                    }
                 }
 
             else
@@ -220,10 +225,14 @@ class Player
             card = this.cards.spades[ a ];
             card.show();
 
-            if ( card.selected )
+            if ( animationDuration === 0 )
                 {
                 card.setPosition( x, y );
-                this.moveSelectedCard( card, true, animationDuration );
+
+                if ( card.selected )
+                    {
+                    this.moveSelectedCard( card, true, animationDuration );
+                    }
                 }
 
             else
@@ -239,11 +248,15 @@ class Player
             {
             card = this.cards.hearts[ a ];
             card.show();
-            
-            if ( card.selected )
+
+            if ( animationDuration === 0 )
                 {
                 card.setPosition( x, y );
-                this.moveSelectedCard( card, true, animationDuration );
+
+                if ( card.selected )
+                    {
+                    this.moveSelectedCard( card, true, animationDuration );
+                    }
                 }
 
             else
@@ -407,6 +420,7 @@ class Player
         var index = array.indexOf( card );
 
         var card = <Cards.IndividualCard> array.splice( index, 1 )[ 0 ];
+        card.selected = false;
 
         if ( !this.isBot )
             {
@@ -448,6 +462,7 @@ class Player
                 {
                 var card = cards[ b ];
 
+                card.moveAnimation.clear();
                 this.removeCard( card );
                 Cards.setAvailable( card );
                 }

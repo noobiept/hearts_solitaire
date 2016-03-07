@@ -85,6 +85,14 @@ export class Move
             }
         }
 
+    clear()
+        {
+        this.isMoving = false;
+
+        var index = ACTIVE.indexOf( this );
+        ACTIVE.splice( index, 1 );
+        }
+
     tick( event )
         {
         this.count += event.delta;
