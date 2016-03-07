@@ -169,7 +169,7 @@ if ( NO_MOVE_ANIMATION )
 
 card.changeSide( true );
 card.show();    // force the card to be shown in front of others
-card.moveTo( x, y, animationDuration, function() { Game.cardPlayed() } );
+card.moveTo( x, y, animationDuration, function() { Game.cardPlayed(); } );
 
 CARDS.push( card );
 
@@ -425,7 +425,7 @@ for (var a = 0 ; a < CARDS.length ; a++)
             throw new Error( 'error, wrong orientation argument.' );
         }
 
-    card.moveTo( x, y, 0 );
+    card.setPosition( x, y );
     }
 }
 

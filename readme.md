@@ -4,29 +4,30 @@ Description
 A hearts solitaire game written in typescript.
 
 
-- 4 players (west / east / north / south( player )
-
-- each player starts with 13 cards
-- objective is to get the least amount of points
-- game ends when one player reaches 100 points
-
-- before each hand begins, each player chooses 3 cards and passes to other player (repeat)
+- 4 players (west / east / north / south).
+- The human player is always in the south position.
+- Each player starts with 13 cards.
+- The objective is to get the least amount of points.
+- The game ends when one player has over 100 points.
+- Before each hand begins, each player chooses 3 cards and passes to other player.
     - first pass to left
     - second pass to right
     - third pass to front
-- clock-wise turns (for example: north, east, south, west)
-
-- each player needs to follow the suit (play a card of the same suit as the lead card (last card played))
-- if doesn't have a card of that suit, then he can play any other card
-- you gain points by getting a card from the heart suits, or the queen of spades
-- the player holding the 2 of clubs starts the first turn
-- the player that wins the turn, gets to start the next turn
-- no penalty card may be played on the first turn (hearts or queen of spades)
-- hearts cannot be led until they have been 'broken'
-    - you can unlock the hearts when you don't have the lead suit (for example someone plays clubs and you don't have any clubs)
-    - or if you only have hearts left in hand (if you're starting the round)
-- each heart card adds 1 point, and the queen of spades 13 points
-- if one player takes all the penalty cards, he gets no points and all the other opponents take 26 points
+    - repeat from the start
+- After selecting 3 cards, click on the arrow in the center.
+- The play order is clock-wise (for example: north, east, south, west).
+- Each player needs to follow the suit (play a card of the same suit as the lead card (last card played)).
+- If a player doesn't have a card of that suit, then he can play any other card.
+- You gain points by getting a card from the heart suits, or the queen of spades (so you want to avoid those!).
+- The player holding the 2 of clubs starts the first turn.
+- The player that wins the turn, gets to start the next turn.
+- No penalty card can be played on the first turn (hearts or queen of spades).
+- Hearts cannot be led until they have been 'broken'.
+    - You can unlock the hearts when you don't have a card of the lead suit (for example someone plays clubs and you don't have any clubs).
+    - Or if you only have hearts left in your hand (if you're starting the round).
+- Each heart card adds 1 point, and the queen of spades 13 points.
+- If one player takes all the penalty cards, he gets no points and all the other opponents take 26 points.
+- Right-clicking with the mouse, skips the move animation of the cards.
 
 
 Dependencies
