@@ -38,8 +38,9 @@ STATISTICS.gamesWon = menu.querySelector( '#gamesWon' );
 STATISTICS.winRate = menu.querySelector( '#winRate' );
 
 var restart = <HTMLDivElement> menu.querySelector( '#Restart' );
-
 restart.onclick = Game.restart;
+
+$( '#DonateButton' ).button();
 
 $( menu ).css( 'display', 'inline' );
 }

@@ -37,6 +37,7 @@ Dependencies
 - jquery : 2.2
 - jqueryui : 1.11
     - dialog
+    - button
     - smoothness theme
 - createjs
     - easeljs: 0.8
