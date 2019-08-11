@@ -1,8 +1,6 @@
 {
-    "exclude": [
-        ".hg",
-        "build",
-        "release",
-        "typings"
-    ]
+    "compilerOptions": {
+        "strict": true
+    },
+    "include": [ "scripts/**/*.ts" ]
 }

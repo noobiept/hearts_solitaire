@@ -1,13 +1,9 @@
-// Place your settings in this file to overwrite default and user settings.
 {
 "files.exclude": {
-    "**scripts/*.js": true,
-    "**/*.map": true,
-    "**/build/temp/**": true
+        "**/*.map": true,
+        "scripts/*.js": true
     },
 "search.exclude": {
-    "**/release": true,
-    "**/libraries": true,
-    "**/typings": true
+
     }
 }

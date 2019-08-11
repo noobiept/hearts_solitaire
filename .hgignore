@@ -1,0 +1,7 @@
+syntax: glob
+node_modules/
+release/
+scripts/*.js
+*.map
+info.txt
+.DS_Store
