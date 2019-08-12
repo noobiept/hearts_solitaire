@@ -14,6 +14,9 @@
         "endOfLine": "lf"
     },
     "devDependencies": {
+        "@types/createjs": "0.0.29",
+        "@types/jquery": "^3.3.31",
+        "@types/jqueryui": "^1.12.7",
         "light-server": "^2.6.3",
         "npm-run-all": "^4.1.5",
         "prettier": "^1.18.2",

@@ -1,4 +1,3 @@
-/// <reference path='../typings/browser.d.ts' />
 /// <reference path='game.ts' />
 
 /*

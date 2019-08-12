@@ -1,15 +1,15 @@
-function getRandomInt( min, max )
+function getRandomInt( min: number, max: number )
 {
 return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 
-function getRandomFloat( min, max )
+function getRandomFloat( min: number, max: number )
 {
 return Math.random() * (max - min) + min;
 }
 
-function getSeveralRandomInt( min, max, howMany )
+function getSeveralRandomInt( min: number, max: number, howMany: number )
 {
 var total = max - min;
 
@@ -34,7 +34,7 @@ return numbers;
 }
 
 
-function calculateAngle( aX, aY, bX, bY )
+function calculateAngle( aX: number, aY: number, bX: number, bY: number )
 {
     // make a triangle from the position the objectA is in, relative to the objectB position
 var triangleOppositeSide = aY - bY;
@@ -45,7 +45,7 @@ return Math.atan2( triangleOppositeSide, triangleAdjacentSide );
 }
 
 
-function calculateHypotenuse( aX, aY, bX, bY )
+function calculateHypotenuse( aX: number, aY: number, bX: number, bY: number )
 {
 var opposite = aY - bY;
 var adjacent = bX - aX;
