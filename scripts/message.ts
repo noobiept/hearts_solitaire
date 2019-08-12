@@ -1,5 +1,3 @@
-module Message
-{
 var MESSAGE = null;
 
 export function init()
@@ -26,6 +24,4 @@ $( MESSAGE ).dialog( 'open' );
 export function close()
 {
 $( MESSAGE ).dialog( 'close' );
-}
-
 }

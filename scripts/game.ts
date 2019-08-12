@@ -1,13 +1,14 @@
-/// <reference path='cards.ts' />
-/// <reference path='player.ts' />
-/// <reference path='bot.ts' />
-/// <reference path='round.ts' />
-/// <reference path='game_menu.ts' />
-/// <reference path='move_animation.ts' />
-/// <reference path='message.ts' />
+import Player from './player.js';
+import Bot from './bot.js';
+import * as Cards from './cards.js';
+import * as Round from './round.js';
+import * as GameMenu from './game_menu.js';
+import * as MoveAnimation from './move_animation.js';
+import * as Message from './message.js';
+import * as PassCards from './pass_cards.js';
+import * as Statistics from './statistics.js';
+import { G } from './main.js';
 
-module Game
-{
 export enum Position { south, west, north, east }
 
 interface AllPlayers {
@@ -96,7 +97,7 @@ G.CANVAS.oncontextmenu = function( event )
     };
 
 drawCards();
-window.onresize = Game.resize;
+window.onresize = resize;
 }
 
 
@@ -490,9 +491,9 @@ if ( !Cards.isMoving() )
         {
         var card = PLAY_QUEUE.pop();
 
-        if ( Game.isValidMove( card ) )
+        if ( isValidMove( card ) )
             {
-            Game.playCard( card );
+            playCard( card );
             }
         }
     }
@@ -533,6 +534,4 @@ PLAYERS.west.updateCenterPosition();
 PLAYERS.west.positionCards( 0 );
 
 Round.resize();
-}
-
 }

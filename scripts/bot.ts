@@ -1,6 +1,9 @@
-/// <reference path='player.ts' />
+import Player from './player.js';
+import * as Round from './round.js';
+import * as Game from './game.js';
+import { Suit, SuitSymbol } from './cards.js';
 
-class Bot extends Player
+export default class Bot extends Player
 {
     constructor( args )
         {
@@ -116,7 +119,7 @@ class Bot extends Player
 
             for (var a = 0 ; a < spadesCards.length ; a++)
                 {
-                if ( spadesCards[ a ].suitSymbol >= Cards.SuitSymbol.queen )
+                if ( spadesCards[ a ].suitSymbol >= SuitSymbol.queen )
                     {
                     aboveQueenSpades = true;
                     break;
@@ -141,7 +144,7 @@ class Bot extends Player
             var lowest = this.getLowestCard( suits );
 
                 // don't play the queen of spades as long as there's other spades cards
-            if ( lowest.suit == Cards.Suit.spades && lowest.suitSymbol == Cards.SuitSymbol.queen )
+            if ( lowest.suit == Suit.spades && lowest.suitSymbol == SuitSymbol.queen )
                 {
                 if ( this.cards[ 'spades' ].length > 1 )
                     {
@@ -160,7 +163,7 @@ class Bot extends Player
     respondCardLogic( isFirstTurn, leadCard )
         {
         var leadSuit = leadCard.suit;
-        var leadSuitStr = Cards.Suit[ leadSuit ];
+        var leadSuitStr = Suit[ leadSuit ];
         var cards = this.cards[ leadSuitStr ];
         var cardsPlayed = Round.cardsPlayed();
         var a;
@@ -170,13 +173,13 @@ class Bot extends Player
         if ( cards.length > 0 )
             {
                 // if a card higher than the queen of spades has been played, we play queen of spades (if we have it)
-            if ( leadSuit == Cards.Suit.spades && leadCard.suitSymbol > Cards.SuitSymbol.queen )
+            if ( leadSuit == Suit.spades && leadCard.suitSymbol > SuitSymbol.queen )
                 {
                 for (a = 0 ; a < cards.length ; a++)
                     {
                     card = cards[ a ];
 
-                    if ( card.suitSymbol === Cards.SuitSymbol.queen )
+                    if ( card.suitSymbol === SuitSymbol.queen )
                         {
                         Game.addCardPlayQueue( card );
                         return;
@@ -255,7 +258,7 @@ class Bot extends Player
                 else
                     {
                         // don't play the queen of spades as long as there's other spades cards
-                    if ( closestAbove == Cards.Suit.spades && closestAbove.suitSymbol == Cards.SuitSymbol.queen )
+                    if ( closestAbove == Suit.spades && closestAbove.suitSymbol == SuitSymbol.queen )
                         {
                         if ( this.cards[ 'spades' ].length > 1 )
                             {
@@ -281,7 +284,7 @@ class Bot extends Player
                     {
                     card = spadesCards[ a ];
 
-                    if ( card.suitSymbol > Cards.SuitSymbol.queen )
+                    if ( card.suitSymbol > SuitSymbol.queen )
                         {
                         Game.addCardPlayQueue( card );
                         return;
@@ -329,7 +332,7 @@ class Bot extends Player
                     {
                     card = spadesCards[ a ];
 
-                    if ( card.suitSymbol === Cards.SuitSymbol.queen )
+                    if ( card.suitSymbol === SuitSymbol.queen )
                         {
                         Game.addCardPlayQueue( card );
                         return;

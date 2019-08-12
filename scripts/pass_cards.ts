@@ -1,24 +1,26 @@
-module PassCards
-{
+import { Pass, passCards } from './game.js';
+import { G } from './main.js';
+
+
 var ELEMENT: createjs.Bitmap;
 var IMAGES = {};
-var CURRENT_DIRECTION: Game.Pass;
+var CURRENT_DIRECTION: Pass;
 
 
 export function init()
     {
-    IMAGES[ Game.Pass.left ] = <HTMLImageElement> G.PRELOAD.getResult( 'pass_left' );
-    IMAGES[ Game.Pass.left + '_effect' ] = <HTMLImageElement> G.PRELOAD.getResult( 'pass_left_effect' );
-    IMAGES[ Game.Pass.right ] = <HTMLImageElement> G.PRELOAD.getResult( 'pass_right' );
-    IMAGES[ Game.Pass.right + '_effect' ] = <HTMLImageElement> G.PRELOAD.getResult( 'pass_right_effect' );
-    IMAGES[ Game.Pass.across ] = <HTMLImageElement> G.PRELOAD.getResult( 'pass_across' );
-    IMAGES[ Game.Pass.across + '_effect' ] = <HTMLImageElement> G.PRELOAD.getResult( 'pass_across_effect' );
+    IMAGES[ Pass.left ] = <HTMLImageElement> G.PRELOAD.getResult( 'pass_left' );
+    IMAGES[ Pass.left + '_effect' ] = <HTMLImageElement> G.PRELOAD.getResult( 'pass_left_effect' );
+    IMAGES[ Pass.right ] = <HTMLImageElement> G.PRELOAD.getResult( 'pass_right' );
+    IMAGES[ Pass.right + '_effect' ] = <HTMLImageElement> G.PRELOAD.getResult( 'pass_right_effect' );
+    IMAGES[ Pass.across ] = <HTMLImageElement> G.PRELOAD.getResult( 'pass_across' );
+    IMAGES[ Pass.across + '_effect' ] = <HTMLImageElement> G.PRELOAD.getResult( 'pass_across_effect' );
 
-    CURRENT_DIRECTION = Game.Pass.left;
+    CURRENT_DIRECTION = Pass.left;
     ELEMENT = new createjs.Bitmap( IMAGES[ CURRENT_DIRECTION ] );
     ELEMENT.visible = false;
     ELEMENT.filters = [];
-    ELEMENT.on( 'click', Game.passCards );
+    ELEMENT.on( 'click', passCards );
     ELEMENT.x = G.CANVAS.width / 2;
     ELEMENT.y = G.CANVAS.height / 2;
 
@@ -45,11 +47,11 @@ export function hide()
     }
 
 
-export function select( direction: Game.Pass )
+export function select( direction: Pass )
     {
     CURRENT_DIRECTION = direction;
     ELEMENT.image = IMAGES[ direction ];
-    PassCards.show();
+    show();
     }
 
 
@@ -63,4 +65,3 @@ export function removeEffect()
     {
     ELEMENT.image = IMAGES[ CURRENT_DIRECTION ];
     }
-}

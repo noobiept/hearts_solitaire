@@ -1,8 +1,6 @@
 interface Window { chrome: any; }
 
 
-module AppStorage
-{
 /**
  * Calls the `callback` with a dictionary that has all the requested keys/values from `localStorage`.
  */
@@ -94,5 +92,3 @@ export function setData( items, callback?: () => any )
         setLocalStorage( items, callback );
         }
     }
-}
-

@@ -1,19 +1,22 @@
-/// <reference path='cards.ts' />
+import * as Message from './message.js';
+import { Position } from './game.js';
+import { IndividualCard, getRandom, Suit, SuitSymbol, setAvailable } from './cards.js';
+import { G } from './main.js'
 
 interface PlayerArgs
     {
     show: boolean;  // show or hide the cards
-    position: Game.Position;
+    position: Position;
     isBot?: boolean;
     }
 
-class Player
+export default class Player
 {
     cards: {
-        clubs: Cards.IndividualCard[];
-        diamonds: Cards.IndividualCard[];
-        spades: Cards.IndividualCard[];
-        hearts: Cards.IndividualCard[];
+        clubs: IndividualCard[];
+        diamonds: IndividualCard[];
+        spades: IndividualCard[];
+        hearts: IndividualCard[];
     };
 
     static startingCards = 13;
@@ -24,8 +27,8 @@ class Player
     centerY: number;
     horizontalOrientation: boolean;
     static step = 40;
-    position: Game.Position;
-    selectedCards: Cards.IndividualCard[];
+    position: Position;
+    selectedCards: IndividualCard[];
 
     points: number;
     isBot: boolean;
@@ -54,8 +57,7 @@ class Player
 
         for (var a = 0 ; a < Player.startingCards ; a++)
             {
-            var card = Cards.getRandom();
-
+            var card = getRandom();
             card.setPlayer( this );
 
             if ( !this.isBot )
@@ -71,19 +73,19 @@ class Player
 
         this.cards.clubs = cards.filter(function( element )
             {
-            return element.suit == Cards.Suit.clubs;
+            return element.suit == Suit.clubs;
             });
         this.cards.diamonds = cards.filter(function( element )
             {
-            return element.suit == Cards.Suit.diamonds;
+            return element.suit == Suit.diamonds;
             });
         this.cards.spades = cards.filter(function( element )
             {
-            return element.suit == Cards.Suit.spades;
+            return element.suit == Suit.spades;
             });
         this.cards.hearts = cards.filter(function( element )
             {
-            return element.suit == Cards.Suit.hearts;
+            return element.suit == Suit.hearts;
             });
 
 
@@ -108,28 +110,28 @@ class Player
         var width = G.CANVAS.width;
         var height = G.CANVAS.height;
 
-        if ( this.position == Game.Position.south )
+        if ( this.position == Position.south )
             {
             this.centerX = width / 2;
-            this.centerY = height - Cards.IndividualCard.height;
+            this.centerY = height - IndividualCard.height;
             this.horizontalOrientation = true;
             }
 
-        else if ( this.position == Game.Position.north )
+        else if ( this.position == Position.north )
             {
             this.centerX = width / 2;
             this.centerY = 0;
             this.horizontalOrientation = true;
             }
 
-        else if ( this.position == Game.Position.east )
+        else if ( this.position == Position.east )
             {
-            this.centerX = width - Cards.IndividualCard.width;
+            this.centerX = width - IndividualCard.width;
             this.centerY = height / 2;
             this.horizontalOrientation = false;
             }
 
-        else if ( this.position == Game.Position.west )
+        else if ( this.position == Position.west )
             {
             this.centerX = 0;
             this.centerY = height / 2;
@@ -147,7 +149,7 @@ class Player
         {
         var x, y, stepX, stepY;
         var callback = null;
-        var card: Cards.IndividualCard;
+        var card: IndividualCard;
 
         if ( this.show )
             {
@@ -270,9 +272,9 @@ class Player
         }
 
 
-    hasCard( suit: Cards.Suit, symbol: Cards.SuitSymbol )
+    hasCard( suit: Suit, symbol: SuitSymbol )
         {
-        var array: Cards.IndividualCard[] = this.cards[ Cards.Suit[ suit ] ];
+        var array: IndividualCard[] = this.cards[ Suit[ suit ] ];
 
         for (var a = 0 ; a < array.length ; a++)
             {
@@ -290,7 +292,7 @@ class Player
      * Moves the card slightly to the center (or away from it).
      * Useful to know visually which cards are selected in the pass cards phase.
      */
-    moveSelectedCard( card: Cards.IndividualCard, towardsCenter: boolean, animationDuration: number )
+    moveSelectedCard( card: IndividualCard, towardsCenter: boolean, animationDuration: number )
         {
         var x = card.getX();
         var y = card.getY();
@@ -301,22 +303,22 @@ class Player
             offset *= -1;
             }
 
-        if ( this.position == Game.Position.north )
+        if ( this.position == Position.north )
             {
             y += offset;
             }
 
-        else if ( this.position == Game.Position.south )
+        else if ( this.position == Position.south )
             {
             y -= offset;
             }
 
-        else if ( this.position == Game.Position.west )
+        else if ( this.position == Position.west )
             {
             x += offset;
             }
 
-        else if ( this.position == Game.Position.east )
+        else if ( this.position == Position.east )
             {
             x -= offset;
             }
@@ -333,7 +335,7 @@ class Player
     /*
         For the pass cards phase (where you pass 3 cards to other player)
      */
-    selectCard( card: Cards.IndividualCard )
+    selectCard( card: IndividualCard )
         {
             // see if we're clicking on a already selected card (if so, we deselect it)
         var index = this.selectedCards.indexOf( card );
@@ -387,9 +389,9 @@ class Player
         return this.cardsCount;
         }
 
-    addCard( card: Cards.IndividualCard )
+    addCard( card: IndividualCard )
         {
-        var suit = Cards.Suit[ card.suit ];
+        var suit = Suit[ card.suit ];
 
         this.cards[ suit ].push( card );
         this.cards[ suit ].sort( function( a, b )
@@ -413,13 +415,13 @@ class Player
         this.cardsCount++;
         }
 
-    removeCard( card: Cards.IndividualCard )
+    removeCard( card: IndividualCard )
         {
-        var array = this.cards[ Cards.Suit[ card.suit ] ];
+        var array = this.cards[ Suit[ card.suit ] ];
 
         var index = array.indexOf( card );
 
-        var card = <Cards.IndividualCard> array.splice( index, 1 )[ 0 ];
+        var card = <IndividualCard> array.splice( index, 1 )[ 0 ];
         card.selected = false;
 
         if ( !this.isBot )
@@ -464,7 +466,7 @@ class Player
 
                 card.moveAnimation.clear();
                 this.removeCard( card );
-                Cards.setAvailable( card );
+                setAvailable( card );
                 }
             }
 

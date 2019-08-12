@@ -1,14 +1,13 @@
-/// <reference path='main.ts' />
-/// <reference path='utilities.ts' />
-/// <reference path='player.ts' />
-/// <reference path='move_animation.ts' />
+import Player from './player.js';
+import * as Game from './game.js'
+import * as MoveAnimation from './move_animation.js';
+import * as Message from './message.js';
+import { G } from './main.js';
+import { getRandomInt } from './utilities.js';
 
-/*
-    Will manage all the cards
+/**
+ * Will manage all the cards.
  */
-
-module Cards
-{
 export enum Suit { clubs, diamonds, spades, hearts }
 export enum SuitSymbol { two, three, four, five, six, seven, eight, nine, ten, jack, queen, king, ace }
 
@@ -284,4 +283,3 @@ export class IndividualCard
         return this.bitmap.y;
         }
     }
-}

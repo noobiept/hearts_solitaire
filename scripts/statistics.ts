@@ -1,5 +1,5 @@
-module Statistics
-{
+import { setData } from './app_storage.js';
+
 export interface StatsData {
     games_played: number;
     games_won: number;
@@ -26,7 +26,7 @@ if ( stats )
 
 function save()
 {
-AppStorage.setData({ 'hearts_statistics': STATS });
+setData({ 'hearts_statistics': STATS });
 }
 
 
@@ -60,6 +60,4 @@ if ( victory === true )
 STATS.win_rate = Math.round( STATS.games_won / STATS.games_played * 100 );
 
 save();
-}
-
 }

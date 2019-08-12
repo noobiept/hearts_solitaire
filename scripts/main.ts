@@ -1,4 +1,6 @@
-/// <reference path='game.ts' />
+import * as AppStorage from './app_storage.js';
+import * as Statistics from './statistics.js';
+import { start } from './game.js';
 
 /*
     classes:
@@ -34,7 +36,7 @@ interface Global {
     DEBUG: boolean;
 }
 
-var G: Global = {
+export var G: Global = {
         CANVAS: null,
         STAGE: null,
         PRELOAD: null,
@@ -143,8 +145,7 @@ G.PRELOAD.addEventListener( 'progress', function( event: createjs.ProgressEvent 
 G.PRELOAD.addEventListener( 'complete', function()
     {
     $( loadMessage ).css( 'display', 'none' );
-
-    Game.start();
+    start();
     });
 G.PRELOAD.loadManifest( manifest, true );
 }

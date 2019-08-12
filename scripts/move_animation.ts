@@ -1,12 +1,10 @@
-/// <reference path='utilities.ts' />
+import { calculateAngle, calculateHypotenuse } from './utilities.js';
 
-module MoveAnimation
-{
 var ACTIVE = [];
 
 export function init()
 {
-createjs.Ticker.on( 'tick', MoveAnimation.tick );
+createjs.Ticker.on( 'tick', tick );
 }
 
 export class Move
@@ -118,7 +116,3 @@ for (var a = ACTIVE.length - 1 ; a >= 0 ; a--)
     ACTIVE[ a ].tick( event );
     }
 }
-
-
-}
-

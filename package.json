@@ -26,7 +26,7 @@
     "scripts": {
         "dev": "npm-run-all --parallel dev:*",
         "dev:tsc": "tsc -w",
-        "dev:server": "light-server --serve . --port 8000 --open --watchexp \"scripts/**/*.js,css/**,index.html\"",
+        "dev:server": "light-server --serve . --port 8000 --open --quiet --watchexp \"scripts/**/*.js,css/**,index.html\"",
         "build": "npm-run-all --serial build:* test",
         "build:clean": "rimraf build/",
         "build:tsc": "tsc",

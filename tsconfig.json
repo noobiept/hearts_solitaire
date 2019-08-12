@@ -1,7 +1,7 @@
 {
     "compilerOptions": {
         "strict": false,
-        "module": "none",
+        "module": "es2015",
         "target": "es2018"
     },
     "include": [ "scripts/**/*.ts" ]

@@ -1,17 +1,17 @@
-/// <reference path='cards.ts' />
-/// <reference path='player.ts' />
+import * as Message from './message.js';
+import { IndividualCard, Suit, SuitSymbol, setAvailable } from './cards.js';
+import { Position, cardPlayed } from './game.js';
+import { G } from './main.js';
 
-module Round
-{
 var IS_FIRST_TURN: boolean;
 var IS_HEARTS_BROKEN: boolean;
 
 
     // cards played in the current turn
-var CARDS: Cards.IndividualCard[] = [];
+var CARDS: IndividualCard[] = [];
 
     // lead card in the current turn
-var LEAD_CARD: Cards.IndividualCard;
+var LEAD_CARD: IndividualCard;
 
 var POINTS = {
         south: 0,
@@ -26,7 +26,7 @@ var CURRENT_TURN = 1;
 var NO_MOVE_ANIMATION = false;
 
 
-export function isValidMove( card: Cards.IndividualCard )
+export function isValidMove( card: IndividualCard )
 {
 var player = card.player;
 
@@ -37,7 +37,7 @@ if ( LEAD_CARD === null )
         // need to play the 2 of clubs
     if ( IS_FIRST_TURN )
         {
-        if ( card.suit == Cards.Suit.clubs && card.suitSymbol == Cards.SuitSymbol.two )
+        if ( card.suit == Suit.clubs && card.suitSymbol == SuitSymbol.two )
             {
             return true;
             }
@@ -53,7 +53,7 @@ if ( LEAD_CARD === null )
         // otherwise any card can be played
     else
         {
-        if ( card.suit == Cards.Suit.hearts )
+        if ( card.suit == Suit.hearts )
             {
             if ( !IS_HEARTS_BROKEN )
                 {
@@ -87,7 +87,7 @@ else
         // you can only play a different suit if you don't have cards of the lead suit
     else
         {
-        const suit = Cards.Suit[ leadSuit ];
+        const suit = Suit[ leadSuit ];
 
         if ( player.cards[ suit ].length == 0 )
             {
@@ -95,13 +95,13 @@ else
                 // or 12 hearts cards + the queen of spades
             if ( IS_FIRST_TURN )
                 {
-                if ( card.suit == Cards.Suit.spades && card.suitSymbol == Cards.SuitSymbol.queen && player.cards[ 'hearts' ].length < 12 )
+                if ( card.suit == Suit.spades && card.suitSymbol == SuitSymbol.queen && player.cards[ 'hearts' ].length < 12 )
                     {
                     Message.open( 'Invalid move.', "Can't play the queen of spades on first turn." );
                     return false;
                     }
 
-                else if ( card.suit == Cards.Suit.hearts && player.cards[ 'hearts' ].length < 13 )
+                else if ( card.suit == Suit.hearts && player.cards[ 'hearts' ].length < 13 )
                     {
                     Message.open( 'Invalid move.', "Can't play hearts on the first turn (unless you happen to have all 13 hearts cards." );
                     return false;
@@ -121,7 +121,7 @@ else
 
         else
             {
-            Message.open( 'Invalid move.', 'Need to play a card of the ' + Cards.Suit[ leadSuit ] + ' suit.' );
+            Message.open( 'Invalid move.', 'Need to play a card of the ' + Suit[ leadSuit ] + ' suit.' );
             return false;
             }
         }
@@ -132,28 +132,28 @@ else
     Returns true if the card was played, or false if its an invalid play
  */
 
-export function playCard( card: Cards.IndividualCard )
+export function playCard( card: IndividualCard )
 {
-var x = G.CANVAS.width / 2 - Cards.IndividualCard.width / 2;
-var y = G.CANVAS.height / 2 - Cards.IndividualCard.height / 2;
+var x = G.CANVAS.width / 2 - IndividualCard.width / 2;
+var y = G.CANVAS.height / 2 - IndividualCard.height / 2;
 
 var offset = 70;
 
 switch( card.player.position )
     {
-    case Game.Position.west:
+    case Position.west:
         x -= offset;
         break;
 
-    case Game.Position.east:
+    case Position.east:
         x += offset;
         break;
 
-    case Game.Position.north:
+    case Position.north:
         y -= offset;
         break;
 
-    case Game.Position.south:
+    case Position.south:
         y += offset;
         break;
 
@@ -171,7 +171,7 @@ if ( NO_MOVE_ANIMATION )
 
 card.changeSide( true );
 card.show();    // force the card to be shown in front of others
-card.moveTo( x, y, animationDuration, function() { Game.cardPlayed(); } );
+card.moveTo( x, y, animationDuration, function() { cardPlayed(); } );
 
 CARDS.push( card );
 
@@ -181,7 +181,7 @@ if ( LEAD_CARD === null )
     LEAD_CARD = card;
     }
 
-if ( card.suit === Cards.Suit.hearts )
+if ( card.suit === Suit.hearts )
     {
     IS_HEARTS_BROKEN = true;
     }
@@ -262,19 +262,19 @@ for (a = 0 ; a < CARDS.length ; a++)
     {
     var card = CARDS[ a ];
 
-    if ( card.suit === Cards.Suit.hearts )
+    if ( card.suit === Suit.hearts )
         {
         points++;
         }
 
-    else if ( card.suit === Cards.Suit.spades && card.suitSymbol === Cards.SuitSymbol.queen )
+    else if ( card.suit === Suit.spades && card.suitSymbol === SuitSymbol.queen )
         {
         points += 13;
         }
     }
 
 var player = highest.player;
-var position = Game.Position[ player.position ];
+var position = Position[ player.position ];
 
 POINTS[ position ] += points;
 
@@ -334,7 +334,7 @@ function clearTurn()
 {
 for (var a = 0 ; a < CARDS.length ; a++)
     {
-    Cards.setAvailable( CARDS[ a ] );
+    setAvailable( CARDS[ a ] );
     }
 
 CARDS.length = 0;
@@ -395,8 +395,8 @@ NO_MOVE_ANIMATION = true;
 
 export function resize()
 {
-var centerX = G.CANVAS.width / 2 - Cards.IndividualCard.width / 2;
-var centerY = G.CANVAS.height / 2 - Cards.IndividualCard.height / 2;
+var centerX = G.CANVAS.width / 2 - IndividualCard.width / 2;
+var centerY = G.CANVAS.height / 2 - IndividualCard.height / 2;
 var offset = 70;
 
 for (var a = 0 ; a < CARDS.length ; a++)
@@ -407,19 +407,19 @@ for (var a = 0 ; a < CARDS.length ; a++)
 
     switch( card.player.position )
         {
-        case Game.Position.west:
+        case Position.west:
             x -= offset;
             break;
 
-        case Game.Position.east:
+        case Position.east:
             x += offset;
             break;
 
-        case Game.Position.north:
+        case Position.north:
             y -= offset;
             break;
 
-        case Game.Position.south:
+        case Position.south:
             y += offset;
             break;
 
@@ -429,6 +429,4 @@ for (var a = 0 ; a < CARDS.length ; a++)
 
     card.setPosition( x, y );
     }
-}
-
 }

@@ -1,14 +1,7 @@
-/// <reference path='game.ts' />
-/// <reference path='statistics.ts' />
+import * as Statistics from './statistics.js';
+import { Position, restart as gameRestart, getPlayer } from './game.js';
 
-/*
-    current player points
-    restart the game
- */
-
-module GameMenu
-{
-    // scores for the 4 players, has the html reference
+// scores for the 4 players, has the html reference
 var SCORES = {
         south: null,
         west : null,
@@ -22,7 +15,7 @@ var STATISTICS = {
         winRate: null
     };
 
-var PLAYER_TURN: Game.Position = null;
+var PLAYER_TURN: Position = null;
 
 export function init()
 {
@@ -38,7 +31,7 @@ STATISTICS.gamesWon = menu.querySelector( '#gamesWon' );
 STATISTICS.winRate = menu.querySelector( '#winRate' );
 
 var restart = <HTMLDivElement> menu.querySelector( '#Restart' );
-restart.onclick = Game.restart;
+restart.onclick = gameRestart;
 
 $( '#DonateButton' ).button();
 
@@ -53,7 +46,7 @@ var positions = [ 'south', 'west', 'north', 'east' ];
 for (var a = 0 ; a < positions.length ; a++)
     {
     var position = positions[ a ];
-    var player = Game.getPlayer( Game.Position[ position ] );
+    var player = getPlayer( Position[ position ] );
 
     var spanElement = SCORES[ position ].querySelector( 'span' );
 
@@ -71,22 +64,19 @@ $( STATISTICS.winRate ).text( Statistics.getWinRate() + '%' );
 
 
 
-export function setPlayerTurn( position: Game.Position )
+export function setPlayerTurn( position: Position )
 {
 if ( PLAYER_TURN !== null )
     {
-    var previousPlayer = Game.Position[ PLAYER_TURN ];
+    var previousPlayer = Position[ PLAYER_TURN ];
 
     $( SCORES[ previousPlayer ] ).removeClass( 'playerTurn' );
     }
 
 
-var nextPlayer = Game.Position[ position ];
+var nextPlayer = Position[ position ];
 
 $( SCORES[ nextPlayer ] ).addClass( 'playerTurn' );
 
 PLAYER_TURN = position;
-}
-
-
 }
