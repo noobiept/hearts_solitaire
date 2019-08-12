@@ -48,6 +48,11 @@ Dependencies
     - tweenjs: 0.6
 
 
+# Commands
+
+- `npm run dev` (Compile and run the game locally on `localhost:8000/`)
+
+
 Images
 ======
 
