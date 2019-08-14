@@ -32,8 +32,6 @@ export function init() {
     var restart = <HTMLDivElement>menu.querySelector("#Restart");
     restart.onclick = gameRestart;
 
-    $("#DonateButton").button();
-
     $(menu).css("display", "inline");
 }
 
