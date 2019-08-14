@@ -1,14 +1,12 @@
-import { calculateAngle, calculateHypotenuse } from './utilities.js';
+import { calculateAngle, calculateHypotenuse } from "./utilities.js";
 
 var ACTIVE = [];
 
-export function init()
-{
-createjs.Ticker.on( 'tick', tick );
+export function init() {
+    createjs.Ticker.on("tick", tick);
 }
 
-export class Move
-    {
+export class Move {
     duration: number;
     count: number;
     element: createjs.DisplayObject;
@@ -19,8 +17,7 @@ export class Move
     callback: () => any;
     isMoving: boolean;
 
-    constructor( element: createjs.DisplayObject )
-        {
+    constructor(element: createjs.DisplayObject) {
         this.count = 0;
         this.duration = 0;
         this.element = element;
@@ -28,91 +25,84 @@ export class Move
         this.moveY = 0;
         this.callback = null;
         this.isMoving = false;
-        }
+    }
 
-    start( destX: number, destY: number, duration: number, callback: () => any )
-        {
+    start(destX: number, destY: number, duration: number, callback: () => any) {
         this.isMoving = true;
         var currentX = this.element.x;
         var currentY = this.element.y;
 
-        var angleRads = calculateAngle( currentX, currentY * -1, destX, destY * -1 );
+        var angleRads = calculateAngle(
+            currentX,
+            currentY * -1,
+            destX,
+            destY * -1
+        );
 
-        var distance = calculateHypotenuse( currentX, currentY * -1, destX, destY * -1 );
+        var distance = calculateHypotenuse(
+            currentX,
+            currentY * -1,
+            destX,
+            destY * -1
+        );
         var movementSpeed = distance / duration;
 
-        this.moveX = Math.cos( angleRads ) * movementSpeed;
-        this.moveY = Math.sin( angleRads ) * movementSpeed;
+        this.moveX = Math.cos(angleRads) * movementSpeed;
+        this.moveY = Math.sin(angleRads) * movementSpeed;
 
         this.duration = duration;
         this.destX = destX;
         this.destY = destY;
         this.count = 0;
 
-        if ( callback )
-            {
+        if (callback) {
             this.callback = callback;
-            }
-
-        else
-            {
+        } else {
             this.callback = null;
-            }
-
-        ACTIVE.push( this );
         }
 
-    end()
-        {
-        if ( !this.isMoving )
-            {
+        ACTIVE.push(this);
+    }
+
+    end() {
+        if (!this.isMoving) {
             return;
-            }
+        }
 
         this.isMoving = false;
         this.element.x = this.destX;
         this.element.y = this.destY;
 
-        var index = ACTIVE.indexOf( this );
+        var index = ACTIVE.indexOf(this);
 
-        ACTIVE.splice( index, 1 );
+        ACTIVE.splice(index, 1);
 
-        if ( this.callback )
-            {
+        if (this.callback) {
             this.callback();
-            }
-        }
-
-    clear()
-        {
-        this.isMoving = false;
-
-        var index = ACTIVE.indexOf( this );
-        ACTIVE.splice( index, 1 );
-        }
-
-    tick( event )
-        {
-        this.count += event.delta;
-
-        if ( this.count >= this.duration )
-            {
-            this.end();
-            }
-
-        else
-            {
-            this.element.x += this.moveX * event.delta;
-            this.element.y += this.moveY * event.delta;
-            }
         }
     }
 
+    clear() {
+        this.isMoving = false;
 
-export function tick( event )
-{
-for (var a = ACTIVE.length - 1 ; a >= 0 ; a--)
-    {
-    ACTIVE[ a ].tick( event );
+        var index = ACTIVE.indexOf(this);
+        ACTIVE.splice(index, 1);
+    }
+
+    tick(event) {
+        this.count += event.delta;
+
+        if (this.count >= this.duration) {
+            this.end();
+        } else {
+            this.element.x += this.moveX * event.delta;
+            this.element.y += this.moveY * event.delta;
+        }
+    }
+}
+
+export function tick(event) {
+    for (var a = ACTIVE.length - 1; a >= 0; a--) {
+        ACTIVE[a].tick(event);
     }
 }

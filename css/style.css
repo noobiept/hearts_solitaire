@@ -1,65 +1,54 @@
-body
-    {
+body {
     margin: 0;
     padding: 0;
-    }
+}
 
-.ui-dialog .ui-dialog-titlebar
-    {
+.ui-dialog .ui-dialog-titlebar {
     padding: 0 10px;
-    }
+}
 
-.no-close .ui-dialog-titlebar-close
-    {
+.no-close .ui-dialog-titlebar-close {
     display: none;
-    }
+}
 
-#MainCanvas, #GameMenu
-    {
+#MainCanvas,
+#GameMenu {
     float: left;
-    }
+}
 
-.button
-    {
+.button {
     cursor: pointer;
     background-color: #edddde;
-    }
+}
 
-.button:hover
-    {
+.button:hover {
     background-color: #edcbd9;
-    }
+}
 
-#GameMenu
-    {
+#GameMenu {
     margin-left: 10px;
     display: none;
-    }
+}
 
-#GameMenu > *
-    {
+#GameMenu > * {
     width: 170px;
     text-align: center;
     margin: 10px 0 50px 0;
-    }
+}
 
-#Scores > *
-    {
+#Scores > * {
     margin: 2px 0;
-    }
+}
 
-.playerTurn
-    {
+.playerTurn {
     background-color: #edcf90;
-    }
+}
 
-#LoadMessage
-    {
+#LoadMessage {
     position: fixed;
     text-align: center;
-    }
+}
 
-#DonateButton
-    {
+#DonateButton {
     display: block;
-    }
+}

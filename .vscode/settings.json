@@ -1,9 +1,8 @@
 {
-"files.exclude": {
+    "files.exclude": {
         "**/*.map": true,
         "scripts/*.js": true
     },
-"search.exclude": {
-
-    }
+    "search.exclude": {},
+    "editor.formatOnSave": true
 }

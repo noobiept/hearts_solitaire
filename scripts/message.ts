@@ -1,27 +1,23 @@
 var MESSAGE = null;
 
-export function init()
-{
-var message = document.querySelector( '#Message' );
+export function init() {
+    var message = document.querySelector("#Message");
 
-$( message ).dialog({
-        position: { my: 'left bottom', at: 'left bottom', of: window },
-        dialogClass: 'no-close',
-        autoOpen: false
+    $(message).dialog({
+        position: { my: "left bottom", at: "left bottom", of: window },
+        dialogClass: "no-close",
+        autoOpen: false,
     });
 
-MESSAGE = message;
+    MESSAGE = message;
 }
 
-export function open( title, text )
-{
-$( MESSAGE ).text( text );
-$( MESSAGE ).dialog( 'option', 'title', title );
-$( MESSAGE ).dialog( 'open' );
+export function open(title, text) {
+    $(MESSAGE).text(text);
+    $(MESSAGE).dialog("option", "title", title);
+    $(MESSAGE).dialog("open");
 }
 
-
-export function close()
-{
-$( MESSAGE ).dialog( 'close' );
+export function close() {
+    $(MESSAGE).dialog("close");
 }
