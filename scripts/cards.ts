@@ -1,9 +1,9 @@
+import { getRandomInt } from "@drk4/utilities";
 import Player from "./player.js";
 import * as Game from "./game.js";
 import * as MoveAnimation from "./move_animation.js";
 import * as Message from "./message.js";
 import { G } from "./main.js";
-import { getRandomInt } from "./utilities.js";
 
 /**
  * Will manage all the cards.
@@ -58,7 +58,6 @@ export function init() {
 
 export function getRandom() {
     var position = getRandomInt(0, ALL_AVAILABLE.length - 1);
-
     var card = ALL_AVAILABLE.splice(position, 1)[0];
 
     return card;

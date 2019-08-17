@@ -1,4 +1,4 @@
-import { calculateAngle, calculateHypotenuse } from "./utilities.js";
+import { calculateAngle, calculateDistance } from "@drk4/utilities";
 
 var ACTIVE = [];
 
@@ -39,7 +39,7 @@ export class Move {
             destY * -1
         );
 
-        var distance = calculateHypotenuse(
+        var distance = calculateDistance(
             currentX,
             currentY * -1,
             destX,
