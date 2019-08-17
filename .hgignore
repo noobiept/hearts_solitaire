@@ -1,6 +1,8 @@
 syntax: glob
 node_modules/
+build/
 release/
+.rpt2_cache/
 scripts/*.js
 *.map
 info.txt

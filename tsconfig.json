@@ -2,7 +2,9 @@
     "compilerOptions": {
         "strict": false,
         "module": "es2015",
-        "target": "es2018"
+        "moduleResolution": "node",
+        "target": "es2018",
+        "sourceMap": true
     },
     "include": ["scripts/**/*.ts"]
 }
