@@ -14,7 +14,7 @@
         "endOfLine": "lf"
     },
     "dependencies": {
-        "@drk4/utilities": "^3.1.0"
+        "@drk4/utilities": "^3.2.0"
     },
     "devDependencies": {
         "@types/createjs": "0.0.29",
@@ -25,6 +25,7 @@
         "prettier": "^1.18.2",
         "rimraf": "^3.0.0",
         "rollup": "^1.19.4",
+        "rollup-plugin-css-only": "^1.0.0",
         "rollup-plugin-node-resolve": "^5.2.0",
         "rollup-plugin-typescript2": "^0.22.1",
         "typescript": "^3.5.3"
