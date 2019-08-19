@@ -4,6 +4,8 @@
         "scripts/*.js": true,
         ".rpt2_cache": true
     },
-    "search.exclude": {},
+    "search.exclude": {
+        "build": true
+    },
     "editor.formatOnSave": true
 }

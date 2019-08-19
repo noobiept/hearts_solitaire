@@ -1,5 +1,6 @@
 import typescript from "rollup-plugin-typescript2";
 import resolve from "rollup-plugin-node-resolve";
+import css from "rollup-plugin-css-only";
 
 export default {
     input: "scripts/main.ts",
@@ -8,5 +9,5 @@ export default {
         format: "esm",
         sourcemap: true,
     },
-    plugins: [typescript(), resolve()],
+    plugins: [typescript(), resolve(), css({ output: "build/bundle.css" })],
 };
