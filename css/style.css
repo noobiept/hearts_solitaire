@@ -48,3 +48,10 @@ body {
     position: fixed;
     text-align: center;
 }
+
+/* Improvements to the 'Dialog' component */
+
+.dialog {
+    min-height: 150px;
+    font-size: 140%;
+}

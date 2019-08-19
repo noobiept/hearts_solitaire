@@ -1,23 +1,24 @@
-var MESSAGE = null;
+import { Dialog, DialogPosition } from "@drk4/utilities";
+import "@drk4/utilities/build/dialog.css";
+
+let DIALOG;
 
 export function init() {
-    var message = document.querySelector("#Message");
-
-    $(message).dialog({
-        position: { my: "left bottom", at: "left bottom", of: window },
-        dialogClass: "no-close",
-        autoOpen: false,
+    DIALOG = new Dialog({
+        title: "",
+        body: "",
+        position: DialogPosition.bottomLeft,
+        okButton: false,
+        modal: false,
     });
-
-    MESSAGE = message;
 }
 
 export function open(title, text) {
-    $(MESSAGE).text(text);
-    $(MESSAGE).dialog("option", "title", title);
-    $(MESSAGE).dialog("open");
+    DIALOG.setTitle(title);
+    DIALOG.setBody(text);
+    DIALOG.open();
 }
 
 export function close() {
-    $(MESSAGE).dialog("close");
+    DIALOG.close();
 }
