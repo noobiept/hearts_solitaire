@@ -3,14 +3,6 @@ body {
     padding: 0;
 }
 
-.ui-dialog .ui-dialog-titlebar {
-    padding: 0 10px;
-}
-
-.no-close .ui-dialog-titlebar-close {
-    display: none;
-}
-
 #MainCanvas,
 #GameMenu {
     float: left;

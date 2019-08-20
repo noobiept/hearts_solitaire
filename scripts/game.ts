@@ -261,12 +261,10 @@ export function cardPlayed() {
             // round ended
             // update the points
             var gameEnded = updatePoints();
-            var roundEnded = document.querySelector("#RoundEnded");
-
             var message = "";
 
             if (gameEnded) {
-                message += "Game Ended!<br /><br />";
+                message += "Game Ended!<br />";
 
                 var winners = getPlayersWinning();
                 var southWon = false; // see if the human player won
@@ -284,34 +282,25 @@ export function cardPlayed() {
                 Statistics.oneMoreGame(southWon);
             }
 
-            for (var a = 0; a < PLAYERS_POSITION.length; a++) {
-                var aPlayer = PLAYERS[PLAYERS_POSITION[a]];
+            PLAYERS_POSITION.forEach((playerPosition) => {
+                const aPlayer = PLAYERS[playerPosition];
 
                 message +=
                     Position[aPlayer.position] +
                     ": " +
                     aPlayer.getPoints() +
                     "<br />";
-            }
+            });
 
-            $(roundEnded).html(message);
-            $(roundEnded).dialog({
-                modal: true,
-                dialogClass: "no-close",
-                buttons: {
-                    Ok: function() {
-                        $(this).dialog("close");
-
-                        if (gameEnded) {
-                            restart();
-                        } else {
-                            // start new round
-                            Cards.centerCards();
-                            Round.clearRound();
-                            drawCards();
-                        }
-                    },
-                },
+            Message.openModal("Round ended", message, () => {
+                if (gameEnded) {
+                    restart();
+                } else {
+                    // start new round
+                    Cards.centerCards();
+                    Round.clearRound();
+                    drawCards();
+                }
             });
         } else {
             // the player that has won will start the next turn

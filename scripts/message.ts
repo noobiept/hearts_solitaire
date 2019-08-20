@@ -13,12 +13,24 @@ export function init() {
     });
 }
 
-export function open(title, text) {
+export function open(title: string, body: string) {
     DIALOG.setTitle(title);
-    DIALOG.setBody(text);
+    DIALOG.setBody(body);
     DIALOG.open();
 }
 
 export function close() {
     DIALOG.close();
+}
+
+/**
+ * Open a modal dialog on the center of the screen that needs to be dealt with.
+ */
+export function openModal(title: string, body: string, onClose: () => void) {
+    const dialog = new Dialog({
+        title,
+        body,
+        onClose,
+    });
+    dialog.open();
 }
