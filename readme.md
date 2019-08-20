@@ -29,19 +29,6 @@ A hearts solitaire game written in typescript.
 -   If one player takes all the penalty cards, he gets no points and all the other opponents take 26 points.
 -   Right-clicking with the mouse, skips the move animation of the cards.
 
-# Dependencies
-
--   typescript: 1.8
--   jquery : 2.2
--   jqueryui : 1.11
-    -   dialog
-    -   button
-    -   smoothness theme
--   createjs
-    -   easeljs: 0.8
-    -   preloadjs: 0.6
-    -   tweenjs: 0.6
-
 # Commands
 
 -   `npm run dev` (Compile and run the game locally on `localhost:8000/`)
