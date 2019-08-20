@@ -126,11 +126,7 @@ function initApp() {
     ];
 
     const loadMessage = document.getElementById("LoadMessage");
-    const left = window.outerWidth / 2;
-    const top = window.outerHeight / 2;
-
-    loadMessage.style.top = top + "px";
-    loadMessage.style.left = left + "px";
+    loadMessage.classList.remove("hidden");
 
     G.PRELOAD.addEventListener("progress", function(
         event: createjs.ProgressEvent
@@ -138,7 +134,7 @@ function initApp() {
         loadMessage.innerText = ((event.progress * 100) | 0) + "%";
     });
     G.PRELOAD.addEventListener("complete", function() {
-        loadMessage.style.display = "none";
+        loadMessage.classList.add("hidden");
         start();
     });
     G.PRELOAD.loadManifest(manifest, true);

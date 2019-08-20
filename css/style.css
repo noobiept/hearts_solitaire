@@ -8,6 +8,10 @@ body {
     float: left;
 }
 
+.hidden {
+    display: none;
+}
+
 .button {
     cursor: pointer;
     background-color: #edddde;
@@ -38,7 +42,10 @@ body {
 
 #LoadMessage {
     position: fixed;
-    text-align: center;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 22px;
 }
 
 /* Improvements to the 'Dialog' component */
