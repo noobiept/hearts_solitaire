@@ -43,6 +43,9 @@ var PASS_CARDS = Pass.left;
 var PLAY_QUEUE: Cards.IndividualCard[] = [];
 
 export function start() {
+    // show the game menu before resizing (so it considers its dimension)
+    GameMenu.init();
+
     // need to resize the canvas in the beginning to fit the available width/height (before any element is added)
     resizeCanvas();
 
@@ -79,7 +82,6 @@ export function start() {
         }),
     };
 
-    GameMenu.init();
     GameMenu.updateScores();
     GameMenu.updateStatistics();
     Round.clearRound();
@@ -417,12 +419,12 @@ function resizeCanvas() {
     const gameMenu = document.getElementById("GameMenu");
     const gameMenuRect = gameMenu.getBoundingClientRect();
 
-    var windowWidth = window.innerWidth;
-    var gameMenuWidth = gameMenuRect.width;
-    var windowHeight = window.innerHeight;
+    const windowWidth = window.innerWidth;
+    const gameMenuWidth = gameMenuRect.width;
+    const windowHeight = window.innerHeight;
 
-    var canvasWidth = windowWidth - gameMenuWidth - 20;
-    var canvasHeight = windowHeight;
+    const canvasWidth = windowWidth - gameMenuWidth - 30;
+    const canvasHeight = windowHeight;
 
     G.CANVAS.width = canvasWidth;
     G.CANVAS.height = canvasHeight;
