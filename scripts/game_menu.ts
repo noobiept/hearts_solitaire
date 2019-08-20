@@ -18,7 +18,7 @@ var STATISTICS = {
 var PLAYER_TURN: Position = null;
 
 export function init() {
-    var menu = document.querySelector("#GameMenu");
+    const menu = document.getElementById("GameMenu");
 
     SCORES["south"] = menu.querySelector("#south");
     SCORES["west"] = menu.querySelector("#west");
@@ -32,7 +32,7 @@ export function init() {
     var restart = <HTMLDivElement>menu.querySelector("#Restart");
     restart.onclick = gameRestart;
 
-    $(menu).css("display", "inline");
+    menu.style.display = "inline";
 }
 
 export function updateScores() {
@@ -43,27 +43,24 @@ export function updateScores() {
         var player = getPlayer(Position[position]);
 
         var spanElement = SCORES[position].querySelector("span");
-
-        $(spanElement).text(player.getPoints());
+        spanElement.innerText = player.getPoints();
     }
 }
 
 export function updateStatistics() {
-    $(STATISTICS.gamesPlayed).text(Statistics.getGamesPlayed());
-    $(STATISTICS.gamesWon).text(Statistics.getGamesWon());
-    $(STATISTICS.winRate).text(Statistics.getWinRate() + "%");
+    STATISTICS.gamesPlayed.innerText = Statistics.getGamesPlayed();
+    STATISTICS.gamesWon.innerText = Statistics.getGamesWon();
+    STATISTICS.winRate.innerText = Statistics.getWinRate() + "%";
 }
 
 export function setPlayerTurn(position: Position) {
     if (PLAYER_TURN !== null) {
-        var previousPlayer = Position[PLAYER_TURN];
-
-        $(SCORES[previousPlayer]).removeClass("playerTurn");
+        const previousPlayer = Position[PLAYER_TURN];
+        SCORES[previousPlayer].classList.remove("playerTurn");
     }
 
-    var nextPlayer = Position[position];
-
-    $(SCORES[nextPlayer]).addClass("playerTurn");
+    const nextPlayer = Position[position];
+    SCORES[nextPlayer].classList.add("playerTurn");
 
     PLAYER_TURN = position;
 }

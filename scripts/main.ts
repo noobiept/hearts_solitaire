@@ -125,21 +125,20 @@ function initApp() {
         { id: "pass_across_effect", src: "images/pass_across_effect.png" },
     ];
 
-    var loadMessage = document.querySelector("#LoadMessage");
+    const loadMessage = document.getElementById("LoadMessage");
+    const left = window.outerWidth / 2;
+    const top = window.outerHeight / 2;
 
-    var left = $(window).width() / 2;
-    var top = $(window).height() / 2;
-
-    $(loadMessage).css("top", top + "px");
-    $(loadMessage).css("left", left + "px");
+    loadMessage.style.top = top + "px";
+    loadMessage.style.left = left + "px";
 
     G.PRELOAD.addEventListener("progress", function(
         event: createjs.ProgressEvent
     ) {
-        $(loadMessage).text(((event.progress * 100) | 0) + "%");
+        loadMessage.innerText = ((event.progress * 100) | 0) + "%";
     });
     G.PRELOAD.addEventListener("complete", function() {
-        $(loadMessage).css("display", "none");
+        loadMessage.style.display = "none";
         start();
     });
     G.PRELOAD.loadManifest(manifest, true);

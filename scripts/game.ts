@@ -414,9 +414,12 @@ export function tick() {
 }
 
 function resizeCanvas() {
-    var windowWidth = $(window).outerWidth(true);
-    var gameMenuWidth = $("#GameMenu").outerWidth(true);
-    var windowHeight = $(window).outerHeight(true);
+    const gameMenu = document.getElementById("GameMenu");
+    const gameMenuRect = gameMenu.getBoundingClientRect();
+
+    var windowWidth = window.innerWidth;
+    var gameMenuWidth = gameMenuRect.width;
+    var windowHeight = window.innerHeight;
 
     var canvasWidth = windowWidth - gameMenuWidth - 20;
     var canvasHeight = windowHeight;
