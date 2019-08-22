@@ -14,10 +14,14 @@
         "endOfLine": "lf"
     },
     "dependencies": {
-        "@drk4/utilities": "^3.2.0"
+        "@drk4/utilities": "^3.2.0",
+        "easeljs": "^1.0.2",
+        "preloadjs": "^1.0.1",
+        "tweenjs": "^1.0.2"
     },
     "devDependencies": {
         "@types/createjs": "0.0.29",
+        "gulp": "^4.0.2",
         "light-server": "^2.6.3",
         "npm-run-all": "^4.1.5",
         "prettier": "^1.18.2",
@@ -31,6 +35,7 @@
     "scripts": {
         "dev": "npm-run-all --parallel dev:*",
         "dev:rollup": "rollup --config rollup.config.js --watch",
+        "dev:update_libraries": "gulp update_libraries",
         "dev:server": "light-server --serve . --port 8000 --open --quiet --watchexp \"scripts/**/*.js,css/**,index.html\"",
         "build": "npm-run-all --serial build:* test",
         "build:clean": "rimraf build/",
