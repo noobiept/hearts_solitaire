@@ -51,6 +51,8 @@ function initApp() {
 
     CANVAS = document.querySelector("#MainCanvas");
     PRELOAD = new createjs.LoadQueue();
+    PRELOAD.setMaxConnections(10);
+    PRELOAD.maintainScriptOrder = false;
 
     const manifest = [
         { id: "card_back", src: "images/card_back_black.png" },
