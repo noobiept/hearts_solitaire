@@ -1,6 +1,7 @@
 import * as AppStorage from "./app_storage.js";
 import * as Statistics from "./statistics.js";
 import { start } from "./game.js";
+import "../css/style.css";
 
 /*
     classes:
