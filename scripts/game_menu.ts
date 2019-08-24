@@ -32,7 +32,7 @@ export function init() {
     var restart = <HTMLDivElement>menu.querySelector("#Restart");
     restart.onclick = gameRestart;
 
-    menu.style.display = "inline";
+    menu.classList.remove("hidden");
 }
 
 export function updateScores() {
