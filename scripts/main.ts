@@ -30,19 +30,14 @@ import "../css/style.css";
             - restart
  */
 
-interface Global {
-    CANVAS: HTMLCanvasElement;
-    STAGE: createjs.Stage;
-    PRELOAD: createjs.LoadQueue;
-    DEBUG: boolean;
+export interface CanvasDimensions {
+    width: number;
+    height: number;
 }
 
-export var G: Global = {
-    CANVAS: null,
-    STAGE: null,
-    PRELOAD: null,
-    DEBUG: false,
-};
+let CANVAS: HTMLCanvasElement;
+let PRELOAD: createjs.LoadQueue;
+let DEBUG: boolean;
 
 window.onload = function() {
     AppStorage.getData(["hearts_statistics"], function(data) {
@@ -52,14 +47,12 @@ window.onload = function() {
 };
 
 function initApp() {
-    G.CANVAS = <HTMLCanvasElement>document.querySelector("#MainCanvas");
-    G.STAGE = new createjs.Stage(G.CANVAS);
-
     createjs.Ticker.timingMode = createjs.Ticker.RAF;
 
-    G.PRELOAD = new createjs.LoadQueue();
+    CANVAS = document.querySelector("#MainCanvas");
+    PRELOAD = new createjs.LoadQueue();
 
-    var manifest = [
+    const manifest = [
         { id: "card_back", src: "images/card_back_black.png" },
 
         { id: "ace_of_clubs", src: "images/ace_of_clubs.png" },
@@ -129,14 +122,72 @@ function initApp() {
     const loadMessage = document.getElementById("LoadMessage");
     loadMessage.classList.remove("hidden");
 
-    G.PRELOAD.addEventListener("progress", function(
+    PRELOAD.addEventListener("progress", function(
         event: createjs.ProgressEvent
     ) {
         loadMessage.innerText = ((event.progress * 100) | 0) + "%";
     });
-    G.PRELOAD.addEventListener("complete", function() {
+    PRELOAD.addEventListener("complete", function() {
         loadMessage.classList.add("hidden");
-        start();
+        start(CANVAS);
     });
-    G.PRELOAD.loadManifest(manifest, true);
+    PRELOAD.loadManifest(manifest, true);
+}
+
+export function debugMode() {
+    return DEBUG;
+}
+
+/**
+ * Setup a event listener for when the user right-clicks on the canvas.
+ * The context menu is disabled here.
+ */
+export function onCanvasRightClick(callback: () => void) {
+    CANVAS.oncontextmenu = (event) => {
+        if (event.button === 2) {
+            callback();
+        }
+
+        return false;
+    };
+}
+
+/**
+ * Resize the canvas to fit the available window width/height.
+ */
+export function resizeCanvas() {
+    const gameMenu = document.getElementById("GameMenu");
+    const gameMenuRect = gameMenu.getBoundingClientRect();
+
+    const windowWidth = window.innerWidth;
+    const gameMenuWidth = gameMenuRect.width;
+    const windowHeight = window.innerHeight;
+
+    const canvasWidth = windowWidth - gameMenuWidth - 30;
+    const canvasHeight = windowHeight;
+
+    CANVAS.width = canvasWidth;
+    CANVAS.height = canvasHeight;
+
+    return {
+        width: canvasWidth,
+        height: canvasHeight,
+    };
+}
+
+/**
+ * Return the canvas dimensions (width/height).
+ */
+export function getCanvasDimensions() {
+    return {
+        width: CANVAS.width,
+        height: CANVAS.height,
+    };
+}
+
+/**
+ * Get a previously loaded asset.
+ */
+export function getAsset(id: string) {
+    return PRELOAD.getResult(id) as HTMLImageElement;
 }

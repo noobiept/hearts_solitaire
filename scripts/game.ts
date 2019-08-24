@@ -7,13 +7,19 @@ import * as MoveAnimation from "./move_animation.js";
 import * as Message from "./message.js";
 import * as PassCards from "./pass_cards.js";
 import * as Statistics from "./statistics.js";
-import { G } from "./main.js";
+import { debugMode, onCanvasRightClick, resizeCanvas } from "./main.js";
 
 export enum Position {
     south,
     west,
     north,
     east,
+}
+
+export enum Pass {
+    left,
+    right,
+    across,
 }
 
 interface AllPlayers {
@@ -23,6 +29,7 @@ interface AllPlayers {
     east: Player;
 }
 
+let STAGE: createjs.Stage;
 var PLAYERS: AllPlayers;
 
 // in the play order (clock-wise)
@@ -31,18 +38,14 @@ var PLAYERS_POSITION = ["south", "west", "north", "east"];
 var ACTIVE_PLAYER: Player = null;
 var PASS_CARDS_PHASE: boolean;
 
-export enum Pass {
-    left,
-    right,
-    across,
-}
-
 var PASS_CARDS = Pass.left;
 
 // wait until the card animations end, until we play other cards
 var PLAY_QUEUE: Cards.IndividualCard[] = [];
 
-export function start() {
+export function start(canvas: HTMLCanvasElement) {
+    STAGE = new createjs.Stage(canvas);
+
     // show the game menu before resizing (so it considers its dimension)
     GameMenu.init();
 
@@ -56,7 +59,7 @@ export function start() {
 
     var showBotCards = false;
 
-    if (G.DEBUG === true) {
+    if (debugMode() === true) {
         showBotCards = true;
     }
 
@@ -89,17 +92,11 @@ export function start() {
     createjs.Ticker.on("tick", tick);
 
     // called when you press the right button of the mouse
-    // disable the context menu
     // force the cards to move immediately to destination
-    G.CANVAS.oncontextmenu = function(event) {
-        // right click
-        if (event.button == 2) {
-            Round.noMoveAnimationThisTurn();
-            Cards.forceMoveToDestination();
-        }
-
-        return false;
-    };
+    onCanvasRightClick(() => {
+        Round.noMoveAnimationThisTurn();
+        Cards.forceMoveToDestination();
+    });
 
     drawCards();
     window.onresize = resize;
@@ -412,30 +409,15 @@ export function tick() {
         }
     }
 
-    G.STAGE.update();
-}
-
-function resizeCanvas() {
-    const gameMenu = document.getElementById("GameMenu");
-    const gameMenuRect = gameMenu.getBoundingClientRect();
-
-    const windowWidth = window.innerWidth;
-    const gameMenuWidth = gameMenuRect.width;
-    const windowHeight = window.innerHeight;
-
-    const canvasWidth = windowWidth - gameMenuWidth - 30;
-    const canvasHeight = windowHeight;
-
-    G.CANVAS.width = canvasWidth;
-    G.CANVAS.height = canvasHeight;
+    STAGE.update();
 }
 
 /**
  * Reposition/resize the game elements, based on the current available width/height of the window.
  */
 export function resize() {
-    resizeCanvas();
-    PassCards.setPosition(G.CANVAS.width / 2, G.CANVAS.height / 2);
+    const dimensions = resizeCanvas();
+    PassCards.setPosition(dimensions.width / 2, dimensions.height / 2);
 
     PLAYERS.north.updateCenterPosition();
     PLAYERS.north.positionCards(0);
@@ -446,5 +428,19 @@ export function resize() {
     PLAYERS.west.updateCenterPosition();
     PLAYERS.west.positionCards(0);
 
-    Round.resize();
+    Round.resize(dimensions);
+}
+
+/**
+ * Add an element to the stage (to be displayed).
+ */
+export function addToStage(element: createjs.DisplayObject) {
+    STAGE.addChild(element);
+}
+
+/**
+ * Remove an element from the stage.
+ */
+export function removeFromStage(element: createjs.DisplayObject) {
+    STAGE.removeChild(element);
 }

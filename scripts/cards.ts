@@ -3,7 +3,7 @@ import Player from "./player.js";
 import * as Game from "./game.js";
 import * as MoveAnimation from "./move_animation.js";
 import * as Message from "./message.js";
-import { G } from "./main.js";
+import { getCanvasDimensions, getAsset } from "./main.js";
 
 /**
  * Will manage all the cards.
@@ -96,8 +96,9 @@ export function forceMoveToDestination() {
 }
 
 export function centerCards() {
-    var x = G.CANVAS.width / 2 - IndividualCard.width / 2;
-    var y = G.CANVAS.height / 2 - IndividualCard.height / 2;
+    const dimensions = getCanvasDimensions();
+    const x = dimensions.width / 2 - IndividualCard.width / 2;
+    const y = dimensions.height / 2 - IndividualCard.height / 2;
 
     for (var a = 0; a < ALL.length; a++) {
         ALL[a].setPosition(x, y);
@@ -147,8 +148,8 @@ export class IndividualCard {
 
         var imageId = SuitSymbol[this.suitSymbol] + "_of_" + Suit[this.suit];
 
-        this.frontImage = <HTMLImageElement>G.PRELOAD.getResult(imageId);
-        this.backImage = <HTMLImageElement>G.PRELOAD.getResult("card_back");
+        this.frontImage = getAsset(imageId);
+        this.backImage = getAsset("card_back");
 
         this.bitmap = new createjs.Bitmap(this.backImage);
 
@@ -158,7 +159,7 @@ export class IndividualCard {
         this.moveAnimation = new MoveAnimation.Move(this.bitmap);
         this.click_f = null;
 
-        G.STAGE.addChild(this.bitmap);
+        Game.addToStage(this.bitmap);
     }
 
     setPosition(x: number, y: number) {
@@ -219,7 +220,7 @@ export class IndividualCard {
     }
 
     show() {
-        G.STAGE.addChild(this.bitmap); // to force it to up in the stack to be drawn on top of other stuff
+        Game.addToStage(this.bitmap); // to force it to up in the stack to be drawn on top of other stuff
         this.bitmap.visible = true;
     }
 
@@ -241,8 +242,7 @@ export class IndividualCard {
 
     remove() {
         this.setClickEvent(false);
-
-        G.STAGE.removeChild(this.bitmap);
+        Game.removeFromStage(this.bitmap);
     }
 
     getX() {

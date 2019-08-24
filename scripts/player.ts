@@ -7,7 +7,7 @@ import {
     SuitSymbol,
     setAvailable,
 } from "./cards.js";
-import { G } from "./main.js";
+import { getCanvasDimensions } from "./main.js";
 
 interface PlayerArgs {
     show: boolean; // show or hide the cards
@@ -102,8 +102,7 @@ export default class Player {
     }
 
     updateCenterPosition() {
-        var width = G.CANVAS.width;
-        var height = G.CANVAS.height;
+        const { width, height } = getCanvasDimensions();
 
         if (this.position == Position.south) {
             this.centerX = width / 2;

@@ -1,7 +1,7 @@
 import * as Message from "./message.js";
 import { IndividualCard, Suit, SuitSymbol, setAvailable } from "./cards.js";
 import { Position, cardPlayed } from "./game.js";
-import { G } from "./main.js";
+import { getCanvasDimensions, CanvasDimensions } from "./main.js";
 
 var IS_FIRST_TURN: boolean;
 var IS_HEARTS_BROKEN: boolean;
@@ -113,15 +113,15 @@ export function isValidMove(card: IndividualCard) {
     }
 }
 
-/*
-    Returns true if the card was played, or false if its an invalid play
+/**
+ * Returns true if the card was played, or false if its an invalid play.
  */
-
 export function playCard(card: IndividualCard) {
-    var x = G.CANVAS.width / 2 - IndividualCard.width / 2;
-    var y = G.CANVAS.height / 2 - IndividualCard.height / 2;
+    const dimensions = getCanvasDimensions();
+    let x = dimensions.width / 2 - IndividualCard.width / 2;
+    let y = dimensions.height / 2 - IndividualCard.height / 2;
 
-    var offset = 70;
+    const offset = 70;
 
     switch (card.player.position) {
         case Position.west:
@@ -330,9 +330,9 @@ export function noMoveAnimationThisTurn() {
     NO_MOVE_ANIMATION = true;
 }
 
-export function resize() {
-    var centerX = G.CANVAS.width / 2 - IndividualCard.width / 2;
-    var centerY = G.CANVAS.height / 2 - IndividualCard.height / 2;
+export function resize(canvas: CanvasDimensions) {
+    var centerX = canvas.width / 2 - IndividualCard.width / 2;
+    var centerY = canvas.height / 2 - IndividualCard.height / 2;
     var offset = 70;
 
     for (var a = 0; a < CARDS.length; a++) {
