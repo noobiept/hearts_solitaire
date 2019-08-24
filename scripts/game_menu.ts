@@ -15,10 +15,10 @@ var STATISTICS = {
     winRate: null,
 };
 
-var PLAYER_TURN: Position = null;
+var PLAYER_TURN: Position | null = null;
 
 export function init() {
-    const menu = document.getElementById("GameMenu");
+    const menu = document.getElementById("GameMenu")!;
 
     SCORES["south"] = menu.querySelector("#south");
     SCORES["west"] = menu.querySelector("#west");

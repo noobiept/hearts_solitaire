@@ -9,7 +9,7 @@ import {
 } from "./cards.js";
 import { getCanvasDimensions } from "./main.js";
 
-interface PlayerArgs {
+export interface PlayerArgs {
     show: boolean; // show or hide the cards
     position: Position;
     isBot?: boolean;
@@ -27,9 +27,9 @@ export default class Player {
     cardsCount: number;
 
     // these are used for the positioning
-    centerX: number;
-    centerY: number;
-    horizontalOrientation: boolean;
+    centerX = 0;
+    centerY = 0;
+    horizontalOrientation = true;
     static step = 40;
     position: Position;
     selectedCards: IndividualCard[];
@@ -88,7 +88,7 @@ export default class Player {
         });
 
         // order the cards by the symbol
-        var sortSymbol = function(a, b) {
+        var sortSymbol = function(a: IndividualCard, b: IndividualCard) {
             return a.suitSymbol - b.suitSymbol;
         };
 
@@ -127,11 +127,11 @@ export default class Player {
 
     positionCards(animationDuration: number) {
         var x, y, stepX, stepY;
-        var callback = null;
+        var callback;
         var card: IndividualCard;
 
         if (this.show) {
-            callback = function(card) {
+            callback = function(card: IndividualCard) {
                 card.changeSide(true);
             };
         }
@@ -383,7 +383,7 @@ export default class Player {
         this.selectedCards.length = 0;
     }
 
-    addPoints(points) {
+    addPoints(points: number) {
         this.points += points;
     }
 

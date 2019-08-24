@@ -1,28 +1,24 @@
 import { calculateAngle, calculateDistance } from "@drk4/utilities";
 
-var ACTIVE = [];
+var ACTIVE: Move[] = [];
 
 export function init() {
-    createjs.Ticker.on("tick", tick);
+    createjs.Ticker.on("tick", tick as any);
 }
 
 export class Move {
-    duration: number;
-    count: number;
+    duration = 0;
+    count = 0;
     element: createjs.DisplayObject;
-    moveX: number;
-    moveY: number;
-    destX: number;
-    destY: number;
-    callback: () => any;
+    moveX = 0;
+    moveY = 0;
+    destX = 0;
+    destY = 0;
+    callback: (() => any) | null;
     isMoving: boolean;
 
     constructor(element: createjs.DisplayObject) {
-        this.count = 0;
-        this.duration = 0;
         this.element = element;
-        this.moveX = 0;
-        this.moveY = 0;
         this.callback = null;
         this.isMoving = false;
     }
@@ -89,7 +85,7 @@ export class Move {
         ACTIVE.splice(index, 1);
     }
 
-    tick(event) {
+    tick(event: createjs.TickerEvent) {
         this.count += event.delta;
 
         if (this.count >= this.duration) {
@@ -101,7 +97,7 @@ export class Move {
     }
 }
 
-export function tick(event) {
+export function tick(event: createjs.TickerEvent) {
     for (var a = ACTIVE.length - 1; a >= 0; a--) {
         ACTIVE[a].tick(event);
     }

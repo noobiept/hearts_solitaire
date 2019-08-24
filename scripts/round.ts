@@ -10,7 +10,7 @@ var IS_HEARTS_BROKEN: boolean;
 var CARDS: IndividualCard[] = [];
 
 // lead card in the current turn
-var LEAD_CARD: IndividualCard;
+var LEAD_CARD: IndividualCard | undefined;
 
 var POINTS = {
     south: 0,
@@ -28,7 +28,7 @@ export function isValidMove(card: IndividualCard) {
     var player = card.player;
 
     // first play of the turn
-    if (LEAD_CARD === null) {
+    if (!LEAD_CARD) {
         // need to play the 2 of clubs
         if (IS_FIRST_TURN) {
             if (card.suit == Suit.clubs && card.suitSymbol == SuitSymbol.two) {
@@ -200,7 +200,7 @@ export function cardsPlayed() {
 
 function determineWinner() {
     // get all cards of the suit of the lead
-    var suit = LEAD_CARD.suit;
+    var suit = LEAD_CARD!.suit;
 
     var cards = [];
     var a;
@@ -290,7 +290,7 @@ function clearTurn() {
     CARDS.length = 0;
 
     NO_MOVE_ANIMATION = false;
-    LEAD_CARD = null;
+    LEAD_CARD = undefined;
 }
 
 /*

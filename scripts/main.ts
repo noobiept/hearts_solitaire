@@ -49,7 +49,7 @@ window.onload = function() {
 function initApp() {
     createjs.Ticker.timingMode = createjs.Ticker.RAF;
 
-    CANVAS = document.querySelector("#MainCanvas");
+    CANVAS = document.getElementById("MainCanvas") as HTMLCanvasElement;
     PRELOAD = new createjs.LoadQueue();
     PRELOAD.setMaxConnections(10);
     PRELOAD.maintainScriptOrder = false;
@@ -121,14 +121,14 @@ function initApp() {
         { id: "pass_across_effect", src: "images/pass_across_effect.png" },
     ];
 
-    const loadMessage = document.getElementById("LoadMessage");
+    const loadMessage = document.getElementById("LoadMessage")!;
     loadMessage.classList.remove("hidden");
 
     PRELOAD.addEventListener("progress", function(
         event: createjs.ProgressEvent
     ) {
         loadMessage.innerText = ((event.progress * 100) | 0) + "%";
-    });
+    } as any);
     PRELOAD.addEventListener("complete", function() {
         loadMessage.classList.add("hidden");
         start(CANVAS);
@@ -158,7 +158,7 @@ export function onCanvasRightClick(callback: () => void) {
  * Resize the canvas to fit the available window width/height.
  */
 export function resizeCanvas() {
-    const gameMenu = document.getElementById("GameMenu");
+    const gameMenu = document.getElementById("GameMenu")!;
     const gameMenuRect = gameMenu.getBoundingClientRect();
 
     const windowWidth = window.innerWidth;

@@ -1,10 +1,12 @@
-import Player from "./player.js";
+import Player, { PlayerArgs } from "./player.js";
 import * as Round from "./round.js";
 import * as Game from "./game.js";
-import { Suit, SuitSymbol } from "./cards.js";
+import { Suit, SuitSymbol, IndividualCard } from "./cards.js";
+
+interface BotArgs extends PlayerArgs {}
 
 export default class Bot extends Player {
-    constructor(args) {
+    constructor(args: BotArgs) {
         args.isBot = true;
 
         super(args);
@@ -21,7 +23,7 @@ export default class Bot extends Player {
             this.passCardPhaseLogic();
         } else {
             // we're starting the round
-            if (leadCard === null) {
+            if (!leadCard) {
                 this.leadCardLogic(firstTurn, heartsBroken);
             } else {
                 this.respondCardLogic(firstTurn, leadCard);
@@ -71,7 +73,7 @@ export default class Bot extends Player {
     /*
         When we're starting the turn
      */
-    leadCardLogic(isFirstTurn, isHeartsBroken) {
+    leadCardLogic(isFirstTurn: boolean, isHeartsBroken: boolean) {
         // means we have the two of clubs
         if (isFirstTurn) {
             Game.addCardPlayQueue(this.cards["clubs"][0]);
@@ -139,7 +141,7 @@ export default class Bot extends Player {
     /*
         We're following the lead
      */
-    respondCardLogic(isFirstTurn, leadCard) {
+    respondCardLogic(isFirstTurn: boolean, leadCard: IndividualCard) {
         var leadSuit = leadCard.suit;
         var leadSuitStr = Suit[leadSuit];
         var cards = this.cards[leadSuitStr];

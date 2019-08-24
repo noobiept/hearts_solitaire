@@ -1,7 +1,7 @@
 import { Dialog, DialogPosition } from "@drk4/utilities";
 import "@drk4/utilities/build/dialog.css";
 
-let DIALOG;
+let DIALOG: Dialog;
 
 export function init() {
     DIALOG = new Dialog({

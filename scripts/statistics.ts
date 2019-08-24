@@ -12,7 +12,7 @@ var STATS: StatsData = {
     win_rate: 0,
 };
 
-export function load(stats: StatsData) {
+export function load(stats?: StatsData) {
     if (stats) {
         STATS.games_played = stats.games_played;
         STATS.games_won = stats.games_won;
