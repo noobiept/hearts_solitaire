@@ -1,13 +1,8 @@
 import * as Message from "./message.js";
 import { Position } from "./game.js";
-import {
-    IndividualCard,
-    getRandom,
-    Suit,
-    SuitSymbol,
-    setAvailable,
-} from "./cards.js";
+import { getRandom, Suit, SuitSymbol, setAvailable } from "./cards.js";
 import { getCanvasDimensions } from "./main.js";
+import IndividualCard from "./individual_card.js";
 
 export interface PlayerArgs {
     show: boolean; // show or hide the cards
