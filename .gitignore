@@ -1,4 +1,6 @@
 node_modules/
 release/
+scripts/**/*.js
+scripts/**/*.js.map
 info.txt
 .DS_Store

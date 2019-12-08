@@ -22,6 +22,8 @@ export enum Pass {
     across,
 }
 
+export type PassString = keyof typeof Pass;
+
 interface AllPlayers {
     south: Player; // human player
     west: Player;

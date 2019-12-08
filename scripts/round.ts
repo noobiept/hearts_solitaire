@@ -1,5 +1,11 @@
 import * as Message from "./message.js";
-import { IndividualCard, Suit, SuitSymbol, setAvailable } from "./cards.js";
+import {
+    IndividualCard,
+    Suit,
+    SuitSymbol,
+    setAvailable,
+    SuitString,
+} from "./cards.js";
 import { Position, cardPlayed } from "./game.js";
 import { getCanvasDimensions, CanvasDimensions } from "./main.js";
 
@@ -71,7 +77,7 @@ export function isValidMove(card: IndividualCard) {
 
         // you can only play a different suit if you don't have cards of the lead suit
         else {
-            const suit = Suit[leadSuit];
+            const suit = Suit[leadSuit] as SuitString;
 
             if (player.cards[suit].length == 0) {
                 // can't play the queen of spades or hearts on the first turn (unless you happen to have all 13 hearts cards)

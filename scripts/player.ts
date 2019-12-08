@@ -6,6 +6,7 @@ import {
     Suit,
     SuitSymbol,
     setAvailable,
+    SuitString,
 } from "./cards.js";
 import { getCanvasDimensions } from "./main.js";
 
@@ -15,13 +16,12 @@ export interface PlayerArgs {
     isBot?: boolean;
 }
 
+export type PlayerCards = {
+    [key in SuitString]: IndividualCard[];
+};
+
 export default class Player {
-    cards: {
-        clubs: IndividualCard[];
-        diamonds: IndividualCard[];
-        spades: IndividualCard[];
-        hearts: IndividualCard[];
-    };
+    cards: PlayerCards;
 
     static startingCards = 13;
     cardsCount: number;
@@ -47,10 +47,10 @@ export default class Player {
         this.position = args.position;
         this.show = args.show;
         this.cards = {
-            clubs: null,
-            diamonds: null,
-            spades: null,
-            hearts: null,
+            clubs: [],
+            diamonds: [],
+            spades: [],
+            hearts: [],
         };
         this.points = 0;
         this.selectedCards = [];
@@ -222,7 +222,8 @@ export default class Player {
     }
 
     hasCard(suit: Suit, symbol: SuitSymbol) {
-        var array: IndividualCard[] = this.cards[Suit[suit]];
+        const cardKey = Suit[suit] as SuitString;
+        var array: IndividualCard[] = this.cards[cardKey];
 
         for (var a = 0; a < array.length; a++) {
             if (array[a].suitSymbol == symbol) {
@@ -316,7 +317,7 @@ export default class Player {
     }
 
     addCard(card: IndividualCard) {
-        var suit = Suit[card.suit];
+        var suit = Suit[card.suit] as SuitString;
 
         this.cards[suit].push(card);
         this.cards[suit].sort(function(a, b) {
@@ -336,7 +337,8 @@ export default class Player {
     }
 
     removeCard(card: IndividualCard) {
-        var array = this.cards[Suit[card.suit]];
+        const suitKey = Suit[card.suit] as SuitString;
+        var array = this.cards[suitKey];
 
         var index = array.indexOf(card);
 
@@ -356,7 +358,8 @@ export default class Player {
         var suits = Object.keys(this.cards);
 
         for (var a = 0; a < suits.length; a++) {
-            var cards = this.cards[suits[a]];
+            const suitKey = suits[a] as SuitString;
+            var cards = this.cards[suitKey];
 
             for (var b = 0; b < cards.length; b++) {
                 cards[a].changeSide(front);
@@ -369,7 +372,8 @@ export default class Player {
         var suits = Object.keys(this.cards);
 
         for (var a = 0; a < suits.length; a++) {
-            var cards = this.cards[suits[a]];
+            const suitKey = suits[a] as SuitString;
+            var cards = this.cards[suitKey];
 
             for (var b = cards.length - 1; b >= 0; b--) {
                 var card = cards[b];

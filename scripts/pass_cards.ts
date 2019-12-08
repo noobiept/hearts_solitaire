@@ -1,24 +1,37 @@
-import { Pass, passCards, addToStage } from "./game.js";
+import { Pass, PassString, passCards, addToStage } from "./game.js";
 import { getAsset, getCanvasDimensions } from "./main.js";
 
+export type ImagesData = {
+    [key in PassString]: {
+        default: HTMLImageElement;
+        effect: HTMLImageElement;
+    };
+};
+
 var ELEMENT: createjs.Bitmap;
-var IMAGES = {};
-var CURRENT_DIRECTION: Pass;
+var IMAGES: ImagesData;
+var CURRENT_DIRECTION: PassString;
 
 export function init() {
     const canvas = getCanvasDimensions();
 
-    IMAGES[Pass.left] = getAsset("pass_left");
-    IMAGES[Pass.left + "_effect"] = getAsset("pass_left_effect");
+    IMAGES = {
+        left: {
+            default: getAsset("pass_left"),
+            effect: getAsset("pass_left_effect"),
+        },
+        right: {
+            default: getAsset("pass_right"),
+            effect: getAsset("pass_right_effect"),
+        },
+        across: {
+            default: getAsset("pass_across"),
+            effect: getAsset("pass_across_effect"),
+        },
+    };
 
-    IMAGES[Pass.right] = getAsset("pass_right");
-    IMAGES[Pass.right + "_effect"] = getAsset("pass_right_effect");
-
-    IMAGES[Pass.across] = getAsset("pass_across");
-    IMAGES[Pass.across + "_effect"] = getAsset("pass_across_effect");
-
-    CURRENT_DIRECTION = Pass.left;
-    ELEMENT = new createjs.Bitmap(IMAGES[CURRENT_DIRECTION]);
+    CURRENT_DIRECTION = "left";
+    ELEMENT = new createjs.Bitmap(IMAGES[CURRENT_DIRECTION].default);
     ELEMENT.visible = false;
     ELEMENT.filters = [];
     ELEMENT.on("click", passCards);
@@ -42,15 +55,17 @@ export function hide() {
 }
 
 export function select(direction: Pass) {
-    CURRENT_DIRECTION = direction;
-    ELEMENT.image = IMAGES[direction];
+    const directionString = Pass[direction] as PassString;
+
+    CURRENT_DIRECTION = directionString;
+    ELEMENT.image = IMAGES[directionString].default;
     show();
 }
 
 export function addEffect() {
-    ELEMENT.image = IMAGES[CURRENT_DIRECTION + "_effect"];
+    ELEMENT.image = IMAGES[CURRENT_DIRECTION].effect;
 }
 
 export function removeEffect() {
-    ELEMENT.image = IMAGES[CURRENT_DIRECTION];
+    ELEMENT.image = IMAGES[CURRENT_DIRECTION].default;
 }

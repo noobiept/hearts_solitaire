@@ -14,6 +14,8 @@ export enum Suit {
     spades,
     hearts,
 }
+export type SuitString = keyof typeof Suit;
+
 export enum SuitSymbol {
     two,
     three,
@@ -132,10 +134,10 @@ export class IndividualCard {
     backImage: HTMLImageElement;
     showingFront: boolean;
 
-    click_f;
+    click_f: Function | null;
     suit: Suit;
     suitSymbol: SuitSymbol;
-    player: Player;
+    player!: Player;
     moveAnimation: MoveAnimation.Move;
     selected: boolean;
 
@@ -207,7 +209,7 @@ export class IndividualCard {
         }
     }
 
-    clicked(event) {
+    clicked(event: createjs.MouseEvent) {
         Message.close();
 
         // left click
