@@ -9,38 +9,25 @@ import * as PassCards from "./pass_cards.js";
 import * as Statistics from "./statistics.js";
 import { debugMode, onCanvasRightClick, resizeCanvas } from "./main.js";
 
-export enum Position {
-    south,
-    west,
-    north,
-    east,
-}
+export type Position = "south" | "west" | "north" | "east";
 
-export enum Pass {
-    left,
-    right,
-    across,
-}
+export type Pass = "left" | "right" | "across";
 
-export type PassString = keyof typeof Pass;
-
-interface AllPlayers {
-    south: Player; // human player
-    west: Player;
-    north: Player;
-    east: Player;
-}
+// 'south' is the human player
+type AllPlayers = {
+    [key in Position]: Player;
+};
 
 let STAGE: createjs.Stage;
 var PLAYERS: AllPlayers;
 
 // in the play order (clock-wise)
-var PLAYERS_POSITION = ["south", "west", "north", "east"];
+var PLAYERS_POSITION: Position[] = ["south", "west", "north", "east"];
 
 var ACTIVE_PLAYER: Player = null;
 var PASS_CARDS_PHASE: boolean;
 
-var PASS_CARDS = Pass.left;
+var PASS_CARDS: Pass = "left";
 
 // wait until the card animations end, until we play other cards
 var PLAY_QUEUE: Cards.IndividualCard[] = [];
@@ -68,22 +55,22 @@ export function start(canvas: HTMLCanvasElement) {
     PLAYERS = {
         south: new Player({
             show: true,
-            position: Position.south,
+            position: "south",
         }),
 
         north: new Bot({
             show: showBotCards,
-            position: Position.north,
+            position: "north",
         }),
 
         east: new Bot({
             show: showBotCards,
-            position: Position.east,
+            position: "east",
         }),
 
         west: new Bot({
             show: showBotCards,
-            position: Position.west,
+            position: "west",
         }),
     };
 
@@ -105,13 +92,9 @@ export function start(canvas: HTMLCanvasElement) {
 }
 
 export function drawCards() {
-    var player: Player;
-    var position;
-
-    for (var a = 0; a < PLAYERS_POSITION.length; a++) {
-        position = PLAYERS_POSITION[a];
-
-        player = PLAYERS[position];
+    for (let a = 0; a < PLAYERS_POSITION.length; a++) {
+        const position = PLAYERS_POSITION[a];
+        const player = PLAYERS[position];
 
         player.getHand();
     }
@@ -125,7 +108,7 @@ export function drawCards() {
     PassCards.select(PASS_CARDS);
 
     // in the pass cards phase, the turn is for the human player (since the bots play immediately)
-    GameMenu.setPlayerTurn(Position.south);
+    GameMenu.setPlayerTurn("south");
 }
 
 export function passCards() {
@@ -143,7 +126,7 @@ export function passCards() {
         }
     }
 
-    var pass = function(from, to) {
+    var pass = function(from: Position, to: Position) {
         var cards = PLAYERS[from].removeSelectedCards();
 
         for (a = 0; a < cards.length; a++) {
@@ -152,7 +135,7 @@ export function passCards() {
     };
 
     // clockwise order
-    if (PASS_CARDS == Pass.left) {
+    if (PASS_CARDS == "left") {
         pass("south", "west");
         pass("west", "north");
         pass("north", "east");
@@ -160,12 +143,12 @@ export function passCards() {
     }
 
     // anti-clockwise order
-    else if (PASS_CARDS == Pass.right) {
+    else if (PASS_CARDS == "right") {
         pass("south", "east");
         pass("east", "north");
         pass("north", "west");
         pass("west", "south");
-    } else if (PASS_CARDS == Pass.across) {
+    } else if (PASS_CARDS == "across") {
         pass("south", "north");
         pass("north", "south");
         pass("east", "west");
@@ -180,10 +163,20 @@ export function passCards() {
     }
 
     PASS_CARDS_PHASE = false;
-    PASS_CARDS++;
-    if (PASS_CARDS >= 3) {
-        // its either left, right or across
-        PASS_CARDS = 0;
+
+    // move to the next order
+    switch (PASS_CARDS) {
+        case "left":
+            PASS_CARDS = "right";
+            break;
+
+        case "right":
+            PASS_CARDS = "across";
+            break;
+
+        case "across":
+            PASS_CARDS = "left";
+            break;
     }
 
     PassCards.hide();
@@ -191,15 +184,12 @@ export function passCards() {
 }
 
 export function startRound() {
-    var player;
-    var position;
-
     // determine who starts playing (who has the 2 of clubs)
-    for (var a = 0; a < PLAYERS_POSITION.length; a++) {
-        position = PLAYERS_POSITION[a];
-        player = PLAYERS[position];
+    for (let a = 0; a < PLAYERS_POSITION.length; a++) {
+        const position = PLAYERS_POSITION[a];
+        const player = PLAYERS[position];
 
-        if (player.hasCard(Cards.Suit.clubs, Cards.SuitSymbol.two)) {
+        if (player.hasCard("clubs", "two")) {
             ACTIVE_PLAYER = player;
             break;
         }
@@ -219,7 +209,7 @@ export function isValidMove(card: Cards.IndividualCard) {
     if (player !== ACTIVE_PLAYER) {
         Message.open(
             "Other player's turn.",
-            "Its " + Position[ACTIVE_PLAYER.position] + " turn"
+            "Its " + ACTIVE_PLAYER.position + " turn"
         );
         return false;
     }
@@ -273,9 +263,9 @@ export function cardPlayed() {
                 for (var a = 0; a < winners.length; a++) {
                     var position = winners[a].position;
 
-                    message += Position[position] + " Won!<br /><br />";
+                    message += position + " Won!<br /><br />";
 
-                    if (position == Position.south) {
+                    if (position == "south") {
                         southWon = true;
                     }
                 }
@@ -287,10 +277,7 @@ export function cardPlayed() {
                 const aPlayer = PLAYERS[playerPosition];
 
                 message +=
-                    Position[aPlayer.position] +
-                    ": " +
-                    aPlayer.getPoints() +
-                    "<br />";
+                    aPlayer.position + ": " + aPlayer.getPoints() + "<br />";
             });
 
             Message.openModal("Round ended", message, () => {
@@ -315,15 +302,27 @@ export function cardPlayed() {
     // round still going on, go to next player
     else {
         // give turn to next player
-        var index = ACTIVE_PLAYER.position;
+        let nextPosition = ACTIVE_PLAYER.position;
 
-        index++;
+        switch (nextPosition) {
+            case "south":
+                nextPosition = "west";
+                break;
 
-        if (index >= PLAYERS_POSITION.length) {
-            index = 0;
+            case "west":
+                nextPosition = "north";
+                break;
+
+            case "north":
+                nextPosition = "east";
+                break;
+
+            case "east":
+                nextPosition = "south";
+                break;
         }
 
-        ACTIVE_PLAYER = PLAYERS[Position[index]];
+        ACTIVE_PLAYER = PLAYERS[nextPosition];
         ACTIVE_PLAYER.yourTurn();
 
         GameMenu.setPlayerTurn(ACTIVE_PLAYER.position);
@@ -376,7 +375,7 @@ function getPlayersWinning() {
 }
 
 export function getPlayer(position: Position) {
-    return PLAYERS[Position[position]];
+    return PLAYERS[position];
 }
 
 export function restart() {
@@ -403,7 +402,7 @@ export function tick() {
     // play a new card only when there's no card moving
     if (!Cards.isMoving()) {
         while (PLAY_QUEUE.length > 0) {
-            var card = PLAY_QUEUE.pop();
+            var card = PLAY_QUEUE.pop()!;
 
             if (isValidMove(card)) {
                 playCard(card);

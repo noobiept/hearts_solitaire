@@ -1,12 +1,6 @@
 import * as Message from "./message.js";
-import {
-    IndividualCard,
-    Suit,
-    SuitSymbol,
-    setAvailable,
-    SuitString,
-} from "./cards.js";
-import { Position, cardPlayed } from "./game.js";
+import { IndividualCard, setAvailable } from "./cards.js";
+import { cardPlayed } from "./game.js";
 import { getCanvasDimensions, CanvasDimensions } from "./main.js";
 
 var IS_FIRST_TURN: boolean;
@@ -37,7 +31,7 @@ export function isValidMove(card: IndividualCard) {
     if (!LEAD_CARD) {
         // need to play the 2 of clubs
         if (IS_FIRST_TURN) {
-            if (card.suit == Suit.clubs && card.suitSymbol == SuitSymbol.two) {
+            if (card.suit == "clubs" && card.suitSymbol == "two") {
                 return true;
             } else {
                 Message.open(
@@ -51,7 +45,7 @@ export function isValidMove(card: IndividualCard) {
         // the hearts can only be played if its already broken (or if you only have hearts left)
         // otherwise any card can be played
         else {
-            if (card.suit == Suit.hearts) {
+            if (card.suit === "hearts") {
                 if (!IS_HEARTS_BROKEN) {
                     // check if you only have hearts left
                     if (player.cards.hearts.length == player.cardCount()) {
@@ -77,15 +71,13 @@ export function isValidMove(card: IndividualCard) {
 
         // you can only play a different suit if you don't have cards of the lead suit
         else {
-            const suit = Suit[leadSuit] as SuitString;
-
-            if (player.cards[suit].length == 0) {
+            if (player.cards[leadSuit].length == 0) {
                 // can't play the queen of spades or hearts on the first turn (unless you happen to have all 13 hearts cards)
                 // or 12 hearts cards + the queen of spades
                 if (IS_FIRST_TURN) {
                     if (
-                        card.suit == Suit.spades &&
-                        card.suitSymbol == SuitSymbol.queen &&
+                        card.suit == "spades" &&
+                        card.suitSymbol == "queen" &&
                         player.cards["hearts"].length < 12
                     ) {
                         Message.open(
@@ -94,7 +86,7 @@ export function isValidMove(card: IndividualCard) {
                         );
                         return false;
                     } else if (
-                        card.suit == Suit.hearts &&
+                        card.suit == "hearts" &&
                         player.cards["hearts"].length < 13
                     ) {
                         Message.open(
@@ -111,7 +103,7 @@ export function isValidMove(card: IndividualCard) {
             } else {
                 Message.open(
                     "Invalid move.",
-                    "Need to play a card of the " + Suit[leadSuit] + " suit."
+                    "Need to play a card of the " + leadSuit + " suit."
                 );
                 return false;
             }
@@ -130,19 +122,19 @@ export function playCard(card: IndividualCard) {
     const offset = 70;
 
     switch (card.player.position) {
-        case Position.west:
+        case "west":
             x -= offset;
             break;
 
-        case Position.east:
+        case "east":
             x += offset;
             break;
 
-        case Position.north:
+        case "north":
             y -= offset;
             break;
 
-        case Position.south:
+        case "south":
             y += offset;
             break;
 
@@ -168,7 +160,7 @@ export function playCard(card: IndividualCard) {
         LEAD_CARD = card;
     }
 
-    if (card.suit === Suit.hearts) {
+    if (card.suit === "hearts") {
         IS_HEARTS_BROKEN = true;
     }
 }
@@ -234,20 +226,15 @@ function determineWinner() {
     for (a = 0; a < CARDS.length; a++) {
         var card = CARDS[a];
 
-        if (card.suit === Suit.hearts) {
+        if (card.suit === "hearts") {
             points++;
-        } else if (
-            card.suit === Suit.spades &&
-            card.suitSymbol === SuitSymbol.queen
-        ) {
+        } else if (card.suit === "spades" && card.suitSymbol === "queen") {
             points += 13;
         }
     }
 
     var player = highest.player;
-    var position = Position[player.position];
-
-    POINTS[position] += points;
+    POINTS[player.position] += points;
 
     return highest.player;
 }
@@ -347,19 +334,19 @@ export function resize(canvas: CanvasDimensions) {
         var y = centerY;
 
         switch (card.player.position) {
-            case Position.west:
+            case "west":
                 x -= offset;
                 break;
 
-            case Position.east:
+            case "east":
                 x += offset;
                 break;
 
-            case Position.north:
+            case "north":
                 y -= offset;
                 break;
 
-            case Position.south:
+            case "south":
                 y += offset;
                 break;
 

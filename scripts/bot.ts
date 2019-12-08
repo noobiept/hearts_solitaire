@@ -124,10 +124,7 @@ export default class Bot extends Player {
             var lowest = this.getLowestCard(suits);
 
             // don't play the queen of spades as long as there's other spades cards
-            if (
-                lowest.suit == Suit.spades &&
-                lowest.suitSymbol == SuitSymbol.queen
-            ) {
+            if (lowest.suit == "spades" && lowest.suitSymbol == "queen") {
                 if (this.cards["spades"].length > 1) {
                     // lowest is queen so its position 0 in array, so we can just get the next card
                     lowest = this.cards["spades"][1];
@@ -143,23 +140,20 @@ export default class Bot extends Player {
      */
     respondCardLogic(isFirstTurn: boolean, leadCard: IndividualCard) {
         var leadSuit = leadCard.suit;
-        var leadSuitStr = Suit[leadSuit];
-        var cards = this.cards[leadSuitStr];
+        var cards = this.cards[leadSuit];
         var cardsPlayed = Round.cardsPlayed();
-        var a;
-        var card;
 
         // check if we have cards of that suit
         if (cards.length > 0) {
             // if a card higher than the queen of spades has been played, we play queen of spades (if we have it)
             if (
-                leadSuit == Suit.spades &&
+                leadSuit == "spades" &&
                 leadCard.suitSymbol > SuitSymbol.queen
             ) {
-                for (a = 0; a < cards.length; a++) {
+                for (let a = 0; a < cards.length; a++) {
                     card = cards[a];
 
-                    if (card.suitSymbol === SuitSymbol.queen) {
+                    if (card.suitSymbol === "queen") {
                         Game.addCardPlayQueue(card);
                         return;
                     }
@@ -169,7 +163,7 @@ export default class Bot extends Player {
             // find the highest value played in the turn
             var highestSymbol = leadCard.suitSymbol;
 
-            for (a = 1; a < cardsPlayed.length; a++) {
+            for (let a = 1; a < cardsPlayed.length; a++) {
                 card = cardsPlayed[a];
 
                 // only the cards of the same suit as the lead matter
@@ -184,7 +178,7 @@ export default class Bot extends Player {
             var closestAbove = null;
 
             // from the cards we have, find the closest to the highest card played
-            for (a = 0; a < cards.length; a++) {
+            for (let a = 0; a < cards.length; a++) {
                 var card = cards[a];
 
                 if (card.suitSymbol < highestSymbol) {
@@ -212,8 +206,8 @@ export default class Bot extends Player {
                 } else {
                     // don't play the queen of spades as long as there's other spades cards
                     if (
-                        closestAbove == Suit.spades &&
-                        closestAbove.suitSymbol == SuitSymbol.queen
+                        closestAbove == "spades" &&
+                        closestAbove.suitSymbol == "queen"
                     ) {
                         if (this.cards["spades"].length > 1) {
                             closestAbove = this.cards["spades"][1];
@@ -230,7 +224,7 @@ export default class Bot extends Player {
             if (isFirstTurn) {
                 var spadesCards = this.cards["spades"];
 
-                for (a = spadesCards.length - 1; a >= 0; a--) {
+                for (let a = spadesCards.length - 1; a >= 0; a--) {
                     card = spadesCards[a];
 
                     if (card.suitSymbol > SuitSymbol.queen) {
@@ -271,10 +265,10 @@ export default class Bot extends Player {
             else {
                 var spadesCards = this.cards["spades"];
 
-                for (a = 0; a < spadesCards.length; a++) {
+                for (let a = 0; a < spadesCards.length; a++) {
                     card = spadesCards[a];
 
-                    if (card.suitSymbol === SuitSymbol.queen) {
+                    if (card.suitSymbol === "queen") {
                         Game.addCardPlayQueue(card);
                         return;
                     }

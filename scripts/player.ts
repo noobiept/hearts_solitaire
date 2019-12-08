@@ -6,7 +6,6 @@ import {
     Suit,
     SuitSymbol,
     setAvailable,
-    SuitString,
 } from "./cards.js";
 import { getCanvasDimensions } from "./main.js";
 
@@ -17,7 +16,7 @@ export interface PlayerArgs {
 }
 
 export type PlayerCards = {
-    [key in SuitString]: IndividualCard[];
+    [key in Suit]: IndividualCard[];
 };
 
 export default class Player {
@@ -75,16 +74,16 @@ export default class Player {
         this.cardsCount = Player.startingCards;
 
         this.cards.clubs = cards.filter(function(element) {
-            return element.suit == Suit.clubs;
+            return element.suit === "clubs";
         });
         this.cards.diamonds = cards.filter(function(element) {
-            return element.suit == Suit.diamonds;
+            return element.suit === "diamonds";
         });
         this.cards.spades = cards.filter(function(element) {
-            return element.suit == Suit.spades;
+            return element.suit === "spades";
         });
         this.cards.hearts = cards.filter(function(element) {
-            return element.suit == Suit.hearts;
+            return element.suit === "hearts";
         });
 
         // order the cards by the symbol
@@ -104,19 +103,19 @@ export default class Player {
     updateCenterPosition() {
         const { width, height } = getCanvasDimensions();
 
-        if (this.position == Position.south) {
+        if (this.position === "south") {
             this.centerX = width / 2;
             this.centerY = height - IndividualCard.height;
             this.horizontalOrientation = true;
-        } else if (this.position == Position.north) {
+        } else if (this.position === "north") {
             this.centerX = width / 2;
             this.centerY = 0;
             this.horizontalOrientation = true;
-        } else if (this.position == Position.east) {
+        } else if (this.position === "east") {
             this.centerX = width - IndividualCard.width;
             this.centerY = height / 2;
             this.horizontalOrientation = false;
-        } else if (this.position == Position.west) {
+        } else if (this.position === "west") {
             this.centerX = 0;
             this.centerY = height / 2;
             this.horizontalOrientation = false;
@@ -222,8 +221,7 @@ export default class Player {
     }
 
     hasCard(suit: Suit, symbol: SuitSymbol) {
-        const cardKey = Suit[suit] as SuitString;
-        var array: IndividualCard[] = this.cards[cardKey];
+        var array: IndividualCard[] = this.cards[suit];
 
         for (var a = 0; a < array.length; a++) {
             if (array[a].suitSymbol == symbol) {
@@ -251,13 +249,13 @@ export default class Player {
             offset *= -1;
         }
 
-        if (this.position == Position.north) {
+        if (this.position === "north") {
             y += offset;
-        } else if (this.position == Position.south) {
+        } else if (this.position === "south") {
             y -= offset;
-        } else if (this.position == Position.west) {
+        } else if (this.position === "west") {
             x += offset;
-        } else if (this.position == Position.east) {
+        } else if (this.position === "east") {
             x -= offset;
         } else {
             throw new Error("error, wrong position argument");
@@ -317,7 +315,7 @@ export default class Player {
     }
 
     addCard(card: IndividualCard) {
-        var suit = Suit[card.suit] as SuitString;
+        const suit = card.suit;
 
         this.cards[suit].push(card);
         this.cards[suit].sort(function(a, b) {
@@ -337,12 +335,10 @@ export default class Player {
     }
 
     removeCard(card: IndividualCard) {
-        const suitKey = Suit[card.suit] as SuitString;
-        var array = this.cards[suitKey];
-
+        var array = this.cards[card.suit];
         var index = array.indexOf(card);
+        array.splice(index, 1)[0];
 
-        var card = <IndividualCard>array.splice(index, 1)[0];
         card.selected = false;
 
         if (!this.isBot) {
@@ -358,7 +354,7 @@ export default class Player {
         var suits = Object.keys(this.cards);
 
         for (var a = 0; a < suits.length; a++) {
-            const suitKey = suits[a] as SuitString;
+            const suitKey = suits[a];
             var cards = this.cards[suitKey];
 
             for (var b = 0; b < cards.length; b++) {
@@ -372,7 +368,7 @@ export default class Player {
         var suits = Object.keys(this.cards);
 
         for (var a = 0; a < suits.length; a++) {
-            const suitKey = suits[a] as SuitString;
+            const suitKey = suits[a];
             var cards = this.cards[suitKey];
 
             for (var b = cards.length - 1; b >= 0; b--) {

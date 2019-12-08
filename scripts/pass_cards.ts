@@ -1,8 +1,8 @@
-import { Pass, PassString, passCards, addToStage } from "./game.js";
+import { Pass, passCards, addToStage } from "./game.js";
 import { getAsset, getCanvasDimensions } from "./main.js";
 
 export type ImagesData = {
-    [key in PassString]: {
+    [key in Pass]: {
         default: HTMLImageElement;
         effect: HTMLImageElement;
     };
@@ -10,7 +10,7 @@ export type ImagesData = {
 
 var ELEMENT: createjs.Bitmap;
 var IMAGES: ImagesData;
-var CURRENT_DIRECTION: PassString;
+var CURRENT_DIRECTION: Pass;
 
 export function init() {
     const canvas = getCanvasDimensions();
@@ -55,10 +55,8 @@ export function hide() {
 }
 
 export function select(direction: Pass) {
-    const directionString = Pass[direction] as PassString;
-
-    CURRENT_DIRECTION = directionString;
-    ELEMENT.image = IMAGES[directionString].default;
+    CURRENT_DIRECTION = direction;
+    ELEMENT.image = IMAGES[direction].default;
     show();
 }
 

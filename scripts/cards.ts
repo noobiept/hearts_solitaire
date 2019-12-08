@@ -8,29 +8,22 @@ import { getCanvasDimensions, getAsset } from "./main.js";
 /**
  * Will manage all the cards.
  */
-export enum Suit {
-    clubs,
-    diamonds,
-    spades,
-    hearts,
-}
-export type SuitString = keyof typeof Suit;
+export type Suit = "clubs" | "diamonds" | "spades" | "hearts";
 
-export enum SuitSymbol {
-    two,
-    three,
-    four,
-    five,
-    six,
-    seven,
-    eight,
-    nine,
-    ten,
-    jack,
-    queen,
-    king,
-    ace,
-}
+export type SuitSymbol =
+    | "two"
+    | "three"
+    | "four"
+    | "five"
+    | "six"
+    | "seven"
+    | "eight"
+    | "nine"
+    | "ten"
+    | "jack"
+    | "queen"
+    | "king"
+    | "ace";
 
 var ALL: IndividualCard[] = [];
 var ALL_AVAILABLE: IndividualCard[] = [];
@@ -148,7 +141,7 @@ export class IndividualCard {
         this.suit = args.suit;
         this.suitSymbol = args.suitSymbol;
 
-        var imageId = SuitSymbol[this.suitSymbol] + "_of_" + Suit[this.suit];
+        var imageId = this.suitSymbol + "_of_" + this.suit;
 
         this.frontImage = getAsset(imageId);
         this.backImage = getAsset("card_back");
