@@ -1,5 +1,5 @@
 import * as Message from "./message.js";
-import { setAvailable } from "./cards.js";
+import { setAvailable, cardHigherThan } from "./cards.js";
 import { cardPlayed } from "./game.js";
 import { getCanvasDimensions, CanvasDimensions } from "./main.js";
 import IndividualCard from "./individual_card.js";
@@ -157,7 +157,7 @@ export function playCard(card: IndividualCard) {
 
     CARDS.push(card);
 
-    if (LEAD_CARD === null) {
+    if (!LEAD_CARD) {
         LEAD_CARD = card;
     }
 
@@ -200,11 +200,9 @@ export function cardsPlayed() {
 function determineWinner() {
     // get all cards of the suit of the lead
     var suit = LEAD_CARD!.suit;
-
     var cards = [];
-    var a;
 
-    for (a = 0; a < CARDS.length; a++) {
+    for (let a = 0; a < CARDS.length; a++) {
         if (CARDS[a].suit === suit) {
             cards.push(CARDS[a]);
         }
@@ -213,8 +211,8 @@ function determineWinner() {
     // determine the card with highest symbol (will be the winner)
     var highest = cards[0];
 
-    for (a = 1; a < cards.length; a++) {
-        if (cards[a].suitSymbol > highest.suitSymbol) {
+    for (let a = 1; a < cards.length; a++) {
+        if (cardHigherThan(cards[a], highest.suitSymbol)) {
             highest = cards[a];
         }
     }
@@ -224,7 +222,7 @@ function determineWinner() {
     // 13 points for the queen of spades
     var points = 0;
 
-    for (a = 0; a < CARDS.length; a++) {
+    for (let a = 0; a < CARDS.length; a++) {
         var card = CARDS[a];
 
         if (card.suit === "hearts") {

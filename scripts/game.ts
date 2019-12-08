@@ -25,7 +25,7 @@ type AllPlayers = {
 let STAGE: createjs.Stage;
 var PLAYERS: AllPlayers;
 
-var ACTIVE_PLAYER: Player = null;
+var ACTIVE_PLAYER: Player;
 var PASS_CARDS_PHASE: boolean;
 
 var PASS_CARDS: Pass = "left";

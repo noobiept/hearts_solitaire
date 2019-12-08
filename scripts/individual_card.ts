@@ -82,9 +82,13 @@ export default class IndividualCard {
     }
 
     setClickEvent(set: boolean) {
-        if (set == true) {
+        if (set === true) {
             if (this.click_f === null) {
-                this.click_f = this.bitmap.on("click", this.clicked, this);
+                this.click_f = this.bitmap.on(
+                    "click",
+                    this.clicked as any,
+                    this
+                );
             }
         } else {
             if (this.click_f !== null) {

@@ -11,7 +11,7 @@ export function getData(
     keys: (keyof AppData)[],
     callback: (data: AppData) => void
 ) {
-    var objects = {};
+    var objects: AppData = {};
 
     for (var a = 0; a < keys.length; a++) {
         var key = keys[a];
@@ -30,7 +30,8 @@ export function getData(
 export function setData(items: AppData) {
     for (var key in items) {
         if (items.hasOwnProperty(key)) {
-            localStorage.setItem(key, JSON.stringify(items[key]));
+            const dataKey = key as keyof AppData;
+            localStorage.setItem(key, JSON.stringify(items[dataKey]));
         }
     }
 }

@@ -8,6 +8,7 @@ import {
     cardEqualOrHigherThan,
     cardHigherThan,
     Suit,
+    cardLowerThan,
 } from "./cards.js";
 
 interface BotArgs extends PlayerArgs {}
@@ -166,7 +167,7 @@ export default class Bot extends Player {
 
                 // only the cards of the same suit as the lead matter
                 if (card.suit == leadSuit) {
-                    if (card.suitSymbol > highestSymbol) {
+                    if (cardHigherThan(card, highestSymbol)) {
                         highestSymbol = card.suitSymbol;
                     }
                 }
@@ -179,16 +180,16 @@ export default class Bot extends Player {
             for (let a = 0; a < cards.length; a++) {
                 var card = cards[a];
 
-                if (card.suitSymbol < highestSymbol) {
+                if (cardLowerThan(card, highestSymbol)) {
                     if (closestBelow === null) {
                         closestBelow = card;
-                    } else if (closestBelow.suitSymbol < card.suitSymbol) {
+                    } else if (cardLowerThan(closestBelow, card.suitSymbol)) {
                         closestBelow = card;
                     }
-                } else if (card.suitSymbol > highestSymbol) {
+                } else if (cardHigherThan(card, highestSymbol)) {
                     if (closestAbove === null) {
                         closestAbove = card;
-                    } else if (closestAbove.suitSymbol > card.suitSymbol) {
+                    } else if (cardHigherThan(closestAbove, card.suitSymbol)) {
                         closestAbove = card;
                     }
                 }
@@ -306,7 +307,7 @@ export default class Bot extends Player {
             for (a = 1; a < highestCards.length; a++) {
                 var card = highestCards[a];
 
-                if (card.suitSymbol > highest.suitSymbol) {
+                if (cardHigherThan(card, highest.suitSymbol)) {
                     highest = card;
                 }
             }
@@ -332,7 +333,7 @@ export default class Bot extends Player {
         for (a = 1; a < lowestCards.length; a++) {
             var card = lowestCards[a];
 
-            if (card.suitSymbol < lowest.suitSymbol) {
+            if (cardLowerThan(card, lowest.suitSymbol)) {
                 lowest = card;
             }
         }

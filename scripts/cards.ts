@@ -110,6 +110,13 @@ export function cardHigherThan(card: IndividualCard, symbol: SuitSymbol) {
     return cardValue > refValue;
 }
 
+export function cardLowerThan(card: IndividualCard, symbol: SuitSymbol) {
+    const cardValue = SYMBOLS_DICT[card.suitSymbol];
+    const refValue = SYMBOLS_DICT[symbol];
+
+    return cardValue < refValue;
+}
+
 /*
     Gets a random card that isn't being used at the moment
  */
