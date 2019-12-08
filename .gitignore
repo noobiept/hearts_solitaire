@@ -1,0 +1,4 @@
+node_modules/
+release/
+info.txt
+.DS_Store
