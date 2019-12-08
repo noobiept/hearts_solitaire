@@ -1,65 +1,73 @@
 import * as Statistics from "./statistics.js";
-import { Position, restart as gameRestart, getPlayer } from "./game.js";
+import {
+    Position,
+    restart as gameRestart,
+    getPlayer,
+    ALL_POSITIONS,
+} from "./game.js";
+
+type ScoresData = {
+    [key in Position]: HTMLElement;
+};
+
+type StatisticsElements = {
+    gamesPlayed: HTMLElement;
+    gamesWon: HTMLElement;
+    winRate: HTMLElement;
+};
 
 // scores for the 4 players, has the html reference
-var SCORES = {
-    south: null,
-    west: null,
-    north: null,
-    east: null,
-};
-
-var STATISTICS = {
-    gamesPlayed: null,
-    gamesWon: null,
-    winRate: null,
-};
+var SCORES: ScoresData;
+var STATISTICS: StatisticsElements;
 
 var PLAYER_TURN: Position | null = null;
 
 export function init() {
     const menu = document.getElementById("GameMenu")!;
 
-    SCORES["south"] = menu.querySelector("#south");
-    SCORES["west"] = menu.querySelector("#west");
-    SCORES["north"] = menu.querySelector("#north");
-    SCORES["east"] = menu.querySelector("#east");
+    SCORES = {
+        south: menu.querySelector("#south") as HTMLElement,
+        west: menu.querySelector("#west") as HTMLElement,
+        north: menu.querySelector("#north") as HTMLElement,
+        east: menu.querySelector("#east") as HTMLElement,
+    };
+    STATISTICS = {
+        gamesPlayed: menu.querySelector("#gamesPlayed") as HTMLElement,
+        gamesWon: menu.querySelector("#gamesWon") as HTMLElement,
+        winRate: menu.querySelector("#winRate") as HTMLElement,
+    };
 
-    STATISTICS.gamesPlayed = menu.querySelector("#gamesPlayed");
-    STATISTICS.gamesWon = menu.querySelector("#gamesWon");
-    STATISTICS.winRate = menu.querySelector("#winRate");
-
-    var restart = <HTMLDivElement>menu.querySelector("#Restart");
+    const restart = menu.querySelector("#Restart") as HTMLElement;
     restart.onclick = gameRestart;
 
     menu.classList.remove("hidden");
 }
 
 export function updateScores() {
-    var positions = ["south", "west", "north", "east"];
+    for (let a = 0; a < ALL_POSITIONS.length; a++) {
+        const position = ALL_POSITIONS[a];
+        const player = getPlayer(position);
+        const spanElement = SCORES[position].querySelector(
+            "span"
+        ) as HTMLElement;
 
-    for (var a = 0; a < positions.length; a++) {
-        var position = positions[a];
-        var player = getPlayer(Position[position]);
-
-        var spanElement = SCORES[position].querySelector("span");
-        spanElement.innerText = player.getPoints();
+        spanElement.innerText = player.getPoints().toString();
     }
 }
 
 export function updateStatistics() {
-    STATISTICS.gamesPlayed.innerText = Statistics.getGamesPlayed();
-    STATISTICS.gamesWon.innerText = Statistics.getGamesWon();
+    STATISTICS.gamesPlayed.innerText = Statistics.getGamesPlayed().toString();
+    STATISTICS.gamesWon.innerText = Statistics.getGamesWon().toString();
     STATISTICS.winRate.innerText = Statistics.getWinRate() + "%";
 }
 
 export function setPlayerTurn(position: Position) {
     if (PLAYER_TURN !== null) {
-        const previousPlayer = Position[PLAYER_TURN];
+        const previousPlayer = PLAYER_TURN;
         SCORES[previousPlayer].classList.remove("playerTurn");
     }
 
-    const nextPlayer = Position[position];
+    const nextPlayer = position;
     SCORES[nextPlayer].classList.add("playerTurn");
 
     PLAYER_TURN = position;

@@ -13,7 +13,7 @@ import IndividualCard from "./individual_card.js";
 export type Position = "south" | "west" | "north" | "east";
 
 // in the play order (clock-wise)
-const ALL_POSITIONS: Position[] = ["south", "west", "north", "east"];
+export const ALL_POSITIONS: Position[] = ["south", "west", "north", "east"];
 
 export type Pass = "left" | "right" | "across";
 
@@ -200,7 +200,7 @@ export function startRound() {
     GameMenu.setPlayerTurn(ACTIVE_PLAYER.position);
 }
 
-export function isValidMove(card: Cards.IndividualCard) {
+export function isValidMove(card: IndividualCard) {
     if (PASS_CARDS_PHASE) {
         return true;
     }
@@ -218,11 +218,11 @@ export function isValidMove(card: Cards.IndividualCard) {
     return Round.isValidMove(card);
 }
 
-export function addCardPlayQueue(card: Cards.IndividualCard) {
+export function addCardPlayQueue(card: IndividualCard) {
     PLAY_QUEUE.push(card);
 }
 
-export function playCard(card: Cards.IndividualCard) {
+export function playCard(card: IndividualCard) {
     var player = card.player;
 
     if (PASS_CARDS_PHASE) {
