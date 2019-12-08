@@ -1,6 +1,13 @@
 import * as Message from "./message.js";
 import { Position } from "./game.js";
-import { getRandom, Suit, SuitSymbol, setAvailable } from "./cards.js";
+import {
+    getRandom,
+    Suit,
+    SuitSymbol,
+    setAvailable,
+    sortCardsBySymbol,
+    ALL_SUITS,
+} from "./cards.js";
 import { getCanvasDimensions } from "./main.js";
 import IndividualCard from "./individual_card.js";
 
@@ -82,14 +89,10 @@ export default class Player {
         });
 
         // order the cards by the symbol
-        var sortSymbol = function(a: IndividualCard, b: IndividualCard) {
-            return a.suitSymbol - b.suitSymbol;
-        };
-
-        this.cards.clubs.sort(sortSymbol);
-        this.cards.diamonds.sort(sortSymbol);
-        this.cards.spades.sort(sortSymbol);
-        this.cards.hearts.sort(sortSymbol);
+        this.cards.clubs = sortCardsBySymbol(this.cards.clubs);
+        this.cards.diamonds = sortCardsBySymbol(this.cards.diamonds);
+        this.cards.spades = sortCardsBySymbol(this.cards.spades);
+        this.cards.hearts = sortCardsBySymbol(this.cards.hearts);
 
         this.updateCenterPosition();
         this.positionCards(500);
@@ -313,9 +316,7 @@ export default class Player {
         const suit = card.suit;
 
         this.cards[suit].push(card);
-        this.cards[suit].sort(function(a, b) {
-            return a.suitSymbol - b.suitSymbol;
-        });
+        this.cards[suit] = sortCardsBySymbol(this.cards[suit]);
 
         card.setPlayer(this);
 
@@ -346,13 +347,11 @@ export default class Player {
     }
 
     changeCardsSide(front: boolean) {
-        var suits = Object.keys(this.cards);
+        for (let a = 0; a < ALL_SUITS.length; a++) {
+            const suitKey = ALL_SUITS[a];
+            const cards = this.cards[suitKey];
 
-        for (var a = 0; a < suits.length; a++) {
-            const suitKey = suits[a];
-            var cards = this.cards[suitKey];
-
-            for (var b = 0; b < cards.length; b++) {
+            for (let b = 0; b < cards.length; b++) {
                 cards[a].changeSide(front);
             }
         }
@@ -360,10 +359,9 @@ export default class Player {
 
     clear() {
         this.points = 0;
-        var suits = Object.keys(this.cards);
 
-        for (var a = 0; a < suits.length; a++) {
-            const suitKey = suits[a];
+        for (var a = 0; a < ALL_SUITS.length; a++) {
+            const suitKey = ALL_SUITS[a];
             var cards = this.cards[suitKey];
 
             for (var b = cards.length - 1; b >= 0; b--) {
