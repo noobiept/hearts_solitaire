@@ -7,6 +7,8 @@ import IndividualCard from "./individual_card.js";
  */
 export type Suit = "clubs" | "diamonds" | "spades" | "hearts";
 
+export const ALL_SUITS: Suit[] = ["clubs", "diamonds", "hearts", "spades"];
+
 export type SuitSymbol =
     | "two"
     | "three"
@@ -22,18 +24,34 @@ export type SuitSymbol =
     | "king"
     | "ace";
 
+export const ALL_SYMBOLS: SuitSymbol[] = [
+    "two",
+    "three",
+    "four",
+    "five",
+    "six",
+    "seven",
+    "eight",
+    "nine",
+    "ten",
+    "jack",
+    "queen",
+    "king",
+    "ace",
+];
+
 var ALL: IndividualCard[] = [];
 var ALL_AVAILABLE: IndividualCard[] = [];
 
 export function init() {
-    var suitLength = 4;
-    var symbolLength = 13;
+    for (let a = 0; a < ALL_SUITS.length; a++) {
+        const suit = ALL_SUITS[a];
 
-    for (var a = 0; a < suitLength; a++) {
-        for (var b = 0; b < symbolLength; b++) {
-            var card = new IndividualCard({
-                suit: a,
-                suitSymbol: b,
+        for (let b = 0; b < ALL_SYMBOLS.length; b++) {
+            const suitSymbol = ALL_SYMBOLS[b];
+            const card = new IndividualCard({
+                suit,
+                suitSymbol,
             });
 
             ALL.push(card);

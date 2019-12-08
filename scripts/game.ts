@@ -8,8 +8,12 @@ import * as Message from "./message.js";
 import * as PassCards from "./pass_cards.js";
 import * as Statistics from "./statistics.js";
 import { debugMode, onCanvasRightClick, resizeCanvas } from "./main.js";
+import IndividualCard from "./individual_card.js";
 
 export type Position = "south" | "west" | "north" | "east";
+
+// in the play order (clock-wise)
+const ALL_POSITIONS: Position[] = ["south", "west", "north", "east"];
 
 export type Pass = "left" | "right" | "across";
 
@@ -21,16 +25,13 @@ type AllPlayers = {
 let STAGE: createjs.Stage;
 var PLAYERS: AllPlayers;
 
-// in the play order (clock-wise)
-var PLAYERS_POSITION: Position[] = ["south", "west", "north", "east"];
-
 var ACTIVE_PLAYER: Player = null;
 var PASS_CARDS_PHASE: boolean;
 
 var PASS_CARDS: Pass = "left";
 
 // wait until the card animations end, until we play other cards
-var PLAY_QUEUE: Cards.IndividualCard[] = [];
+var PLAY_QUEUE: IndividualCard[] = [];
 
 export function start(canvas: HTMLCanvasElement) {
     STAGE = new createjs.Stage(canvas);
@@ -92,8 +93,8 @@ export function start(canvas: HTMLCanvasElement) {
 }
 
 export function drawCards() {
-    for (let a = 0; a < PLAYERS_POSITION.length; a++) {
-        const position = PLAYERS_POSITION[a];
+    for (let a = 0; a < ALL_POSITIONS.length; a++) {
+        const position = ALL_POSITIONS[a];
         const player = PLAYERS[position];
 
         player.getHand();
@@ -101,8 +102,8 @@ export function drawCards() {
 
     PASS_CARDS_PHASE = true;
 
-    for (var a = 0; a < PLAYERS_POSITION.length; a++) {
-        PLAYERS[PLAYERS_POSITION[a]].yourTurn();
+    for (var a = 0; a < ALL_POSITIONS.length; a++) {
+        PLAYERS[ALL_POSITIONS[a]].yourTurn();
     }
 
     PassCards.select(PASS_CARDS);
@@ -114,8 +115,8 @@ export function drawCards() {
 export function passCards() {
     Message.close();
 
-    for (var a = 0; a < PLAYERS_POSITION.length; a++) {
-        var player: Player = PLAYERS[PLAYERS_POSITION[a]];
+    for (var a = 0; a < ALL_POSITIONS.length; a++) {
+        var player: Player = PLAYERS[ALL_POSITIONS[a]];
 
         if (player.selectedCards.length < 3) {
             Message.open(
@@ -158,8 +159,8 @@ export function passCards() {
         return;
     }
 
-    for (var a = 0; a < PLAYERS_POSITION.length; a++) {
-        PLAYERS[PLAYERS_POSITION[a]].positionCards(400);
+    for (var a = 0; a < ALL_POSITIONS.length; a++) {
+        PLAYERS[ALL_POSITIONS[a]].positionCards(400);
     }
 
     PASS_CARDS_PHASE = false;
@@ -185,8 +186,8 @@ export function passCards() {
 
 export function startRound() {
     // determine who starts playing (who has the 2 of clubs)
-    for (let a = 0; a < PLAYERS_POSITION.length; a++) {
-        const position = PLAYERS_POSITION[a];
+    for (let a = 0; a < ALL_POSITIONS.length; a++) {
+        const position = ALL_POSITIONS[a];
         const player = PLAYERS[position];
 
         if (player.hasCard("clubs", "two")) {
@@ -273,7 +274,7 @@ export function cardPlayed() {
                 Statistics.oneMoreGame(southWon);
             }
 
-            PLAYERS_POSITION.forEach((playerPosition) => {
+            ALL_POSITIONS.forEach((playerPosition) => {
                 const aPlayer = PLAYERS[playerPosition];
 
                 message +=
@@ -333,8 +334,8 @@ function updatePoints() {
     var points = Round.getPoints();
     var gameEnded = false;
 
-    for (var a = 0; a < PLAYERS_POSITION.length; a++) {
-        var position = PLAYERS_POSITION[a];
+    for (var a = 0; a < ALL_POSITIONS.length; a++) {
+        var position = ALL_POSITIONS[a];
 
         var player = PLAYERS[position];
 
@@ -355,11 +356,11 @@ function updatePoints() {
     There's at least one player, but can be more (2 max. ?..)
  */
 function getPlayersWinning() {
-    var position = PLAYERS_POSITION[0];
+    var position = ALL_POSITIONS[0];
     var playersWinning = [PLAYERS[position]];
 
-    for (var a = 1; a < PLAYERS_POSITION.length; a++) {
-        position = PLAYERS_POSITION[a];
+    for (var a = 1; a < ALL_POSITIONS.length; a++) {
+        position = ALL_POSITIONS[a];
         var player = PLAYERS[position];
         var playerPoints = player.getPoints();
         var winningPoints = playersWinning[0].getPoints();
@@ -379,8 +380,8 @@ export function getPlayer(position: Position) {
 }
 
 export function restart() {
-    for (var a = 0; a < PLAYERS_POSITION.length; a++) {
-        var player = PLAYERS[PLAYERS_POSITION[a]];
+    for (var a = 0; a < ALL_POSITIONS.length; a++) {
+        var player = PLAYERS[ALL_POSITIONS[a]];
 
         player.clear();
     }
