@@ -7,7 +7,8 @@ import * as MoveAnimation from "./move_animation.js";
 import * as Message from "./message.js";
 import * as PassCards from "./pass_cards.js";
 import * as Statistics from "./statistics.js";
-import { debugMode, onCanvasRightClick, resizeCanvas } from "./main.js";
+import { debugMode } from "./main.js";
+import { onCanvasRightClick, resizeCanvas } from "./canvas";
 import IndividualCard from "./individual_card.js";
 
 export type Position = "south" | "west" | "north" | "east";

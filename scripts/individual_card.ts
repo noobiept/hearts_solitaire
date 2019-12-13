@@ -3,7 +3,7 @@ import * as Game from "./game.js";
 import * as MoveAnimation from "./move_animation.js";
 import * as Message from "./message.js";
 import { Suit, SuitSymbol, getValueOf } from "./cards.js";
-import { getAsset } from "./main.js";
+import { getAsset } from "./preload";
 
 /*
     One object for each individual card

@@ -1,5 +1,5 @@
 import { getRandomInt } from "@drk4/utilities";
-import { getCanvasDimensions } from "./main.js";
+import { getCanvasDimensions } from "./canvas";
 import IndividualCard from "./individual_card.js";
 
 /**

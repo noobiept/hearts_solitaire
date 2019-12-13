@@ -1,5 +1,6 @@
 import { Pass, passCards, addToStage } from "./game.js";
-import { getAsset, getCanvasDimensions } from "./main.js";
+import { getAsset } from "./preload";
+import { getCanvasDimensions } from "./canvas";
 
 export type ImagesData = {
     [key in Pass]: {

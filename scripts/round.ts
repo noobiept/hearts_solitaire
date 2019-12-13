@@ -1,7 +1,7 @@
 import * as Message from "./message.js";
 import { setAvailable } from "./cards.js";
 import { cardPlayed } from "./game.js";
-import { getCanvasDimensions, CanvasDimensions } from "./main.js";
+import { getCanvasDimensions, CanvasDimensions } from "./canvas";
 import IndividualCard from "./individual_card.js";
 
 var IS_FIRST_TURN: boolean;
