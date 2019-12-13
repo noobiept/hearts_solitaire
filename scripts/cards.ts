@@ -60,7 +60,12 @@ const SYMBOLS_DICT: { [key in SuitSymbol]: number } = {
 var ALL: IndividualCard[] = [];
 var ALL_AVAILABLE: IndividualCard[] = [];
 
-export function init() {
+export interface CardsInitArgs {
+    addToStage: (element: createjs.DisplayObject) => void;
+    onCardClick: (card: IndividualCard, leftButton: boolean) => void;
+}
+
+export function init(args: CardsInitArgs) {
     for (let a = 0; a < ALL_SUITS.length; a++) {
         const suit = ALL_SUITS[a];
 
@@ -69,6 +74,8 @@ export function init() {
             const card = new IndividualCard({
                 suit,
                 suitSymbol,
+                addToStage: args.addToStage,
+                onClick: args.onCardClick,
             });
 
             ALL.push(card);

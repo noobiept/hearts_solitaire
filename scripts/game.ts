@@ -43,7 +43,7 @@ export function start(canvas: HTMLCanvasElement) {
     // need to resize the canvas in the beginning to fit the available width/height (before any element is added)
     resizeCanvas();
 
-    Cards.init();
+    Cards.init({ addToStage, onCardClick });
     MoveAnimation.init();
     Message.init();
     PassCards.init();
@@ -201,7 +201,7 @@ export function startRound() {
     GameMenu.setPlayerTurn(ACTIVE_PLAYER.position);
 }
 
-export function isValidMove(card: IndividualCard) {
+function isValidMove(card: IndividualCard) {
     if (PASS_CARDS_PHASE) {
         return true;
     }
@@ -328,6 +328,17 @@ export function cardPlayed() {
         ACTIVE_PLAYER.yourTurn();
 
         GameMenu.setPlayerTurn(ACTIVE_PLAYER.position);
+    }
+}
+
+function onCardClick(card: IndividualCard, leftButton: boolean) {
+    Message.close();
+
+    if (leftButton) {
+        // check if valid move
+        if (isValidMove(card)) {
+            addCardPlayQueue(card);
+        }
     }
 }
 

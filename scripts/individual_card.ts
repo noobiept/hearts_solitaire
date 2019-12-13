@@ -1,7 +1,5 @@
 import Player from "./player.js";
-import * as Game from "./game.js";
 import * as MoveAnimation from "./move_animation.js";
-import * as Message from "./message.js";
 import { Suit, SuitSymbol, getValueOf } from "./cards.js";
 import { getAsset } from "./preload";
 
@@ -11,6 +9,8 @@ import { getAsset } from "./preload";
 export interface IndividualCardArgs {
     suit: Suit;
     suitSymbol: SuitSymbol;
+    addToStage: (element: createjs.DisplayObject) => void;
+    onClick: (card: IndividualCard, leftButton: boolean) => void;
 }
 
 export default class IndividualCard {
@@ -20,6 +20,9 @@ export default class IndividualCard {
     private showingFront: boolean;
 
     private click_f: Function | null;
+    private addToStage: (element: createjs.DisplayObject) => void;
+    private onClick: (card: IndividualCard, leftButton: boolean) => void;
+
     readonly suit: Suit;
     readonly suitSymbol: SuitSymbol;
     readonly symbolValue: number;
@@ -48,8 +51,10 @@ export default class IndividualCard {
 
         this.moveAnimation = new MoveAnimation.Move(this.bitmap);
         this.click_f = null;
+        this.addToStage = args.addToStage;
+        this.onClick = args.onClick;
 
-        Game.addToStage(this.bitmap);
+        args.addToStage(this.bitmap);
     }
 
     setPosition(x: number, y: number) {
@@ -102,19 +107,11 @@ export default class IndividualCard {
     }
 
     clicked(event: createjs.MouseEvent) {
-        Message.close();
-
-        // left click
-        if (event.nativeEvent.button == 0) {
-            // check if valid move
-            if (Game.isValidMove(this)) {
-                Game.addCardPlayQueue(this);
-            }
-        }
+        this.onClick(this, event.nativeEvent.button === 0);
     }
 
     show() {
-        Game.addToStage(this.bitmap); // to force it to up in the stack to be drawn on top of other stuff
+        this.addToStage(this.bitmap); // to force it to up in the stack to be drawn on top of other stuff
         this.bitmap.visible = true;
     }
 
@@ -132,11 +129,6 @@ export default class IndividualCard {
 
             this.showingFront = false;
         }
-    }
-
-    remove() {
-        this.setClickEvent(false);
-        Game.removeFromStage(this.bitmap);
     }
 
     getX() {
