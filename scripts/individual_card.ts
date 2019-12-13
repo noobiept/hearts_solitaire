@@ -2,7 +2,7 @@ import Player from "./player.js";
 import * as Game from "./game.js";
 import * as MoveAnimation from "./move_animation.js";
 import * as Message from "./message.js";
-import { Suit, SuitSymbol } from "./cards.js";
+import { Suit, SuitSymbol, getValueOf } from "./cards.js";
 import { getAsset } from "./main.js";
 
 /*
@@ -14,14 +14,16 @@ export interface IndividualCardArgs {
 }
 
 export default class IndividualCard {
-    bitmap: createjs.Bitmap;
-    frontImage: HTMLImageElement;
-    backImage: HTMLImageElement;
-    showingFront: boolean;
+    private bitmap: createjs.Bitmap;
+    private frontImage: HTMLImageElement;
+    private backImage: HTMLImageElement;
+    private showingFront: boolean;
 
-    click_f: Function | null;
-    suit: Suit;
-    suitSymbol: SuitSymbol;
+    private click_f: Function | null;
+    readonly suit: Suit;
+    readonly suitSymbol: SuitSymbol;
+    readonly symbolValue: number;
+
     player!: Player;
     moveAnimation: MoveAnimation.Move;
     selected: boolean;
@@ -32,6 +34,7 @@ export default class IndividualCard {
     constructor(args: IndividualCardArgs) {
         this.suit = args.suit;
         this.suitSymbol = args.suitSymbol;
+        this.symbolValue = getValueOf(args.suitSymbol);
 
         var imageId = this.suitSymbol + "_of_" + this.suit;
 

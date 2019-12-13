@@ -37,6 +37,7 @@
         "dev:rollup": "rollup --config rollup.config.js --watch",
         "dev:update_libraries": "gulp update_libraries",
         "dev:server": "light-server --serve . --port 8000 --open --quiet --watchexp \"scripts/**/*.js,css/**,index.html\"",
+        "tsc": "tsc --watch",
         "build": "npm-run-all --serial build:* test",
         "build:clean": "rimraf build/",
         "build:tsc": "tsc",

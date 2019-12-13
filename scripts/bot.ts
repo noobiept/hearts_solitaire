@@ -2,14 +2,7 @@ import Player, { PlayerArgs } from "./player.js";
 import * as Round from "./round.js";
 import * as Game from "./game.js";
 import IndividualCard from "./individual_card.js";
-import {
-    ALL_SUITS,
-    sortCardsBySymbol,
-    cardEqualOrHigherThan,
-    cardHigherThan,
-    Suit,
-    cardLowerThan,
-} from "./cards.js";
+import { ALL_SUITS, sortCardsBySymbol, getValueOf, Suit } from "./cards.js";
 
 interface BotArgs extends PlayerArgs {}
 
@@ -102,7 +95,7 @@ export default class Bot extends Player {
             var spadesCards = this.cards["spades"];
 
             for (let a = 0; a < spadesCards.length; a++) {
-                if (cardEqualOrHigherThan(spadesCards[a], "queen")) {
+                if (spadesCards[a].symbolValue >= getValueOf("queen")) {
                     aboveQueenSpades = true;
                     break;
                 }
@@ -148,9 +141,12 @@ export default class Bot extends Player {
         // check if we have cards of that suit
         if (cards.length > 0) {
             // if a card higher than the queen of spades has been played, we play queen of spades (if we have it)
-            if (leadSuit == "spades" && cardHigherThan(leadCard, "queen")) {
+            if (
+                leadSuit == "spades" &&
+                leadCard.symbolValue > getValueOf("queen")
+            ) {
                 for (let a = 0; a < cards.length; a++) {
-                    card = cards[a];
+                    const card = cards[a];
 
                     if (card.suitSymbol === "queen") {
                         Game.addCardPlayQueue(card);
@@ -160,36 +156,36 @@ export default class Bot extends Player {
             }
 
             // find the highest value played in the turn
-            var highestSymbol = leadCard.suitSymbol;
+            let highestSymbol = leadCard.symbolValue;
 
             for (let a = 1; a < cardsPlayed.length; a++) {
-                card = cardsPlayed[a];
+                const card = cardsPlayed[a];
 
                 // only the cards of the same suit as the lead matter
-                if (card.suit == leadSuit) {
-                    if (cardHigherThan(card, highestSymbol)) {
-                        highestSymbol = card.suitSymbol;
+                if (card.suit === leadSuit) {
+                    if (card.symbolValue > highestSymbol) {
+                        highestSymbol = card.symbolValue;
                     }
                 }
             }
 
-            var closestBelow: IndividualCard | null = null;
-            var closestAbove: IndividualCard | null = null;
+            let closestBelow: IndividualCard | null = null;
+            let closestAbove: IndividualCard | null = null;
 
             // from the cards we have, find the closest to the highest card played
             for (let a = 0; a < cards.length; a++) {
-                var card = cards[a];
+                const card = cards[a];
 
-                if (cardLowerThan(card, highestSymbol)) {
+                if (card.symbolValue < highestSymbol) {
                     if (closestBelow === null) {
                         closestBelow = card;
-                    } else if (cardLowerThan(closestBelow, card.suitSymbol)) {
+                    } else if (closestBelow.symbolValue < card.symbolValue) {
                         closestBelow = card;
                     }
-                } else if (cardHigherThan(card, highestSymbol)) {
+                } else if (card.symbolValue > highestSymbol) {
                     if (closestAbove === null) {
                         closestAbove = card;
-                    } else if (cardHigherThan(closestAbove, card.suitSymbol)) {
+                    } else if (closestAbove.symbolValue > card.symbolValue) {
                         closestAbove = card;
                     }
                 }
@@ -221,20 +217,19 @@ export default class Bot extends Player {
             // try to play a spades if we have any above the queen
             // otherwise play the highest diamonds card
             if (isFirstTurn) {
-                var spadesCards = this.cards["spades"];
+                const spadesCards = this.cards["spades"];
 
                 for (let a = spadesCards.length - 1; a >= 0; a--) {
-                    card = spadesCards[a];
+                    const card = spadesCards[a];
 
-                    if (cardHigherThan(card, "queen")) {
+                    if (card.symbolValue > getValueOf("queen")) {
                         Game.addCardPlayQueue(card);
                         return;
                     }
                 }
 
-                var suits: Suit[] = ["diamonds"];
-
-                var highest = this.getHighestCard(suits);
+                const suits: Suit[] = ["diamonds"];
+                const highest = this.getHighestCard(suits);
 
                 if (highest !== null) {
                     Game.addCardPlayQueue(highest);
@@ -249,7 +244,7 @@ export default class Bot extends Player {
                     if (spadesCards.length > 0) {
                         Game.addCardPlayQueue(spadesCards[0]);
                     } else {
-                        var heartsCards = this.cards["hearts"];
+                        const heartsCards = this.cards["hearts"];
 
                         Game.addCardPlayQueue(
                             heartsCards[heartsCards.length - 1]
@@ -262,10 +257,10 @@ export default class Bot extends Player {
             // play a hearts if we have it
             // otherwise just play the highest symbol we have
             else {
-                var spadesCards = this.cards["spades"];
+                const spadesCards = this.cards["spades"];
 
                 for (let a = 0; a < spadesCards.length; a++) {
-                    card = spadesCards[a];
+                    const card = spadesCards[a];
 
                     if (card.suitSymbol === "queen") {
                         Game.addCardPlayQueue(card);
@@ -305,9 +300,9 @@ export default class Bot extends Player {
             highest = highestCards[0];
 
             for (a = 1; a < highestCards.length; a++) {
-                var card = highestCards[a];
+                const card = highestCards[a];
 
-                if (cardHigherThan(card, highest.suitSymbol)) {
+                if (card.symbolValue > highest.symbolValue) {
                     highest = card;
                 }
             }
@@ -317,23 +312,22 @@ export default class Bot extends Player {
     }
 
     getLowestCard(suits: Suit[]) {
-        var lowestCards = [];
-        var a;
+        const lowestCards = [];
 
-        for (a = 0; a < suits.length; a++) {
-            var cards = this.cards[suits[a]];
+        for (let a = 0; a < suits.length; a++) {
+            const cards = this.cards[suits[a]];
 
             if (cards.length > 0) {
                 lowestCards.push(cards[0]);
             }
         }
 
-        var lowest = lowestCards[0];
+        let lowest = lowestCards[0];
 
-        for (a = 1; a < lowestCards.length; a++) {
-            var card = lowestCards[a];
+        for (let a = 1; a < lowestCards.length; a++) {
+            const card = lowestCards[a];
 
-            if (cardLowerThan(card, lowest.suitSymbol)) {
+            if (card.symbolValue < lowest.symbolValue) {
                 lowest = card;
             }
         }

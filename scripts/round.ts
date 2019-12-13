@@ -1,5 +1,5 @@
 import * as Message from "./message.js";
-import { setAvailable, cardHigherThan } from "./cards.js";
+import { setAvailable } from "./cards.js";
 import { cardPlayed } from "./game.js";
 import { getCanvasDimensions, CanvasDimensions } from "./main.js";
 import IndividualCard from "./individual_card.js";
@@ -212,7 +212,7 @@ function determineWinner() {
     var highest = cards[0];
 
     for (let a = 1; a < cards.length; a++) {
-        if (cardHigherThan(cards[a], highest.suitSymbol)) {
+        if (cards[a].symbolValue > highest.symbolValue) {
             highest = cards[a];
         }
     }

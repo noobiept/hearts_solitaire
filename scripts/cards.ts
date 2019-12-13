@@ -24,7 +24,7 @@ export type SuitSymbol =
     | "king"
     | "ace";
 
-export const ALL_SYMBOLS: SuitSymbol[] = [
+const ALL_SYMBOLS: SuitSymbol[] = [
     "two",
     "three",
     "four",
@@ -41,7 +41,7 @@ export const ALL_SYMBOLS: SuitSymbol[] = [
 ];
 
 // the value represents the order of the symbols (ie three is bigger than two, queen is bigger than jack)
-export const SYMBOLS_DICT: { [key in SuitSymbol]: number } = {
+const SYMBOLS_DICT: { [key in SuitSymbol]: number } = {
     two: 2,
     three: 3,
     four: 4,
@@ -83,38 +83,11 @@ export function init() {
  * Sort the cards based on the symbol value (4 > 3, queen > jack, ace > king, etc).
  */
 export function sortCardsBySymbol(cards: IndividualCard[]) {
-    cards.sort((a, b) => {
-        const aValue = SYMBOLS_DICT[a.suitSymbol];
-        const bValue = SYMBOLS_DICT[b.suitSymbol];
-
-        return aValue - bValue;
-    });
-
-    return cards;
+    return cards.sort((a, b) => a.symbolValue - b.symbolValue);
 }
 
-export function cardEqualOrHigherThan(
-    card: IndividualCard,
-    symbol: SuitSymbol
-) {
-    const cardValue = SYMBOLS_DICT[card.suitSymbol];
-    const refValue = SYMBOLS_DICT[symbol];
-
-    return cardValue >= refValue;
-}
-
-export function cardHigherThan(card: IndividualCard, symbol: SuitSymbol) {
-    const cardValue = SYMBOLS_DICT[card.suitSymbol];
-    const refValue = SYMBOLS_DICT[symbol];
-
-    return cardValue > refValue;
-}
-
-export function cardLowerThan(card: IndividualCard, symbol: SuitSymbol) {
-    const cardValue = SYMBOLS_DICT[card.suitSymbol];
-    const refValue = SYMBOLS_DICT[symbol];
-
-    return cardValue < refValue;
+export function getValueOf(symbol: SuitSymbol) {
+    return SYMBOLS_DICT[symbol];
 }
 
 /*
