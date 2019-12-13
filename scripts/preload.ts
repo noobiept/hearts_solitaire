@@ -82,7 +82,7 @@ export function init(args: PreloadInitArgs) {
     ) {
         args.duringLoading((event.progress * 100) | 0);
     } as any);
-    PRELOAD.addEventListener("complete", function() {});
+    PRELOAD.addEventListener("complete", args.onEnd);
     PRELOAD.loadManifest(manifest, true);
 }
 
