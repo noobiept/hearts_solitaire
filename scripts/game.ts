@@ -277,9 +277,10 @@ export function cardPlayed() {
 
             ALL_POSITIONS.forEach((playerPosition) => {
                 const aPlayer = PLAYERS[playerPosition];
+                const positionText =
+                    playerPosition === "south" ? "south (you)" : playerPosition;
 
-                message +=
-                    aPlayer.position + ": " + aPlayer.getPoints() + "<br />";
+                message += positionText + ": " + aPlayer.getPoints() + "<br />";
             });
 
             Message.openModal("Round ended", message, () => {
