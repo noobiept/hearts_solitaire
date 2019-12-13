@@ -1,4 +1,4 @@
-import { StatsData } from "./statistics.js";
+import { StatsData } from "./statistics";
 
 export interface AppData {
     hearts_statistics?: StatsData;

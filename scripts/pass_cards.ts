@@ -1,4 +1,4 @@
-import { Pass, passCards, addToStage } from "./game.js";
+import { Pass, passCards, addToStage } from "./game";
 import { getAsset } from "./preload";
 import { getCanvasDimensions } from "./canvas";
 

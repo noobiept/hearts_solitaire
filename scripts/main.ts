@@ -1,8 +1,8 @@
-import * as AppStorage from "./app_storage.js";
-import * as Statistics from "./statistics.js";
+import * as AppStorage from "./app_storage";
+import * as Statistics from "./statistics";
 import * as Canvas from "./canvas";
 import * as Preload from "./preload";
-import { start } from "./game.js";
+import { start } from "./game";
 import "../css/style.css";
 
 /*

@@ -1,4 +1,4 @@
-import { setData } from "./app_storage.js";
+import { setData } from "./app_storage";
 
 export interface StatsData {
     games_played: number;

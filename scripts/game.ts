@@ -1,15 +1,15 @@
-import Player from "./player.js";
-import Bot from "./bot.js";
-import * as Cards from "./cards.js";
-import * as Round from "./round.js";
-import * as GameMenu from "./game_menu.js";
-import * as MoveAnimation from "./move_animation.js";
-import * as Message from "./message.js";
-import * as PassCards from "./pass_cards.js";
-import * as Statistics from "./statistics.js";
-import { debugMode } from "./main.js";
+import Player from "./player";
+import Bot from "./bot";
+import * as Cards from "./cards";
+import * as Round from "./round";
+import * as GameMenu from "./game_menu";
+import * as MoveAnimation from "./move_animation";
+import * as Message from "./message";
+import * as PassCards from "./pass_cards";
+import * as Statistics from "./statistics";
+import { debugMode } from "./main";
 import { onCanvasRightClick, resizeCanvas } from "./canvas";
-import IndividualCard from "./individual_card.js";
+import IndividualCard from "./individual_card";
 
 export type Position = "south" | "west" | "north" | "east";
 

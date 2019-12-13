@@ -32,6 +32,7 @@ A hearts solitaire game written in typescript.
 # Commands
 
 -   `npm run dev` (Compile and run the game locally on `localhost:8000/`)
+-   `npm run build` (Build the release distribution of the game (placed in the `/release/` directory))
 
 # Images
 

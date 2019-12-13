@@ -1,8 +1,8 @@
-import Player, { PlayerArgs } from "./player.js";
-import * as Round from "./round.js";
-import * as Game from "./game.js";
-import IndividualCard from "./individual_card.js";
-import { ALL_SUITS, sortCardsBySymbol, getValueOf, Suit } from "./cards.js";
+import Player, { PlayerArgs } from "./player";
+import * as Round from "./round";
+import * as Game from "./game";
+import IndividualCard from "./individual_card";
+import { ALL_SUITS, sortCardsBySymbol, getValueOf, Suit } from "./cards";
 
 interface BotArgs extends PlayerArgs {}
 

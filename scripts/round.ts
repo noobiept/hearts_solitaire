@@ -1,8 +1,8 @@
-import * as Message from "./message.js";
-import { setAvailable } from "./cards.js";
-import { cardPlayed } from "./game.js";
+import * as Message from "./message";
+import { setAvailable } from "./cards";
+import { cardPlayed } from "./game";
 import { getCanvasDimensions, CanvasDimensions } from "./canvas";
-import IndividualCard from "./individual_card.js";
+import IndividualCard from "./individual_card";
 
 var IS_FIRST_TURN: boolean;
 var IS_HEARTS_BROKEN: boolean;

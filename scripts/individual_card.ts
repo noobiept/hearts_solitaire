@@ -1,6 +1,6 @@
-import Player from "./player.js";
-import * as MoveAnimation from "./move_animation.js";
-import { Suit, SuitSymbol, getValueOf } from "./cards.js";
+import Player from "./player";
+import * as MoveAnimation from "./move_animation";
+import { Suit, SuitSymbol, getValueOf } from "./cards";
 import { getAsset } from "./preload";
 
 /*

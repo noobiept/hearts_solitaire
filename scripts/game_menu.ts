@@ -1,10 +1,10 @@
-import * as Statistics from "./statistics.js";
+import * as Statistics from "./statistics";
 import {
     Position,
     restart as gameRestart,
     getPlayer,
     ALL_POSITIONS,
-} from "./game.js";
+} from "./game";
 
 type ScoresData = {
     [key in Position]: HTMLElement;
