@@ -22,22 +22,22 @@ export type PlayerCards = {
 };
 
 export default class Player {
-    cards: PlayerCards;
-
     static startingCards = 13;
-    cardsCount: number;
+    static step = 40;
+
+    readonly cards: PlayerCards;
+    readonly isBot: boolean;
+    readonly selectedCards: IndividualCard[];
 
     // these are used for the positioning
-    centerX = 0;
-    centerY = 0;
-    horizontalOrientation = true;
-    static step = 40;
+    private centerX = 0;
+    private centerY = 0;
+    private horizontalOrientation = true;
     position: Position;
-    selectedCards: IndividualCard[];
 
-    points: number;
-    isBot: boolean;
-    show: boolean;
+    private cardsCount: number;
+    private points: number;
+    private show: boolean;
 
     constructor(args: PlayerArgs) {
         if (typeof args.isBot === "undefined") {
@@ -308,8 +308,15 @@ export default class Player {
         return cards;
     }
 
-    cardCount() {
+    getCardsCount() {
         return this.cardsCount;
+    }
+
+    getCenterPosition() {
+        return {
+            x: this.centerX,
+            y: this.centerY,
+        };
     }
 
     addCard(card: IndividualCard) {

@@ -250,7 +250,7 @@ export function cardPlayed() {
     if (winner) {
         // check if the round has ended (when there's no more cards to be played)
         // we can check in any player (since they all have the same amount of cards)
-        if (ACTIVE_PLAYER.cardCount() === 0) {
+        if (ACTIVE_PLAYER.getCardsCount() === 0) {
             // round ended
             // update the points
             var gameEnded = updatePoints();

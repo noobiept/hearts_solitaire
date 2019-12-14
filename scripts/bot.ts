@@ -111,7 +111,7 @@ export default class Bot extends Player {
 
             if (
                 isHeartsBroken ||
-                this.cards["hearts"].length === this.cardsCount
+                this.cards["hearts"].length === this.getCardsCount()
             ) {
                 suits.push("hearts");
             }

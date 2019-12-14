@@ -119,7 +119,7 @@ export function setAvailable(card: IndividualCard) {
  */
 export function isMoving() {
     for (var a = 0; a < ALL.length; a++) {
-        if (ALL[a].moveAnimation.isMoving) {
+        if (ALL[a].moveAnimation.isMoving()) {
             return true;
         }
     }

@@ -49,7 +49,7 @@ export function isValidMove(card: IndividualCard) {
             if (card.suit === "hearts") {
                 if (!IS_HEARTS_BROKEN) {
                     // check if you only have hearts left
-                    if (player.cards.hearts.length == player.cardCount()) {
+                    if (player.cards.hearts.length == player.getCardsCount()) {
                         return true;
                     } else {
                         Message.open(
@@ -178,11 +178,12 @@ export function getTurnWinner() {
             IS_FIRST_TURN = false;
         }
 
-        var winner = determineWinner();
+        const winner = determineWinner();
 
-        for (var a = 0; a < CARDS.length; a++) {
-            CARDS[a].moveAndHide(winner.centerX, winner.centerY, 500);
-        }
+        CARDS.forEach((card) => {
+            const { x, y } = winner.getCenterPosition();
+            card.moveAndHide(x, y, 500);
+        });
 
         CURRENT_TURN++;
         clearTurn();

@@ -26,9 +26,9 @@ export default class IndividualCard {
     readonly suit: Suit;
     readonly suitSymbol: SuitSymbol;
     readonly symbolValue: number;
+    readonly moveAnimation: MoveAnimation.Move;
 
     player!: Player;
-    moveAnimation: MoveAnimation.Move;
     selected: boolean;
 
     static width = 150;

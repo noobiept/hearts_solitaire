@@ -7,24 +7,24 @@ export function init() {
 }
 
 export class Move {
-    duration = 0;
-    count = 0;
-    element: createjs.DisplayObject;
-    moveX = 0;
-    moveY = 0;
-    destX = 0;
-    destY = 0;
-    callback: (() => any) | null;
-    isMoving: boolean;
+    private duration = 0;
+    private count = 0;
+    private element: createjs.DisplayObject;
+    private moveX = 0;
+    private moveY = 0;
+    private destX = 0;
+    private destY = 0;
+    private callback: (() => any) | null;
+    private moving: boolean;
 
     constructor(element: createjs.DisplayObject) {
         this.element = element;
         this.callback = null;
-        this.isMoving = false;
+        this.moving = false;
     }
 
     start(destX: number, destY: number, duration: number, callback: () => any) {
-        this.isMoving = true;
+        this.moving = true;
         var currentX = this.element.x;
         var currentY = this.element.y;
 
@@ -61,11 +61,11 @@ export class Move {
     }
 
     end() {
-        if (!this.isMoving) {
+        if (!this.moving) {
             return;
         }
 
-        this.isMoving = false;
+        this.moving = false;
         this.element.x = this.destX;
         this.element.y = this.destY;
 
@@ -79,10 +79,14 @@ export class Move {
     }
 
     clear() {
-        this.isMoving = false;
+        this.moving = false;
 
         var index = ACTIVE.indexOf(this);
         ACTIVE.splice(index, 1);
+    }
+
+    isMoving() {
+        return this.moving;
     }
 
     tick(event: createjs.TickerEvent) {
