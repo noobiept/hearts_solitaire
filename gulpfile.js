@@ -3,6 +3,7 @@ const rimraf = require("rimraf");
 const fs = require("fs");
 const merge = require("merge-stream");
 const path = require("path");
+const cleanCSS = require("gulp-clean-css");
 
 const PACKAGE = JSON.parse(fs.readFileSync("./package.json"));
 const RELEASE_PATH = `release/${PACKAGE.name} ${PACKAGE.version}`;
@@ -27,6 +28,12 @@ function cleanReleaseDirectory(cb) {
     });
 }
 
+function minimizeCss() {
+    return src("build/*.css")
+        .pipe(cleanCSS())
+        .pipe(dest("build/"));
+}
+
 function copyReleaseFiles(cb) {
     const paths = [
         { src: "build/**", dest: path.join(RELEASE_PATH, "/build") },
@@ -39,5 +46,12 @@ function copyReleaseFiles(cb) {
     return merge(tasks);
 }
 
-exports.update_libraries = series(cleanLibrariesDirectory, copyLibraries);
-exports.release = series(cleanReleaseDirectory, copyReleaseFiles);
+const updateLibrariesTask = series(cleanLibrariesDirectory, copyLibraries);
+
+exports.update_libraries = updateLibrariesTask;
+exports.release = series(
+    updateLibrariesTask,
+    minimizeCss,
+    cleanReleaseDirectory,
+    copyReleaseFiles
+);
