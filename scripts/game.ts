@@ -23,6 +23,7 @@ type AllPlayers = {
     [key in Position]: Player;
 };
 
+const GAME_OVER_LIMIT = 100;
 let STAGE: createjs.Stage;
 var PLAYERS: AllPlayers;
 
@@ -253,37 +254,58 @@ export function cardPlayed() {
         if (ACTIVE_PLAYER.getCardsCount() === 0) {
             // round ended
             // update the points
-            var gameEnded = updatePoints();
-            var message = "";
+            const gameEnded = updatePoints();
+            const message = document.createElement("div");
 
             if (gameEnded) {
-                message += "Game Ended!<br />";
+                const winners = getPlayersWinning();
+                let southWon = false; // see if the human player won
 
-                var winners = getPlayersWinning();
-                var southWon = false; // see if the human player won
-
-                for (var a = 0; a < winners.length; a++) {
-                    var position = winners[a].position;
-
-                    message += position + " Won!<br /><br />";
+                for (let a = 0; a < winners.length; a++) {
+                    const position = winners[a].position;
 
                     if (position == "south") {
                         southWon = true;
+                        break;
                     }
                 }
 
                 Statistics.oneMoreGame(southWon);
             }
 
-            ALL_POSITIONS.forEach((playerPosition) => {
-                const aPlayer = PLAYERS[playerPosition];
-                const positionText =
-                    playerPosition === "south" ? "south (you)" : playerPosition;
-
-                message += positionText + ": " + aPlayer.getPoints() + "<br />";
+            const sorted = Object.entries(PLAYERS).sort((a, b) => {
+                return a[1].getPoints() - b[1].getPoints();
             });
+            const [_, firstPlayer] = sorted[0];
+            const currentBestScore = firstPlayer.getPoints();
 
-            Message.openModal("Round ended", message, () => {
+            sorted.forEach(([playerPosition, aPlayer]) => {
+                const playerScore = document.createElement("div");
+                const points = aPlayer.getPoints();
+
+                // add some different styling for the first position, and the human player scores
+                // there can be more than 1 player winning
+                let positionText = playerPosition;
+                if (positionText === "south") {
+                    positionText = "south (you)";
+                    playerScore.classList.add("player");
+                }
+                let text = `${positionText}: ${points}`;
+
+                if (points === currentBestScore) {
+                    playerScore.classList.add("firstPlace");
+
+                    if (gameEnded) {
+                        text += " - winner!";
+                    }
+                }
+
+                playerScore.innerText = text;
+                message.appendChild(playerScore);
+            });
+            const title = gameEnded ? "Game Over!" : "Round Ended!";
+
+            Message.openModal(title, message.innerHTML, () => {
                 if (gameEnded) {
                     restart();
                 } else {
@@ -344,17 +366,16 @@ function onCardClick(card: IndividualCard, leftButton: boolean) {
 }
 
 function updatePoints() {
-    var points = Round.getPoints();
-    var gameEnded = false;
+    const points = Round.getPoints();
+    let gameEnded = false;
 
-    for (var a = 0; a < ALL_POSITIONS.length; a++) {
-        var position = ALL_POSITIONS[a];
-
-        var player = PLAYERS[position];
+    for (let a = 0; a < ALL_POSITIONS.length; a++) {
+        const position = ALL_POSITIONS[a];
+        const player = PLAYERS[position];
 
         player.addPoints(points[position]);
 
-        if (player.getPoints() > 100) {
+        if (player.getPoints() > GAME_OVER_LIMIT) {
             gameEnded = true;
         }
     }
@@ -430,7 +451,7 @@ export function tick() {
 /**
  * Reposition/resize the game elements, based on the current available width/height of the window.
  */
-export function resize() {
+function resize() {
     const dimensions = resizeCanvas();
     PassCards.setPosition(dimensions.width / 2, dimensions.height / 2);
 

@@ -53,3 +53,13 @@ body {
     min-height: 150px;
     font-size: 140%;
 }
+
+/* Dialog Message */
+
+.firstPlace {
+    color: blue;
+}
+
+.player {
+    font-weight: bold;
+}

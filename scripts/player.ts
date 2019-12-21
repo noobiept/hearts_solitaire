@@ -28,13 +28,11 @@ export default class Player {
     readonly cards: PlayerCards;
     readonly isBot: boolean;
     readonly selectedCards: IndividualCard[];
+    readonly position: Position;
 
-    // these are used for the positioning
     private centerX = 0;
     private centerY = 0;
     private horizontalOrientation = true;
-    position: Position;
-
     private cardsCount: number;
     private points: number;
     private show: boolean;
