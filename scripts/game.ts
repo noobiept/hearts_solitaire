@@ -279,28 +279,37 @@ export function cardPlayed() {
             const [_, firstPlayer] = sorted[0];
             const currentBestScore = firstPlayer.getPoints();
 
-            sorted.forEach(([playerPosition, aPlayer]) => {
+            sorted.forEach(([positionValue, aPlayer]) => {
+                const playerPosition = document.createElement("div");
                 const playerScore = document.createElement("div");
                 const points = aPlayer.getPoints();
 
                 // add some different styling for the first position, and the human player scores
                 // there can be more than 1 player winning
-                let positionText = playerPosition;
+                let positionText = positionValue;
                 if (positionText === "south") {
                     positionText = "south (you)";
+                    playerPosition.classList.add("player");
                     playerScore.classList.add("player");
                 }
-                let text = `${positionText}: ${points}`;
+                let scoreText = points.toString();
 
                 if (points === currentBestScore) {
                     playerScore.classList.add("firstPlace");
+                    playerPosition.classList.add("firstPlace");
 
                     if (gameEnded) {
-                        text += " - winner!";
+                        scoreText += " - winner!";
                     }
+                } else if (points >= GAME_OVER_LIMIT) {
+                    playerScore.classList.add("aboveLimit");
+                    playerPosition.classList.add("aboveLimit");
                 }
 
-                playerScore.innerText = text;
+                playerPosition.innerText = positionText;
+                playerScore.innerText = scoreText;
+
+                message.appendChild(playerPosition);
                 message.appendChild(playerScore);
             });
             const title = gameEnded ? "Game Over!" : "Round Ended!";

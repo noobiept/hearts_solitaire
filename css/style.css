@@ -54,10 +54,21 @@ body {
     font-size: 140%;
 }
 
+.dialog .dialogBody {
+    margin: 20px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-column-gap: 20px;
+}
+
 /* Dialog Message */
 
 .firstPlace {
     color: blue;
+}
+
+.aboveLimit {
+    color: darkred;
 }
 
 .player {
