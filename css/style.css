@@ -54,14 +54,14 @@ body {
     font-size: 140%;
 }
 
-.dialog .dialogBody {
-    margin: 20px;
+/* Dialog Message */
+
+#EndRoundContainer {
+    margin: 10px;
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-column-gap: 20px;
 }
-
-/* Dialog Message */
 
 .firstPlace {
     color: blue;

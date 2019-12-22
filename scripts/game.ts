@@ -255,6 +255,7 @@ export function cardPlayed() {
             // update the points
             const gameEnded = updatePoints();
             const message = document.createElement("div");
+            message.id = "EndRoundContainer";
 
             if (gameEnded) {
                 const winners = getPlayersWinning();
@@ -313,7 +314,7 @@ export function cardPlayed() {
             });
             const title = gameEnded ? "Game Over!" : "Round Ended!";
 
-            Message.openModal(title, message.innerHTML, () => {
+            Message.openModal(title, message.outerHTML, () => {
                 if (gameEnded) {
                     restart();
                 } else {
