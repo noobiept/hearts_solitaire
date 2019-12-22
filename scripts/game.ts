@@ -244,7 +244,7 @@ export function playCard(card: IndividualCard) {
 }
 
 export function cardPlayed() {
-    var winner = Round.getTurnWinner();
+    const winner = Round.getTurnWinner();
 
     // turn ended
     if (winner) {
@@ -254,67 +254,17 @@ export function cardPlayed() {
             // round ended
             // update the points
             const gameEnded = updatePoints();
-            const message = document.createElement("div");
-            message.id = "EndRoundContainer";
 
             if (gameEnded) {
                 const winners = getPlayersWinning();
-                let southWon = false; // see if the human player won
-
-                for (let a = 0; a < winners.length; a++) {
-                    const position = winners[a].position;
-
-                    if (position == "south") {
-                        southWon = true;
-                        break;
-                    }
-                }
+                const southWon = winners.some(
+                    (winner) => winner.position === "south"
+                ); // see if the human player won
 
                 Statistics.oneMoreGame(southWon);
             }
 
-            const sorted = Object.entries(PLAYERS).sort((a, b) => {
-                return a[1].getPoints() - b[1].getPoints();
-            });
-            const [_, firstPlayer] = sorted[0];
-            const currentBestScore = firstPlayer.getPoints();
-
-            sorted.forEach(([positionValue, aPlayer]) => {
-                const playerPosition = document.createElement("div");
-                const playerScore = document.createElement("div");
-                const points = aPlayer.getPoints();
-
-                // add some different styling for the first position, and the human player scores
-                // there can be more than 1 player winning
-                let positionText = positionValue;
-                if (positionText === "south") {
-                    positionText = "south (you)";
-                    playerPosition.classList.add("player");
-                    playerScore.classList.add("player");
-                }
-                let scoreText = points.toString();
-
-                if (points === currentBestScore) {
-                    playerScore.classList.add("firstPlace");
-                    playerPosition.classList.add("firstPlace");
-
-                    if (gameEnded) {
-                        scoreText += " - winner!";
-                    }
-                } else if (points >= GAME_OVER_LIMIT) {
-                    playerScore.classList.add("aboveLimit");
-                    playerPosition.classList.add("aboveLimit");
-                }
-
-                playerPosition.innerText = positionText;
-                playerScore.innerText = scoreText;
-
-                message.appendChild(playerPosition);
-                message.appendChild(playerScore);
-            });
-            const title = gameEnded ? "Game Over!" : "Round Ended!";
-
-            Message.openModal(title, message.outerHTML, () => {
+            showEndRoundScores(PLAYERS, gameEnded, () => {
                 if (gameEnded) {
                     restart();
                 } else {
@@ -488,4 +438,59 @@ export function addToStage(element: createjs.DisplayObject) {
  */
 export function removeFromStage(element: createjs.DisplayObject) {
     STAGE.removeChild(element);
+}
+
+/**
+ * Show the end of round/game dialog message with the player's scores.
+ */
+function showEndRoundScores(
+    players: AllPlayers,
+    gameEnded: boolean,
+    onClose: () => void
+) {
+    const message = document.createElement("div");
+    message.id = "EndRoundContainer";
+
+    const sorted = Object.entries(players).sort((a, b) => {
+        return a[1].getPoints() - b[1].getPoints();
+    });
+    const [_, firstPlayer] = sorted[0];
+    const currentBestScore = firstPlayer.getPoints();
+
+    sorted.forEach(([positionValue, aPlayer]) => {
+        const playerPosition = document.createElement("div");
+        const playerScore = document.createElement("div");
+        const points = aPlayer.getPoints();
+
+        // add some different styling for the first position, and the human player scores
+        // there can be more than 1 player winning
+        let positionText = positionValue;
+        if (positionText === "south") {
+            positionText = "south (you)";
+            playerPosition.classList.add("player");
+            playerScore.classList.add("player");
+        }
+        let scoreText = points.toString();
+
+        if (points === currentBestScore) {
+            playerScore.classList.add("firstPlace");
+            playerPosition.classList.add("firstPlace");
+
+            if (gameEnded) {
+                scoreText += " - winner!";
+            }
+        } else if (points >= GAME_OVER_LIMIT) {
+            playerScore.classList.add("aboveLimit");
+            playerPosition.classList.add("aboveLimit");
+        }
+
+        playerPosition.innerText = positionText;
+        playerScore.innerText = scoreText;
+
+        message.appendChild(playerPosition);
+        message.appendChild(playerScore);
+    });
+    const title = gameEnded ? "Game Over!" : "Round Ended!";
+
+    Message.openModal(title, message.outerHTML, onClose);
 }
