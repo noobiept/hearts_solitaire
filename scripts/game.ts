@@ -8,7 +8,7 @@ import * as Message from "./message";
 import * as PassCards from "./pass_cards";
 import * as Statistics from "./statistics";
 import { debugMode } from "./main";
-import { onCanvasRightClick, resizeCanvas } from "./canvas";
+import { resizeCanvas } from "./canvas";
 import IndividualCard from "./individual_card";
 
 export type Position = "south" | "west" | "north" | "east";
@@ -83,15 +83,14 @@ export function start(canvas: HTMLCanvasElement) {
 
     createjs.Ticker.on("tick", tick);
 
-    // called when you press the right button of the mouse
-    // force the cards to move immediately to destination
-    onCanvasRightClick(() => {
-        Round.noMoveAnimationThisTurn();
-        Cards.forceMoveToDestination();
-    });
-
     drawCards();
     window.onresize = resize;
+    window.addEventListener("keypress", (event) => {
+        if (event.code === "KeyF") {
+            Round.noMoveAnimationThisTurn();
+            Cards.forceMoveToDestination();
+        }
+    });
 }
 
 export function drawCards() {

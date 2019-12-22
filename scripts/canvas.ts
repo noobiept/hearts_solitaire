@@ -14,20 +14,6 @@ export function getCanvasElement() {
 }
 
 /**
- * Setup a event listener for when the user right-clicks on the canvas.
- * The context menu is disabled here.
- */
-export function onCanvasRightClick(callback: () => void) {
-    CANVAS.oncontextmenu = (event) => {
-        if (event.button === 2) {
-            callback();
-        }
-
-        return false;
-    };
-}
-
-/**
  * Resize the canvas to fit the available window width/height.
  */
 export function resizeCanvas() {

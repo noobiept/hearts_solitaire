@@ -27,7 +27,11 @@ A hearts solitaire game written in typescript.
     -   Or if you only have hearts left in your hand (if you're starting the round).
 -   Each heart card adds 1 point, and the queen of spades 13 points.
 -   If one player takes all the penalty cards, he gets no points and all the other opponents take 26 points.
--   Right-clicking with the mouse, skips the move animation of the cards.
+
+# Keyboard shortcuts
+
+-   `f`: Skips the move animation of the cards.
+-   `esc` / `enter`: Closes the dialog at the end of the round/game.
 
 # Commands
 
