@@ -1,8 +1,12 @@
 import * as Message from "./message";
 import { setAvailable } from "./cards";
-import { cardPlayed } from "./game";
+import { cardPlayed, Position } from "./game";
 import { getCanvasDimensions, CanvasDimensions } from "./canvas";
 import IndividualCard from "./individual_card";
+
+type RoundCards = {
+    [key in Position]: IndividualCard[];
+};
 
 var IS_FIRST_TURN: boolean;
 var IS_HEARTS_BROKEN: boolean;
@@ -13,11 +17,11 @@ var CARDS: IndividualCard[] = [];
 // lead card in the current turn
 var LEAD_CARD: IndividualCard | undefined;
 
-var POINTS = {
-    south: 0,
-    west: 0,
-    north: 0,
-    east: 0,
+const POINTS_CARDS: RoundCards = {
+    south: [],
+    west: [],
+    north: [],
+    east: [],
 };
 
 var CURRENT_TURN = 1;
@@ -200,75 +204,94 @@ export function cardsPlayed() {
 
 function determineWinner() {
     // get all cards of the suit of the lead
-    var suit = LEAD_CARD!.suit;
-    var cards = [];
-
-    for (let a = 0; a < CARDS.length; a++) {
-        if (CARDS[a].suit === suit) {
-            cards.push(CARDS[a]);
-        }
-    }
+    const suit = LEAD_CARD!.suit;
+    const cards = CARDS.filter((card) => card.suit === suit);
 
     // determine the card with highest symbol (will be the winner)
-    var highest = cards[0];
+    const highest = cards.reduce((high, current) =>
+        current.symbolValue > high.symbolValue ? current : high
+    );
 
-    for (let a = 1; a < cards.length; a++) {
-        if (cards[a].symbolValue > highest.symbolValue) {
-            highest = cards[a];
-        }
-    }
+    // find the cards that matter (add to the points)
+    const pointsCards = CARDS.filter(
+        (card) =>
+            card.suit === "hearts" ||
+            (card.suit === "spades" && card.suitSymbol === "queen")
+    );
 
-    // determine the points
-    // 1 point per hearts card
-    // 13 points for the queen of spades
-    var points = 0;
-
-    for (let a = 0; a < CARDS.length; a++) {
-        var card = CARDS[a];
-
-        if (card.suit === "hearts") {
-            points++;
-        } else if (card.suit === "spades" && card.suitSymbol === "queen") {
-            points += 13;
-        }
-    }
-
-    var player = highest.player;
-    POINTS[player.position] += points;
+    const player = highest.player;
+    POINTS_CARDS[player.position] = POINTS_CARDS[player.position].concat(
+        pointsCards
+    );
 
     return highest.player;
 }
 
-/*
-    Called when the round ends
-    Need to check if a player got all the hearts + queen of spades (if so, all the other players get 26 points)
-    Otherwise the current points stays
- */
+function calculatePoints(cards: IndividualCard[]) {
+    return cards.reduce((total, card) => {
+        if (card.suit === "hearts") {
+            return total + 1;
+        }
 
+        if (card.suit === "spades" && card.suitSymbol === "queen") {
+            return total + 13;
+        }
+
+        return total;
+    }, 0);
+}
+
+/**
+ * Called when the round ends.
+ * Need to check if a player got all the hearts + queen of spades (if so, all the other players get 26 points).
+ * Otherwise just calculate the points normally:
+ *      - Queen of spades 13 points
+ *      - Each heart card 1 point
+ */
 export function getPoints() {
-    if (POINTS.west >= 26) {
-        POINTS.west = 0;
-        POINTS.north = 26;
-        POINTS.east = 26;
-        POINTS.south = 26;
-    } else if (POINTS.north >= 26) {
-        POINTS.west = 26;
-        POINTS.north = 0;
-        POINTS.east = 26;
-        POINTS.south = 26;
-    } else if (POINTS.east >= 26) {
-        POINTS.west = 26;
-        POINTS.north = 26;
-        POINTS.east = 0;
-        POINTS.south = 26;
-    } else if (POINTS.south >= 26) {
-        POINTS.west = 26;
-        POINTS.north = 26;
-        POINTS.east = 26;
-        POINTS.south = 0;
+    if (POINTS_CARDS.west.length >= 14) {
+        return {
+            west: 0,
+            north: 26,
+            east: 26,
+            south: 26,
+        };
     }
 
-    return POINTS;
+    if (POINTS_CARDS.north.length >= 14) {
+        return {
+            west: 26,
+            north: 0,
+            east: 26,
+            south: 26,
+        };
+    }
+
+    if (POINTS_CARDS.east.length >= 14) {
+        return {
+            west: 26,
+            north: 26,
+            east: 0,
+            south: 26,
+        };
+    }
+
+    if (POINTS_CARDS.south.length >= 14) {
+        return {
+            west: 26,
+            north: 26,
+            east: 26,
+            south: 0,
+        };
+    }
+
+    // else, calculate points for each player
+    return {
+        west: calculatePoints(POINTS_CARDS["west"]),
+        north: calculatePoints(POINTS_CARDS["north"]),
+        east: calculatePoints(POINTS_CARDS["east"]),
+        south: calculatePoints(POINTS_CARDS["south"]),
+    };
 }
 
 /*
@@ -293,10 +316,10 @@ function clearTurn() {
 export function clearRound() {
     clearTurn();
 
-    POINTS.south = 0;
-    POINTS.west = 0;
-    POINTS.north = 0;
-    POINTS.east = 0;
+    POINTS_CARDS.south.length = 0;
+    POINTS_CARDS.west.length = 0;
+    POINTS_CARDS.north.length = 0;
+    POINTS_CARDS.east.length = 0;
     CURRENT_TURN = 1;
 
     IS_FIRST_TURN = true;
@@ -317,6 +340,10 @@ export function getLeadCard() {
 
 export function getCurrentTurn() {
     return CURRENT_TURN;
+}
+
+export function getPointsCards() {
+    return POINTS_CARDS;
 }
 
 export function noMoveAnimationThisTurn() {

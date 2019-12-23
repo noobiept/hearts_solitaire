@@ -264,6 +264,7 @@ export function cardPlayed() {
                 Statistics.oneMoreGame(southWon);
             }
 
+            showPointsCards();
             showEndRoundScores(PLAYERS, gameEnded, () => {
                 if (gameEnded) {
                     restart();
@@ -493,4 +494,25 @@ function showEndRoundScores(
     const title = gameEnded ? "Game Over!" : "Round Ended!";
 
     Message.openModal(title, message.outerHTML, onClose);
+}
+
+/**
+ * Show the cards that add to the points that were given to each player, at the end of the round.
+ */
+function showPointsCards() {
+    const pointsCards = Round.getPointsCards();
+
+    ALL_POSITIONS.forEach((position) => {
+        const player = PLAYERS[position];
+        const cards = pointsCards[position];
+
+        cards.sort((a, b) => {
+            if (a.suit !== b.suit) {
+                return 1;
+            }
+
+            return a.symbolValue - b.symbolValue;
+        });
+        player.positionGivenCards(cards);
+    });
 }

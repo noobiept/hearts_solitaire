@@ -216,6 +216,37 @@ export default class Player {
         }
     }
 
+    /**
+     * Position the given cards on the player side.
+     */
+    positionGivenCards(cards: IndividualCard[]) {
+        let x = 0,
+            y = 0,
+            stepX = 0,
+            stepY = 0;
+        const cardsCount = cards.length;
+
+        if (this.horizontalOrientation) {
+            x = this.centerX - (cardsCount / 2) * Player.step;
+            y = this.centerY;
+            stepX = Player.step;
+            stepY = 0;
+        } else {
+            x = this.centerX;
+            y = this.centerY - (cardsCount / 2) * Player.step;
+            stepX = 0;
+            stepY = Player.step;
+        }
+
+        cards.forEach((card) => {
+            card.show();
+            card.setPosition(x, y);
+
+            x += stepX;
+            y += stepY;
+        });
+    }
+
     hasCard(suit: Suit, symbol: SuitSymbol) {
         var array: IndividualCard[] = this.cards[suit];
 
