@@ -240,7 +240,7 @@ export default class Player {
 
         cards.forEach((card) => {
             card.show();
-            card.setPosition(x, y);
+            card.moveTo(x, y, 500);
 
             x += stepX;
             y += stepY;

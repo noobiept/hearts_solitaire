@@ -191,6 +191,7 @@ export function getTurnWinner() {
 
         CURRENT_TURN++;
         clearTurn();
+        hideAllCards();
 
         return winner;
     }
@@ -294,25 +295,27 @@ export function getPoints() {
     };
 }
 
-/*
-    When a round ends, removes the cards and the lead card
+/**
+ * When a round ends, removes the cards and the lead card.
  */
-
 function clearTurn() {
-    for (var a = 0; a < CARDS.length; a++) {
-        setAvailable(CARDS[a]);
-    }
-
+    CARDS.forEach((card) => setAvailable(card));
     CARDS.length = 0;
 
     NO_MOVE_ANIMATION = false;
     LEAD_CARD = undefined;
 }
 
-/*
-    For when restarting the game (clears everything)
+/**
+ * Hide all the cards (show the back of the card).
  */
+function hideAllCards() {
+    CARDS.forEach((card) => card.changeSide(false));
+}
 
+/**
+ * For when restarting the game (clears everything).
+ */
 export function clearRound() {
     clearTurn();
 
