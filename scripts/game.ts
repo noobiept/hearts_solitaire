@@ -253,7 +253,7 @@ export function cardPlayed() {
         if (ACTIVE_PLAYER.getCardsCount() === 0) {
             // round ended
             // update the points
-            const gameEnded = updatePoints();
+            const { gameEnded, points } = updatePoints();
 
             if (gameEnded) {
                 const winners = getPlayersWinning();
@@ -265,7 +265,7 @@ export function cardPlayed() {
             }
 
             showPointsCards();
-            showEndRoundScores(PLAYERS, gameEnded, () => {
+            showEndRoundScores(PLAYERS, gameEnded, points, () => {
                 if (gameEnded) {
                     restart();
                 } else {
@@ -342,7 +342,7 @@ function updatePoints() {
 
     GameMenu.updateScores();
 
-    return gameEnded;
+    return { gameEnded, points };
 }
 
 /*
@@ -447,6 +447,7 @@ export function removeFromStage(element: createjs.DisplayObject) {
 function showEndRoundScores(
     players: AllPlayers,
     gameEnded: boolean,
+    roundPoints: Round.RoundPoints,
     onClose: () => void
 ) {
     const message = document.createElement("div");
@@ -461,7 +462,10 @@ function showEndRoundScores(
     sorted.forEach(([positionValue, aPlayer]) => {
         const playerPosition = document.createElement("div");
         const playerScore = document.createElement("div");
+        const roundScore = document.createElement("div");
+        const winner = document.createElement("div");
         const points = aPlayer.getPoints();
+        const thisRoundPoints = roundPoints[positionValue as Position];
 
         // add some different styling for the first position, and the human player scores
         // there can be more than 1 player winning
@@ -471,25 +475,33 @@ function showEndRoundScores(
             playerPosition.classList.add("player");
             playerScore.classList.add("player");
         }
-        let scoreText = points.toString();
+        const scoreText = points.toString();
+        let roundScoreText =
+            thisRoundPoints > 0 ? ` (+${thisRoundPoints})` : "";
 
         if (points === currentBestScore) {
             playerScore.classList.add("firstPlace");
             playerPosition.classList.add("firstPlace");
+            roundScore.classList.add("firstPlace");
 
             if (gameEnded) {
-                scoreText += " - winner!";
+                winner.classList.add("firstPlace");
+                winner.innerText = "Winner!";
             }
         } else if (points >= GAME_OVER_LIMIT) {
             playerScore.classList.add("aboveLimit");
             playerPosition.classList.add("aboveLimit");
+            roundScore.classList.add("aboveLimit");
         }
 
         playerPosition.innerText = positionText;
         playerScore.innerText = scoreText;
+        roundScore.innerText = roundScoreText;
 
         message.appendChild(playerPosition);
         message.appendChild(playerScore);
+        message.appendChild(roundScore);
+        message.appendChild(winner);
     });
     const title = gameEnded ? "Game Over!" : "Round Ended!";
 

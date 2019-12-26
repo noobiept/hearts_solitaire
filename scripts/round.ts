@@ -4,6 +4,10 @@ import { cardPlayed, Position } from "./game";
 import { getCanvasDimensions, CanvasDimensions } from "./canvas";
 import IndividualCard from "./individual_card";
 
+export type RoundPoints = {
+    [key in Position]: number;
+};
+
 type RoundCards = {
     [key in Position]: IndividualCard[];
 };
