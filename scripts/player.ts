@@ -98,32 +98,83 @@ export default class Player {
 
     updateCenterPosition() {
         const { width, height } = getCanvasDimensions();
+        const canvasHalfWidth = width / 2;
+        const canvasHalfHeight = height / 2;
+        const cardWidth = IndividualCard.width;
+        const cardHeight = IndividualCard.height;
 
         if (this.position === "south") {
-            this.centerX = width / 2;
-            this.centerY = height - IndividualCard.height;
+            this.centerX = canvasHalfWidth;
+            this.centerY = height - cardHeight;
+
             this.horizontalOrientation = true;
         } else if (this.position === "north") {
-            this.centerX = width / 2;
+            this.centerX = canvasHalfWidth;
             this.centerY = 0;
+
             this.horizontalOrientation = true;
         } else if (this.position === "east") {
-            this.centerX = width - IndividualCard.width;
-            this.centerY = height / 2;
+            this.centerX = width - cardWidth;
+            this.centerY = canvasHalfHeight;
+
             this.horizontalOrientation = false;
         } else if (this.position === "west") {
             this.centerX = 0;
-            this.centerY = height / 2;
+            this.centerY = canvasHalfHeight;
+
             this.horizontalOrientation = false;
         } else {
             throw new Error("error, wrong position argument");
         }
     }
 
+    private getPositionValues(cardsCount: number) {
+        if (this.horizontalOrientation) {
+            const allCardsLength =
+                IndividualCard.width + (cardsCount - 1) * Player.step;
+
+            return {
+                x: this.centerX - allCardsLength / 2,
+                y: this.centerY,
+                stepX: Player.step,
+                stepY: 0,
+            };
+        } else {
+            const allCardsLength =
+                IndividualCard.height + (cardsCount - 1) * Player.step;
+
+            return {
+                x: this.centerX,
+                y: this.centerY - allCardsLength / 2,
+                stepX: 0,
+                stepY: Player.step,
+            };
+        }
+    }
+
+    private moveCard(
+        card: IndividualCard,
+        x: number,
+        y: number,
+        animationDuration: number,
+        callback?: (card: IndividualCard) => void
+    ) {
+        card.show();
+
+        if (animationDuration === 0) {
+            card.setPosition(x, y);
+
+            if (card.selected) {
+                this.moveSelectedCard(card, true, animationDuration);
+            }
+        } else {
+            card.moveTo(x, y, animationDuration, callback);
+        }
+    }
+
     positionCards(animationDuration: number) {
-        var x, y, stepX, stepY;
-        var callback;
-        var card: IndividualCard;
+        let callback;
+        let { x, y, stepX, stepY } = this.getPositionValues(this.cardsCount);
 
         if (this.show) {
             callback = function(card: IndividualCard) {
@@ -131,85 +182,33 @@ export default class Player {
             };
         }
 
-        if (this.horizontalOrientation) {
-            x = this.centerX - (this.cardsCount / 2) * Player.step;
-            y = this.centerY;
-            stepX = Player.step;
-            stepY = 0;
-        } else {
-            x = this.centerX;
-            y = this.centerY - (this.cardsCount / 2) * Player.step;
-            stepX = 0;
-            stepY = Player.step;
-        }
-
-        for (var a = 0; a < this.cards.clubs.length; a++) {
-            card = this.cards.clubs[a];
-            card.show();
-
-            if (animationDuration === 0) {
-                card.setPosition(x, y);
-
-                if (card.selected) {
-                    this.moveSelectedCard(card, true, animationDuration);
-                }
-            } else {
-                card.moveTo(x, y, animationDuration, callback);
-            }
+        for (let a = 0; a < this.cards.clubs.length; a++) {
+            const card = this.cards.clubs[a];
+            this.moveCard(card, x, y, animationDuration, callback);
 
             x += stepX;
             y += stepY;
         }
 
-        for (var a = 0; a < this.cards.diamonds.length; a++) {
-            card = this.cards.diamonds[a];
-            card.show();
-
-            if (animationDuration === 0) {
-                card.setPosition(x, y);
-
-                if (card.selected) {
-                    this.moveSelectedCard(card, true, animationDuration);
-                }
-            } else {
-                card.moveTo(x, y, animationDuration, callback);
-            }
+        for (let a = 0; a < this.cards.diamonds.length; a++) {
+            const card = this.cards.diamonds[a];
+            this.moveCard(card, x, y, animationDuration, callback);
 
             x += stepX;
             y += stepY;
         }
 
-        for (var a = 0; a < this.cards.spades.length; a++) {
-            card = this.cards.spades[a];
-            card.show();
-
-            if (animationDuration === 0) {
-                card.setPosition(x, y);
-
-                if (card.selected) {
-                    this.moveSelectedCard(card, true, animationDuration);
-                }
-            } else {
-                card.moveTo(x, y, animationDuration, callback);
-            }
+        for (let a = 0; a < this.cards.spades.length; a++) {
+            const card = this.cards.spades[a];
+            this.moveCard(card, x, y, animationDuration, callback);
 
             x += stepX;
             y += stepY;
         }
 
-        for (var a = 0; a < this.cards.hearts.length; a++) {
-            card = this.cards.hearts[a];
-            card.show();
-
-            if (animationDuration === 0) {
-                card.setPosition(x, y);
-
-                if (card.selected) {
-                    this.moveSelectedCard(card, true, animationDuration);
-                }
-            } else {
-                card.moveTo(x, y, animationDuration, callback);
-            }
+        for (let a = 0; a < this.cards.hearts.length; a++) {
+            const card = this.cards.hearts[a];
+            this.moveCard(card, x, y, animationDuration, callback);
 
             x += stepX;
             y += stepY;
@@ -220,23 +219,8 @@ export default class Player {
      * Position the given cards on the player side.
      */
     positionGivenCards(cards: IndividualCard[]) {
-        let x = 0,
-            y = 0,
-            stepX = 0,
-            stepY = 0;
         const cardsCount = cards.length;
-
-        if (this.horizontalOrientation) {
-            x = this.centerX - (cardsCount / 2) * Player.step;
-            y = this.centerY;
-            stepX = Player.step;
-            stepY = 0;
-        } else {
-            x = this.centerX;
-            y = this.centerY - (cardsCount / 2) * Player.step;
-            stepX = 0;
-            stepY = Player.step;
-        }
+        let { x, y, stepX, stepY } = this.getPositionValues(cardsCount);
 
         cards.forEach((card) => {
             card.show();

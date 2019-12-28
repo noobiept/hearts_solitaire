@@ -27,6 +27,7 @@ export const CARD_SPEED = {
     pass: 400, // pass to the next player
     play: 250, // play the card in the round (to the center)
     back: 500, // back to the player's hand
+    hand: 150, // re-arrange the cards in the player's hand
 };
 const GAME_OVER_LIMIT = 100;
 
@@ -244,7 +245,7 @@ export function playCard(card: IndividualCard) {
         }
     } else {
         player.removeCard(card);
-        player.positionCards(150);
+        player.positionCards(CARD_SPEED.hand);
         Round.playCard(card);
     }
 }
