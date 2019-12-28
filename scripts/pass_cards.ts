@@ -14,8 +14,6 @@ var IMAGES: ImagesData;
 var CURRENT_DIRECTION: Pass;
 
 export function init() {
-    const canvas = getCanvasDimensions();
-
     IMAGES = {
         left: {
             default: getAsset("pass_left"),
@@ -36,15 +34,21 @@ export function init() {
     ELEMENT.visible = false;
     ELEMENT.filters = [];
     ELEMENT.on("click", passCards);
-    ELEMENT.x = canvas.width / 2;
-    ELEMENT.y = canvas.height / 2;
 
+    centerInCanvas();
     addToStage(ELEMENT);
 }
 
-export function setPosition(x: number, y: number) {
-    ELEMENT.x = x;
-    ELEMENT.y = y;
+/**
+ * Position the element around the center of the canvas.
+ */
+export function centerInCanvas() {
+    const canvas = getCanvasDimensions();
+    const imageWidth = ELEMENT.image.width;
+    const imageHeight = ELEMENT.image.height;
+
+    ELEMENT.x = canvas.width / 2 - imageWidth / 2;
+    ELEMENT.y = canvas.height / 2 - imageHeight / 2;
 }
 
 export function show() {
@@ -58,6 +62,9 @@ export function hide() {
 export function select(direction: Pass) {
     CURRENT_DIRECTION = direction;
     ELEMENT.image = IMAGES[direction].default;
+
+    // need to reposition the element, since the image can have different dimensions
+    centerInCanvas();
     show();
 }
 

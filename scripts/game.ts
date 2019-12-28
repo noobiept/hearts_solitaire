@@ -419,7 +419,7 @@ export function tick() {
  */
 function resize() {
     const dimensions = resizeCanvas();
-    PassCards.setPosition(dimensions.width / 2, dimensions.height / 2);
+    PassCards.centerInCanvas();
 
     PLAYERS.north.updateCenterPosition();
     PLAYERS.north.positionCards(0);
