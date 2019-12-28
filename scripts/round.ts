@@ -188,7 +188,7 @@ export function getTurnWinner() {
         const winner = determineWinner();
 
         CARDS.forEach((card) => {
-            const { x, y } = winner.getCenterPosition();
+            const { x, y } = winner.getCardCenterPosition();
             card.moveAndHide(x, y, CARD_SPEED.back);
         });
 

@@ -332,6 +332,27 @@ export default class Player {
         };
     }
 
+    /**
+     * Get the center of the player considering the card dimension (so you can send a card there centered).
+     */
+    getCardCenterPosition() {
+        switch (this.position) {
+            case "north":
+            case "south":
+                return {
+                    x: this.centerX - IndividualCard.width / 2,
+                    y: this.centerY,
+                };
+
+            case "east":
+            case "west":
+                return {
+                    x: this.centerX,
+                    y: this.centerY - IndividualCard.height / 2,
+                };
+        }
+    }
+
     addCard(card: IndividualCard) {
         const suit = card.suit;
 
