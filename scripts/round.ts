@@ -1,6 +1,6 @@
 import * as Message from "./message";
 import { setAvailable } from "./cards";
-import { cardPlayed, Position } from "./game";
+import { cardPlayed, Position, CARD_SPEED } from "./game";
 import { getCanvasDimensions, CanvasDimensions } from "./canvas";
 import IndividualCard from "./individual_card";
 
@@ -151,7 +151,7 @@ export function playCard(card: IndividualCard) {
             throw new Error("error, wrong orientation argument.");
     }
 
-    var animationDuration = 250;
+    var animationDuration = CARD_SPEED.play;
 
     if (NO_MOVE_ANIMATION) {
         animationDuration = 0;
@@ -174,10 +174,9 @@ export function playCard(card: IndividualCard) {
     }
 }
 
-/*
-    Returns null if the round hasn't ended, otherwise returns a reference to the player that won
+/**
+ * Returns null if the round hasn't ended, otherwise returns a reference to the player that won
  */
-
 export function getTurnWinner() {
     // all players played a card, need to determine who won the round
     if (CARDS.length >= 4) {
@@ -190,7 +189,7 @@ export function getTurnWinner() {
 
         CARDS.forEach((card) => {
             const { x, y } = winner.getCenterPosition();
-            card.moveAndHide(x, y, 500);
+            card.moveAndHide(x, y, CARD_SPEED.back);
         });
 
         CURRENT_TURN++;

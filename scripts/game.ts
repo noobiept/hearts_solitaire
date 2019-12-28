@@ -23,7 +23,13 @@ type AllPlayers = {
     [key in Position]: Player;
 };
 
+export const CARD_SPEED = {
+    pass: 400, // pass to the next player
+    play: 250, // play the card in the round (to the center)
+    back: 500, // back to the player's hand
+};
 const GAME_OVER_LIMIT = 100;
+
 let STAGE: createjs.Stage;
 var PLAYERS: AllPlayers;
 
@@ -161,7 +167,7 @@ export function passCards() {
     }
 
     for (var a = 0; a < ALL_POSITIONS.length; a++) {
-        PLAYERS[ALL_POSITIONS[a]].positionCards(400);
+        PLAYERS[ALL_POSITIONS[a]].positionCards(CARD_SPEED.pass);
     }
 
     PASS_CARDS_PHASE = false;
@@ -517,6 +523,7 @@ function showPointsCards() {
     ALL_POSITIONS.forEach((position) => {
         const player = PLAYERS[position];
         const cards = pointsCards[position];
+        const center = player.getCenterPosition();
 
         cards.sort((a, b) => {
             if (a.suit !== b.suit) {
@@ -524,6 +531,11 @@ function showPointsCards() {
             }
 
             return a.symbolValue - b.symbolValue;
+        });
+
+        // position the cards on the player center, and the move from there to the sides
+        cards.forEach((card) => {
+            card.setPosition(center.x, center.y);
         });
         player.positionGivenCards(cards);
     });

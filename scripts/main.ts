@@ -32,8 +32,6 @@ import "../css/style.css";
             - restart
  */
 
-let DEBUG: boolean;
-
 window.onload = function() {
     AppStorage.getData(["hearts_statistics"], function(data) {
         Statistics.load(data["hearts_statistics"]);
@@ -61,5 +59,5 @@ function initApp() {
 }
 
 export function debugMode() {
-    return DEBUG;
+    return false;
 }

@@ -1,5 +1,5 @@
 import * as Message from "./message";
-import { Position } from "./game";
+import { Position, CARD_SPEED } from "./game";
 import {
     getRandom,
     Suit,
@@ -93,7 +93,7 @@ export default class Player {
         this.cards.hearts = sortCardsBySymbol(this.cards.hearts);
 
         this.updateCenterPosition();
-        this.positionCards(500);
+        this.positionCards(CARD_SPEED.back);
     }
 
     updateCenterPosition() {
@@ -240,7 +240,7 @@ export default class Player {
 
         cards.forEach((card) => {
             card.show();
-            card.moveTo(x, y, 500);
+            card.moveTo(x, y, CARD_SPEED.back);
 
             x += stepX;
             y += stepY;
