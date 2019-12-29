@@ -72,21 +72,27 @@ export default class IndividualCard {
         animationDuration: number,
         callback?: (card: IndividualCard) => any
     ) {
-        var _this = this;
-
-        this.moveAnimation.start(x, y, animationDuration, function() {
+        this.moveAnimation.start(x, y, animationDuration, () => {
             if (callback) {
-                callback(_this);
+                callback(this);
             }
         });
     }
 
+    /**
+     * Move the card to the given position and hide it with a fade out effect.
+     */
     moveAndHide(x: number, y: number, animationDuration: number) {
-        var _this = this;
-
-        this.moveTo(x, y, animationDuration, function() {
-            _this.hide();
+        this.moveTo(x, y, animationDuration, () => {
+            this.hide();
+            this.bitmap.alpha = 1;
         });
+
+        createjs.Tween.get(this.bitmap).to(
+            { alpha: 0 },
+            animationDuration,
+            createjs.Ease.cubicInOut
+        );
     }
 
     setClickEvent(set: boolean) {
@@ -113,6 +119,7 @@ export default class IndividualCard {
     show() {
         this.addToStage(this.bitmap); // to force it to up in the stack to be drawn on top of other stuff
         this.bitmap.visible = true;
+        this.bitmap.alpha = 1;
     }
 
     hide() {

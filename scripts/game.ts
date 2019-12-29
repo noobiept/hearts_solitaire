@@ -536,6 +536,7 @@ function showPointsCards() {
 
         // position the cards on the player center, and the move from there to the sides
         cards.forEach((card) => {
+            card.show();
             card.setPosition(center.x, center.y);
         });
         player.positionGivenCards(cards);
