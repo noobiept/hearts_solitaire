@@ -24,6 +24,10 @@ export class Move {
     }
 
     start(destX: number, destY: number, duration: number, callback: () => any) {
+        if (this.moving) {
+            this.clear();
+        }
+
         this.moving = true;
         var currentX = this.element.x;
         var currentY = this.element.y;
