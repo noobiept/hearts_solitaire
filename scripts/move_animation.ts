@@ -84,8 +84,9 @@ export class Move {
 
     clear() {
         this.moving = false;
+        createjs.Tween.removeTweens(this.element);
 
-        var index = ACTIVE.indexOf(this);
+        const index = ACTIVE.indexOf(this);
         ACTIVE.splice(index, 1);
     }
 
