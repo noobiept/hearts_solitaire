@@ -512,7 +512,7 @@ function showEndRoundScores(
     });
     const title = gameEnded ? "Game Over!" : "Round Ended!";
 
-    Message.openModal(title, message.outerHTML, onClose);
+    Message.openModal(title, message, onClose);
 }
 
 /**

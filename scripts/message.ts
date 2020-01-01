@@ -26,7 +26,11 @@ export function close() {
 /**
  * Open a modal dialog on the center of the screen that needs to be dealt with.
  */
-export function openModal(title: string, body: string, onClose: () => void) {
+export function openModal(
+    title: string | HTMLElement,
+    body: string | HTMLElement,
+    onClose: () => void
+) {
     const dialog = new Dialog({
         title,
         body,
