@@ -482,6 +482,7 @@ function showEndRoundScores(
             playerPosition.classList.add("player");
             playerScore.classList.add("player");
             roundScore.classList.add("player");
+            winner.classList.add("player");
         }
         const scoreText = points.toString();
         let roundScoreText =
