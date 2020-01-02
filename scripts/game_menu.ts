@@ -56,9 +56,19 @@ export function updateScores() {
 }
 
 export function updateStatistics() {
-    STATISTICS.gamesPlayed.innerText = Statistics.getGamesPlayed().toString();
-    STATISTICS.gamesWon.innerText = Statistics.getGamesWon().toString();
-    STATISTICS.winRate.innerText = Statistics.getWinRate() + "%";
+    const gamesPlayed = Statistics.getGamesPlayed();
+    const gamesWon = Statistics.getGamesWon();
+    const winRate = Statistics.getWinRate();
+
+    if (gamesPlayed === 0) {
+        STATISTICS.gamesPlayed.innerText = "-";
+        STATISTICS.gamesWon.innerText = "-";
+        STATISTICS.winRate.innerText = "-";
+    } else {
+        STATISTICS.gamesPlayed.innerText = gamesPlayed.toString();
+        STATISTICS.gamesWon.innerText = gamesWon.toString();
+        STATISTICS.winRate.innerText = `${winRate}%`;
+    }
 }
 
 export function setPlayerTurn(position: Position) {
