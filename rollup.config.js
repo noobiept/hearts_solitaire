@@ -16,6 +16,7 @@ const config = {
 export default (commandLineArgs) => {
     if (commandLineArgs.configRelease === true) {
         config.plugins.push(terser());
+        config.output.sourcemap = false;
     }
 
     return config;
