@@ -100,7 +100,7 @@ export function isValidMove(card: IndividualCard) {
                     ) {
                         Message.open(
                             "Invalid move.",
-                            "Can't play hearts on the first turn (unless you happen to have all 13 hearts cards."
+                            "Can't play hearts on the first turn (unless you happen to have all 13 hearts cards)."
                         );
                         return false;
                     } else {
